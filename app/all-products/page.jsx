@@ -3,11 +3,31 @@ import ProductCard from "@/components/ProductCard";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useAppContext } from "@/context/AppContext";
+import {useEffect, useState} from "react";
+import {useSearchParams} from "next/navigation";
 
 const AllProducts = () => {
 
-    const { products } = useAppContext();
+    const { fetchProductData } = useAppContext();
+    const [products, setProducts] = useState([]);
 
+    const searchParams = useSearchParams();
+    const search = searchParams.get('search') || '';
+    const loadProducts = async (filters = {}) => {
+        const result = await fetchProductData(filters);
+        if (result) {
+            setProducts(result.products);
+        }
+    };
+    useEffect(() => {
+        if (!search) {
+            loadProducts({ per_page: 15 });
+        }
+    }, []);
+
+    useEffect(() => {
+            loadProducts({ per_page: 15, search });
+    }, [search]);
     return (
         <>
             <Navbar />

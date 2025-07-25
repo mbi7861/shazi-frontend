@@ -1,15 +1,23 @@
 'use client'
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { assets } from "@/assets/assets";
 import OrderSummary from "@/components/OrderSummary";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import { useAppContext } from "@/context/AppContext";
+import {getImageUrl} from "@/app/utils/utils";
+import AuthModal from "@/components/AuthModal";
 
 const Cart = () => {
+  const [authOpen, setAuthOpen] = useState(false);
+  const closeAuthModal = () => setAuthOpen(false);
 
-  const { products, router, cartItems, addToCart, updateCartQuantity, getCartCount } = useAppContext();
-
+  const { router, cartItems, updateCartQuantity,removeFromCart, cartCount , userData } = useAppContext();
+  useEffect(() => {
+    if (!userData) {
+      setAuthOpen(true);
+    }
+  }, [userData]);
   return (
     <>
       <Navbar />
@@ -19,7 +27,7 @@ const Cart = () => {
             <p className="text-2xl md:text-3xl text-gray-500">
               Your <span className="font-medium text-orange-600">Cart</span>
             </p>
-            <p className="text-lg md:text-xl text-gray-500/80">{getCartCount()} Items</p>
+            <p className="text-lg md:text-xl text-gray-500/80">{cartCount} Items</p>
           </div>
           <div className="overflow-x-auto">
             <table className="min-w-full table-auto">
@@ -40,65 +48,64 @@ const Cart = () => {
                 </tr>
               </thead>
               <tbody>
-                {Object.keys(cartItems).map((itemId) => {
-                  const product = products.find(product => product._id === itemId);
+              {
+                Object.values(cartItems).map((product) => {
+                const quantity = product.pivot?.quantity || 0;
+                const price = product.prices?.[0]?.discounted_price || 0;
+                const total = (price * quantity);
+                const imageUrl = product.primary_image || product.images[0].uuid;
 
-                  if (!product || cartItems[itemId] <= 0) return null;
-
-                  return (
-                    <tr key={itemId}>
+                return (
+                    <tr key={product.id}>
                       <td className="flex items-center gap-4 py-4 md:px-4 px-1">
                         <div>
                           <div className="rounded-lg overflow-hidden bg-gray-500/10 p-2">
                             <Image
-                              src={product.image[0]}
-                              alt={product.name}
-                              className="w-16 h-auto object-cover mix-blend-multiply"
-                              width={1280}
-                              height={720}
+                                src={getImageUrl(imageUrl)}
+                                alt={product.title}
+                                className="w-16 h-auto object-cover mix-blend-multiply"
+                                width={1280}
+                                height={720}
                             />
                           </div>
                           <button
-                            className="md:hidden text-xs text-orange-600 mt-1"
-                            onClick={() => updateCartQuantity(product._id, 0)}
+                              className="md:hidden text-xs text-orange-600 mt-1"
+                              onClick={() => updateCartQuantity(product.id, 0)}
                           >
                             Remove
                           </button>
                         </div>
                         <div className="text-sm hidden md:block">
-                          <p className="text-gray-800">{product.name}</p>
+                          <p className="text-gray-800">{product.title}</p>
                           <button
-                            className="text-xs text-orange-600 mt-1"
-                            onClick={() => updateCartQuantity(product._id, 0)}
+                              className="text-xs text-orange-600 mt-1"
+                              onClick={() => removeFromCart(product.id)}
                           >
                             Remove
                           </button>
                         </div>
                       </td>
-                      <td className="py-4 md:px-4 px-1 text-gray-600">${product.offerPrice}</td>
+                      <td className="py-4 md:px-4 px-1 text-gray-600">Rs {price}</td>
                       <td className="py-4 md:px-4 px-1">
                         <div className="flex items-center md:gap-2 gap-1">
-                          <button onClick={() => updateCartQuantity(product._id, cartItems[itemId] - 1)}>
-                            <Image
-                              src={assets.decrease_arrow}
-                              alt="decrease_arrow"
-                              className="w-4 h-4"
-                            />
+                          <button onClick={() => updateCartQuantity(product.id, quantity - 1)}>
+                            <Image src={assets.decrease_arrow} alt="decrease" className="w-4 h-4" />
                           </button>
-                          <input onChange={e => updateCartQuantity(product._id, Number(e.target.value))} type="number" value={cartItems[itemId]} className="w-8 border text-center appearance-none"></input>
-                          <button onClick={() => addToCart(product._id)}>
-                            <Image
-                              src={assets.increase_arrow}
-                              alt="increase_arrow"
-                              className="w-4 h-4"
-                            />
+                          <input
+                              type="number"
+                              value={quantity}
+                              onChange={(e) => updateCartQuantity(product.id, Number(e.target.value))}
+                              className="w-8 border text-center appearance-none"
+                          />
+                          <button onClick={() => updateCartQuantity(product.id, quantity + 1)}>
+                            <Image src={assets.increase_arrow} alt="increase" className="w-4 h-4" />
                           </button>
                         </div>
                       </td>
-                      <td className="py-4 md:px-4 px-1 text-gray-600">${(product.offerPrice * cartItems[itemId]).toFixed(2)}</td>
+                      <td className="py-4 md:px-4 px-1 text-gray-600">Rs {total}</td>
                     </tr>
-                  );
-                })}
+                );
+              })}
               </tbody>
             </table>
           </div>
@@ -113,6 +120,9 @@ const Cart = () => {
         </div>
         <OrderSummary />
       </div>
+      {authOpen && (
+          <AuthModal isOpen={authOpen} onClose={closeAuthModal} />
+      )}
     </>
   );
 };

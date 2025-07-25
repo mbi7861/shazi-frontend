@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import Loading from "@/components/Loading";
 import axios from "axios";
 import toast from "react-hot-toast";
+import axiosInstance from "@/app/api/axiosInstance";
 
 const MyOrders = () => {
 
@@ -21,7 +22,7 @@ const MyOrders = () => {
             
             const token = await getToken()
 
-            const {data} = await axios.get('/api/order/list', {headers:{Authorization:`Bearer ${token}`}})
+            const {data} = await axiosInstance().get('/orders/list')
 
             if (data.success) {
                 setOrders(data.orders.reverse())
