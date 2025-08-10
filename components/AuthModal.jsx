@@ -62,6 +62,32 @@ export default function AuthModal({ isOpen, onClose }) {
         }
     };
 
+    const loginWithGoogle = async ({ code, status }) => {
+        console.log(code,status);
+        if (!code || status === false) {
+            toast.error('Google authentication failed.');
+            return;
+        }
+        try {
+            const endpoint = isLogin
+                ? 'auth/social-login/google'
+                : 'auth/social-register/google';
+            const response = await axiosInstance.post(endpoint, { code });
+
+            if (response?.data?.status) {
+                const token = response.data.data.session.session_token;
+                localStorage.setItem('AUTH-TOKEN', token);
+                setUserData(response.data.data.profile);
+                toast.success('Logged in with Google!');
+                onClose();
+            } else {
+                toast.error(response.data.msg || 'Google login failed.');
+            }
+        } catch (error) {
+
+            toast.error(error.response?.data?.msg || 'Something went wrong during Google login.');
+        }
+    };
 
     return (
         <Dialog open={isOpen} onClose={onClose} className="fixed z-50 inset-0 overflow-y-auto">
@@ -80,7 +106,7 @@ export default function AuthModal({ isOpen, onClose }) {
                         {isLogin ? 'Welcome back!' : 'Get started by creating your account.'}
                     </p>
 
-                    <GoogleAuth isLogin={isLogin} onClose={onClose} />
+                    <GoogleAuth isLogin={isLogin} loginWithGoogle={loginWithGoogle} />
 
 
                     <div className="flex items-center gap-2 text-gray-400 text-sm mb-4">

@@ -379,13 +379,13 @@ export default function CheckoutPage() {
                                                             <strong>Bank:</strong> Meezan Bank
                                                         </p>
                                                         <p>
-                                                            <strong>Account Title:</strong> Alladin.pk
+                                                            <strong>Account Title:</strong> Dilawar Traders
                                                         </p>
                                                         <p>
-                                                            <strong>Account Number:</strong> 10010103903664
+                                                            <strong>Account Number:</strong> 10010103943364
                                                         </p>
                                                         <p>
-                                                            <strong>IBAN:</strong> PK26MEZN0010103903664
+                                                            <strong>IBAN:</strong> PK26MEZN0010103903994
                                                         </p>
                                                     </div>
 
@@ -406,7 +406,7 @@ export default function CheckoutPage() {
 
                                                     <div className="mt-3 text-xs">
                                                         <p>For any help, contact us at:</p>
-                                                        <p>📞 0492722500 📱 0331-6801200 📧 contact@alladin.pk</p>
+                                                        <p>📞 0492722500 📱 0331-6801200 📧 contact@dilawarTraders.pk</p>
                                                     </div>
                                                 </div>
                                             )}
