@@ -10,6 +10,7 @@ import {validateCheckoutForm} from "../utils/validation"
 import Navbar from "@/components/Navbar";
 import StripeCardForm from "@/components/StripeCardForm";
 import Image from "next/image";
+import { apiServiceService } from "@/app/utils/apiService";
 
 // import { formattedErrors } from "@/lib/formattedErrors" // Declare the variable before using it
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
@@ -111,59 +112,61 @@ export default function CheckoutPage() {
             const storedCart = localStorage.getItem('cart');
             const orderItems = storedCart ? JSON.parse(storedCart) : {};
 
-            // Prepare order data
+            // Prepare order data for API Service
             const orderData = {
                 customer: {
                     email: formData.email,
-                    firstName: formData.firstName,
-                    lastName: formData.lastName,
+                    first_name: formData.firstName,
+                    last_name: formData.lastName,
                     phone: formData.phone,
                 },
-                address: {
-                    firstName: formData.firstName,
-                    lastName: formData.lastName,
+                shipping_address: {
+                    first_name: formData.firstName,
+                    last_name: formData.lastName,
                     address: formData.address,
                     apartment: formData.apartment,
                     city: formData.city,
-                    postalCode: formData.postalCode,
+                    postal_code: formData.postalCode,
                     country: formData.country,
                     phone: formData.phone,
                 },
-                items: orderItems,
-                shippingMethod: formData.shippingMethod,
-                paymentMethod: formData.paymentMethod,
-                discountCode: formData.discountCode,
-                subtotal,
-                shippingCost,
-                currency,
+                items: Object.values(orderItems).map(item => ({
+                    product_id: item.id,
+                    quantity: item.pivot?.quantity || 1,
+                    price: item.prices?.[0]?.discounted_price || 0,
+                    currency: item.prices?.[0]?.currency || 'PKR'
+                })),
+                shipping_method: formData.shippingMethod,
+                payment_method: formData.paymentMethod,
+                discount_code: formData.discountCode,
+                subtotal: subtotal,
+                shipping_cost: shippingCost,
+                total: total,
+                currency: currency || 'PKR',
+                // Add Stripe payment method ID if card payment
+                ...(formData.paymentMethod === 'card' && {
+                    stripe_payment_method_id: await stripeRef.current?.getPaymentMethodId()
+                })
+            };
+
+            // Send to API Service via our Next.js API route
+            const result = await apiServiceService.createOrder(orderData);
+
+            if (!result.success) {
+                throw new Error(result.error || 'Failed to create order');
             }
-            console.log(orderData);
-            return
-            // Send to backend API
-            const response = await fetch("/api/orders", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(orderData),
-            })
 
-            if (!response.ok) {
-                throw new Error("Failed to create order")
-            }
-
-            const result = await response.json()
-
-            toast.success(`Order Placed Successfully! Order ID: ${result.orderId}`)
+            toast.success(`Order Placed Successfully! Order ID: ${result.data.order_id || result.data.id}`);
 
             // Clear localStorage after successful order
-            localStorage.removeItem("checkoutFormData")
+            localStorage.removeItem("checkoutFormData");
+            localStorage.removeItem("cart");
 
             // Redirect to success page
-            router.push(`/order-success/${result.orderId}`)
+            router.push(`/order-placed?orderId=${result.data.order_id || result.data.id}`);
         } catch (error) {
-            console.error("Order submission error:", error)
-            toast.error("There was an error processing your order. Please try again.")
+            console.error("Order submission error:", error);
+            toast.error(error.message || "There was an error processing your order. Please try again.");
         } finally {
             setIsLoading(false)
         }
@@ -174,23 +177,21 @@ export default function CheckoutPage() {
         if (!formData.discountCode) return
 
         try {
-            const response = await fetch("/api/discount", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({code: formData.discountCode}),
-            })
-
-            if (response.ok) {
-                const result = await response.json()
-                toast.success(`${result.discount}% discount applied!`)
+            const result = await apiServiceService.applyDiscount(formData.discountCode);
+            
+            if (result.success) {
+                toast.success(`${result.data.discount}% discount applied!`);
+                // You can update the total here if the API returns updated pricing
+                if (result.data.updated_total) {
+                    // Update the total with discount applied
+                    // This would require state management for the total
+                }
             } else {
-                toast.error("The discount code you entered is not valid.")
+                toast.error(result.error || "The discount code you entered is not valid.");
             }
         } catch (error) {
-            console.error("Discount error:", error)
-            toast.error("There was an error applying the discount.")
+            console.error("Discount error:", error);
+            toast.error("There was an error applying the discount.");
         }
     }
 

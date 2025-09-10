@@ -1,8 +1,8 @@
 'use client';
 
 import axiosInstance from "@/app/api/axiosInstance";
-import { createContext, useContext, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import {createContext, useContext, useEffect, useState} from "react";
+import {useRouter} from "next/navigation";
 import toast from "react-hot-toast";
 
 export const AppContext = createContext();
@@ -29,7 +29,6 @@ export const AppContextProvider = ({ children }) => {
             if (data.status) {
                 return {
                     products: data.data.products,
-                    categories: data.data.categories
                 };
             } else {
                 toast.error(data.message || 'Failed to load products');
@@ -38,6 +37,19 @@ export const AppContextProvider = ({ children }) => {
         } catch (error) {
             toast.error(error?.response?.data?.message || 'Error fetching products');
             return null;
+        }
+    };
+    const fetchCategoriesData = async () => {
+        try {
+
+            const { data } = await axiosInstance.get(`/categories`);
+            if (data.status) {
+                setCategories(data.data)
+            } else {
+                toast.error(data.message || 'Failed to load Categories');
+            }
+        } catch (error) {
+            toast.error(error?.response?.data?.message || 'Error fetching Categories');
         }
     };
 
@@ -182,13 +194,15 @@ export const AppContextProvider = ({ children }) => {
         const result = await fetchProductData({ per_page: 5 });
         if (result) {
             setProducts(result.products);
-            setCategories(result.categories);
         }
     };
-
+    const loadFeaturedProducts = () => {
+        return products.filter(p => p.is_feature === 1);
+    };
     useEffect(() => {
         loadProducts();
         fetchCartProducts();
+        fetchCategoriesData();
         fetchUserData();
     }, []);
 
