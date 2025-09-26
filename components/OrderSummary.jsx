@@ -1,10 +1,14 @@
-import { useAppContext } from "@/context/AppContext";
+import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 const OrderSummary = () => {
-
-  const { currency, router, cartCount, cartAmount, getToken, userData , cartItems, setCartItems } = useAppContext()
+  const { cartCount, cartAmount, cartItems } = useCart();
+  const { userData } = useAuth();
+  const router = useRouter();
+  const currency = process.env.NEXT_PUBLIC_CURRENCY || 'Rs';
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 

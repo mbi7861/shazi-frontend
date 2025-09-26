@@ -2,7 +2,7 @@ import { Outfit } from "next/font/google";
 import "./globals.css";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { AppContextProvider } from "@/context/AppContext";
+import { AppProvider } from "@/context/AppProvider";
 import { Toaster } from "react-hot-toast";
 import Script from "next/script";
 
@@ -21,10 +21,10 @@ export default function RootLayout({ children }) {
           src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
           strategy="beforeInteractive"
       />
-        <AppContextProvider>
+        <AppProvider>
           {children}
           <Toaster />
-        </AppContextProvider>
+        </AppProvider>
       </body>
     </html>
   );

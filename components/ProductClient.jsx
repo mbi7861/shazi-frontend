@@ -2,7 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { useAppContext } from "@/context/AppContext";
+import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 import DOMPurify from "dompurify";
 import { getImageUrl } from "@/app/utils/utils";
 import { assets } from "@/assets/assets";
@@ -12,8 +14,10 @@ import Footer from "@/components/Footer";
 import Loading from "@/components/Loading";
 
 const ProductClient = ({ initialProduct , relatedProducts }) => {
-    const { router, addToCart, user } = useAppContext();
-    console.log(initialProduct)
+    const { addToCart } = useCart();
+    const { userData } = useAuth();
+    console.log(userData);
+    const router = useRouter();
     const [mainImage, setMainImage] = useState(
         initialProduct?.primary_image || initialProduct?.images?.[0]?.uuid || null
     );
@@ -78,10 +82,10 @@ const ProductClient = ({ initialProduct , relatedProducts }) => {
                             }}
                         />
                         <p className="text-3xl font-medium mt-6">
-                            ${productData.prices[0].discounted_price}
+                            Rs {productData.prices[0].discounted_price}
                             {productData.prices[0].discount_value && (
                                 <span className="text-base font-normal text-gray-800/60 line-through ml-2">
-                         ${productData.prices[0].price}
+                         Rs {productData.prices[0].price}
                         </span>
                             )}
                         </p>
@@ -106,7 +110,7 @@ const ProductClient = ({ initialProduct , relatedProducts }) => {
                             <button
                                 onClick={() => {
                                     addToCart(productData);
-                                    router.push(user ? '/cart' : '');
+                                    router.push(userData ? '/cart' : '');
                                 }}
                                 className="w-full py-3.5 bg-orange-500 text-white hover:bg-orange-600 transition"
                             >

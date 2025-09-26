@@ -1,11 +1,12 @@
 import React from 'react';
 import Image from 'next/image';
 import { assets } from '@/assets/assets';
-import { useAppContext } from '@/context/AppContext';
+import { useRouter } from 'next/navigation';
 import DOMPurify from 'dompurify';
 
 const ProductCard = ({ product }) => {
-    const { currency, router } = useAppContext();
+    const router = useRouter();
+    const currency = process.env.NEXT_PUBLIC_CURRENCY || 'Rs';
 
     const offerPrice = product.prices[0].discounted_price
     const imageUUID = product.primary_image || product.images?.[0]?.uuid;
@@ -64,10 +65,10 @@ const ProductCard = ({ product }) => {
 
             <div className="flex items-end justify-between w-full mt-1">
                 <p className="text-base font-medium">
-                    ${product.prices[0].discounted_price}
+                    {currency} {product.prices[0].discounted_price}
                     {product.prices[0].discount_value && (
                         <span className="text-base font-normal text-gray-800/60 line-through ml-2">
-            ${product.prices[0].price}
+            {currency} {product.prices[0].price}
         </span>
                     )}
                 </p>

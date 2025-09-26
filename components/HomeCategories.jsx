@@ -2,13 +2,14 @@
 import React from "react";
 import Slider from 'react-slick';
 import Image from "next/image";
-import {useAppContext} from "@/context/AppContext";
-import {log} from "next/dist/server/typescript/utils";
+import { useProducts } from "@/context/ProductContext";
+import { useRouter } from "next/navigation";
 import {assets} from "@/assets/assets";
 import {getImageUrl} from "@/app/utils/utils";
 
 const CategoryHome = () => {
-    const {categories, router} = useAppContext()
+    const { categories } = useProducts();
+    const router = useRouter();
     const settings = {
         infinite: true,
         slidesToShow: 5,
@@ -46,7 +47,7 @@ const CategoryHome = () => {
                 {categories.map((cat, idx) => (
                     <div key={idx} className="px-2">
                         <div className="text-center">
-                            <a onClick={() => router.push(`/category/${category.slug}`)} title={cat.title}>
+                            <a onClick={() => router.push(`/category/${cat.slug}`)} title={cat.title}>
                                 <img
                                     src={getImageUrl(cat.image?.uuid, "categories") || assets.logo}
 

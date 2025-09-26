@@ -1,18 +1,18 @@
 'use client';
 
-import { useAppContext } from "@/context/AppContext";
+import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 
 export default function ProductCardClient({ product }) {
-    const { addToCart, cart } = useAppContext();
+    const { addToCart, cartItems } = useCart();
     const router = useRouter();
     const [isHovered, setIsHovered] = useState(false);
 
     const handleAddToCart = (e) => {
         e.stopPropagation();
-        const isInCart = cart.some((item) => item.id === product.id);
+        const isInCart = cartItems.some((item) => item.id === product.id);
         if (isInCart) {
             toast.error("Product is already in cart");
             return;

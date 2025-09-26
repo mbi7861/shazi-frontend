@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { assets, orderDummyData } from "@/assets/assets";
 import Image from "next/image";
-import { useAppContext } from "@/context/AppContext";
+import { useAuth } from "@/context/AuthContext";
 import Footer from "@/components/seller/Footer";
 import Loading from "@/components/Loading";
 import axios from "axios";
@@ -10,7 +10,8 @@ import toast from "react-hot-toast";
 
 const Orders = () => {
 
-    const { currency, getToken, user } = useAppContext();
+    const { getToken, userData } = useAuth();
+    const currency = process.env.NEXT_PUBLIC_CURRENCY || 'Rs';
 
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -38,10 +39,10 @@ const Orders = () => {
     }
 
     useEffect(() => {
-        if (user) {
+        if (userData) {
             fetchSellerOrders();
         }
-    }, [user]);
+    }, [userData]);
 
     return (
         <div className="flex-1 h-screen overflow-scroll flex flex-col justify-between text-sm">

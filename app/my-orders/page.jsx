@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { assets, orderDummyData } from "@/assets/assets";
 import Image from "next/image";
-import { useAppContext } from "@/context/AppContext";
+import { useAuth } from "@/context/AuthContext";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import Loading from "@/components/Loading";
@@ -12,7 +12,8 @@ import axiosInstance from "@/app/api/axiosInstance";
 
 const MyOrders = () => {
 
-    const { currency, getToken, user } = useAppContext();
+    const { getToken, userData } = useAuth();
+    const currency = process.env.NEXT_PUBLIC_CURRENCY || 'Rs';
 
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -36,10 +37,10 @@ const MyOrders = () => {
     }
 
     useEffect(() => {
-        if (user) {
+        if (userData) {
         fetchOrders();
         }
-    }, [user]);
+    }, [userData]);
 
     return (
         <>

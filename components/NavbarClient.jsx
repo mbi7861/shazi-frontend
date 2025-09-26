@@ -3,14 +3,17 @@
 import { useEffect, useState } from 'react';
 import { assets, BagIcon, BoxIcon, CartIcon, HomeIcon } from "@/assets/assets";
 import Link from "next/link";
-import { useAppContext } from "@/context/AppContext";
+import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import AuthModal from './AuthModal';
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import CartModal from "./CartModal";
 
 export default function NavbarClient() {
-    const { router, cartCount, userData } = useAppContext();
+    const { cartCount } = useCart();
+    const { userData } = useAuth();
+    const router = useRouter();
     const [authOpen, setAuthOpen] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
     const [search, setSearch] = useState('');

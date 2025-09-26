@@ -4,7 +4,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Image from "next/image";
 import {useEffect, useState} from "react";
-import {useAppContext} from "@/context/AppContext";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
 import LocationPickerModal from "@/components/LocationPickerModal";
@@ -12,7 +13,8 @@ import LocationPickerModal from "@/components/LocationPickerModal";
 const AddAddress = () => {
 
     const [isLocationPickerOpen, setLocationPickerOpen] = useState(false);
-    const {getToken, router , userData} = useAppContext()
+    const { getToken, userData } = useAuth();
+    const router = useRouter();
     const [address, setAddress] = useState({
         fullName: '',
         phoneNumber: '',

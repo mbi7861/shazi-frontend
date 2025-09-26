@@ -2,13 +2,13 @@
 import React, { useState } from "react";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
-import { useAppContext } from "@/context/AppContext";
+import { useAuth } from "@/context/AuthContext";
 import axios from "axios";
 import toast from "react-hot-toast";
 
 const AddProduct = () => {
 
-  const { getToken } = useAppContext()
+  const { getToken } = useAuth()
 
   const [files, setFiles] = useState([]);
   const [name, setName] = useState('');

@@ -8,7 +8,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axiosInstance from '@/app/api/axiosInstance';
 import toast from "react-hot-toast";
-import {useAppContext} from "@/context/AppContext";
+import { useAuth } from "@/context/AuthContext";
 import GoogleAuth from "@/components/GoogleAuth";
 
 const loginSchema = z.object({
@@ -26,7 +26,7 @@ const registerSchema = z.object({
 
 export default function AuthModal({ isOpen, onClose }) {
     const [isLogin, setIsLogin] = useState(true);
-    const { setUserData } = useAppContext();
+    const { fetchUserData } = useAuth();
 
     const {
         register,
@@ -45,7 +45,7 @@ export default function AuthModal({ isOpen, onClose }) {
             if (response?.data?.status) {
                 const token = response.data.data.session.session_token;
                 localStorage.setItem('AUTH-TOKEN', token);
-                setUserData(response.data.data.profile);
+                await fetchUserData(); // Refresh user data from context
                 toast.success(response.data.msg || (isLogin ? 'Login successful!' : 'Registration successful!'));
                 onClose();
             } else {
@@ -77,7 +77,7 @@ export default function AuthModal({ isOpen, onClose }) {
             if (response?.data?.status) {
                 const token = response.data.data.session.session_token;
                 localStorage.setItem('AUTH-TOKEN', token);
-                setUserData(response.data.data.profile);
+                await fetchUserData(); // Refresh user data from context
                 toast.success('Logged in with Google!');
                 onClose();
             } else {

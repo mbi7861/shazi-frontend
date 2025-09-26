@@ -3,10 +3,12 @@ import React, {useEffect, useRef} from 'react';
 import Image from 'next/image';
 import { getImageUrl } from "@/app/utils/utils";
 import { assets } from "@/assets/assets";
-import { useAppContext } from "@/context/AppContext";
+import { useCart } from "@/context/CartContext";
+import { useRouter } from "next/navigation";
 
 const CartModal = ({ isOpen, onClose }) => {
-    const { router, cartItems, updateCartQuantity, removeFromCart,cartAmount } = useAppContext();
+    const { cartItems, updateCartQuantity, removeFromCart, cartAmount } = useCart();
+    const router = useRouter();
     const modalRef = useRef();
     useEffect(() => {
         const handleClickOutside = (event) => {

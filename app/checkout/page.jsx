@@ -1,10 +1,11 @@
 "use client"
 import {Elements} from "@stripe/react-stripe-js";
 import {loadStripe} from "@stripe/stripe-js";
-import {useState, useEffect, useContext, useRef} from "react"
+import {useState, useEffect, useRef} from "react"
 import {redirect, useRouter} from "next/navigation"
 import toast from "react-hot-toast";
-import {AppContext} from "@/context/AppContext"
+import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 import {getImageUrl} from "@/app/utils/utils"
 import {validateCheckoutForm} from "../utils/validation"
 import Navbar from "@/components/Navbar";
@@ -16,7 +17,10 @@ import { apiServiceService } from "@/app/utils/apiService";
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 export default function CheckoutPage() {
-    const {router , cartItems, cartAmount, currency, userData, cartLoading} = useContext(AppContext)
+    const router = useRouter();
+    const { cartItems, cartAmount, cartLoading } = useCart();
+    const { userData } = useAuth();
+    const currency = process.env.NEXT_PUBLIC_CURRENCY || 'Rs';
     const stripeRef = useRef();
 
     const [isLoading, setIsLoading] = useState(false)

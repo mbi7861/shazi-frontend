@@ -3,12 +3,12 @@ import ProductCard from "@/components/ProductCard";
 import ProductFilters from "@/components/ProductFilters";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import { useAppContext } from "@/context/AppContext";
+import { useProducts } from "@/context/ProductContext";
 import { useEffect, useState, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
 
 const AllProducts = () => {
-    const { fetchProductData } = useAppContext();
+    const { fetchProducts } = useProducts();
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -30,7 +30,6 @@ const AllProducts = () => {
         max: ''
     });
 
-    // Debounced filter change handler
     const debouncedFilterChange = useCallback(
         (() => {
             let timeoutId;
@@ -38,7 +37,7 @@ const AllProducts = () => {
                 clearTimeout(timeoutId);
                 timeoutId = setTimeout(() => {
                     handleFilterChange(newFilters);
-                }, 500); // 500ms delay
+                }, 500);
             };
         })(),
         []
@@ -47,10 +46,10 @@ const AllProducts = () => {
     const loadProducts = async (filters = {}) => {
         try {
             setLoading(true);
-            const result = await fetchProductData(filters);
+            const result = await fetchProducts(filters);
             if (result) {
-                setProducts(result.products);
-                setCategories(result.categories);
+                setProducts(result.products || []);
+                setCategories(result.categories || []);
                 // Extract total count from pagination if available
                 if (result.products?.data) {
                     setTotalProducts(result.products.total || 0);
@@ -158,7 +157,7 @@ const AllProducts = () => {
                                         >
                                             Previous
                                         </button>
-                                        
+
                                         {Array.from({ length: Math.min(5, Math.ceil(totalProducts / (filters.per_page || 15))) }).map((_, index) => {
                                             const page = index + 1;
                                             return (
@@ -175,7 +174,7 @@ const AllProducts = () => {
                                                 </button>
                                             );
                                         })}
-                                        
+
                                         <button
                                             onClick={() => handlePageChange(currentPage + 1)}
                                             disabled={currentPage >= Math.ceil(totalProducts / (filters.per_page || 15))}

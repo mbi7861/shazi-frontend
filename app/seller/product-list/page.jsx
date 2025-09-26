@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
-import { useAppContext } from "@/context/AppContext";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 import Footer from "@/components/seller/Footer";
 import Loading from "@/components/Loading";
 import axios from "axios";
@@ -10,7 +11,8 @@ import toast from "react-hot-toast";
 
 const ProductList = () => {
 
-  const { router, getToken, user } = useAppContext()
+  const { getToken, userData } = useAuth();
+  const router = useRouter();
 
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
@@ -35,10 +37,10 @@ const ProductList = () => {
   }
 
   useEffect(() => {
-    if (user) {
+    if (userData) {
       fetchSellerProduct();
     }
-  }, [user])
+  }, [userData])
 
   return (
     <div className="flex-1 min-h-screen flex flex-col justify-between">

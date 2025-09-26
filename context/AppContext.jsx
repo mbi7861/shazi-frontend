@@ -5,8 +5,56 @@ import {createContext, useContext, useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 import toast from "react-hot-toast";
 
-export const AppContext = createContext();
-export const useAppContext = () => useContext(AppContext);
+export const AppContext = createContext({
+    // Default values to prevent destructuring errors during migration
+    currency: 'Rs',
+    router: null,
+    userData: null,
+    setUserData: () => {},
+    fetchUserData: async () => {},
+    fetchProductData: async () => {},
+    products: [],
+    categories: [],
+    cartItems: [],
+    setCartItems: () => {},
+    cartObj: [],
+    setCartObj: () => {},
+    addToCart: () => {},
+    removeFromCart: () => {},
+    updateCartQuantity: () => {},
+    cartCount: 0,
+    cartAmount: 0,
+    cartLoading: false
+});
+
+export const useAppContext = () => {
+    const context = useContext(AppContext);
+    if (!context) {
+        console.warn('useAppContext is being used outside of AppContextProvider. This is deprecated. Please use the new context hooks: useAuth, useProducts, useCart');
+        // Return default values to prevent crashes
+        return {
+            currency: 'Rs',
+            router: null,
+            userData: null,
+            setUserData: () => {},
+            fetchUserData: async () => {},
+            fetchProductData: async () => {},
+            products: [],
+            categories: [],
+            cartItems: [],
+            setCartItems: () => {},
+            cartObj: [],
+            setCartObj: () => {},
+            addToCart: () => {},
+            removeFromCart: () => {},
+            updateCartQuantity: () => {},
+            cartCount: 0,
+            cartAmount: 0,
+            cartLoading: false
+        };
+    }
+    return context;
+};
 
 export const AppContextProvider = ({ children }) => {
     const currency = process.env.NEXT_PUBLIC_CURRENCY || 'Rs';
@@ -89,6 +137,7 @@ export const AppContextProvider = ({ children }) => {
     };
 
     const addToCart = (product) => {
+        console.log(product);
         try {
             const productId = product.id;
             const stock = product.stock ?? 0;

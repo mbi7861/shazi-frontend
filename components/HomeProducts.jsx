@@ -1,11 +1,12 @@
 'use client';
 import React from "react";
 import ProductCard from "./ProductCard";
-import { useAppContext } from "@/context/AppContext";
+import { useProducts } from "@/context/ProductContext";
+import { useRouter } from "next/navigation";
 
 const HomeProducts = () => {
-
-    const { products, router } = useAppContext()
+    const { products } = useProducts();
+    const router = useRouter();
     return (
         <div className="flex flex-col items-center pt-14">
             <div className="flex items-center justify-between mb-4 w-full">

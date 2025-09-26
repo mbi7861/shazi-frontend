@@ -1,12 +1,12 @@
 'use client'
 import { assets } from '@/assets/assets'
-import { useAppContext } from '@/context/AppContext'
+import { useRouter } from 'next/navigation';
 import Image from 'next/image'
 import { useEffect } from 'react'
 
 const OrderPlaced = () => {
 
-  const { router } = useAppContext()
+  const router = useRouter();
 
   useEffect(() => {
     setTimeout(() => {
