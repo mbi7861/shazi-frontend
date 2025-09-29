@@ -10,6 +10,7 @@ import axiosInstance from '@/app/api/axiosInstance';
 import toast from "react-hot-toast";
 import { useAuth } from "@/context/AuthContext";
 import GoogleAuth from "@/components/GoogleAuth";
+import Cookies from "js-cookie";
 
 const loginSchema = z.object({
     email: z.string().email({ message: 'Invalid email address' }),
@@ -44,7 +45,7 @@ export default function AuthModal({ isOpen, onClose }) {
 
             if (response?.data?.status) {
                 const token = response.data.data.session.session_token;
-                localStorage.setItem('AUTH-TOKEN', token);
+                Cookies.setItem('AUTH-TOKEN', token);
                 await fetchUserData(); // Refresh user data from context
                 toast.success(response.data.msg || (isLogin ? 'Login successful!' : 'Registration successful!'));
                 onClose();
@@ -76,15 +77,15 @@ export default function AuthModal({ isOpen, onClose }) {
 
             if (response?.data?.status) {
                 const token = response.data.data.session.session_token;
-                localStorage.setItem('AUTH-TOKEN', token);
-                await fetchUserData(); // Refresh user data from context
+                Cookies.set("AUTH-TOKEN", token);
+                await fetchUserData(); 
                 toast.success('Logged in with Google!');
                 onClose();
             } else {
                 toast.error(response.data.msg || 'Google login failed.');
             }
         } catch (error) {
-
+                console.log(error);
             toast.error(error.response?.data?.msg || 'Something went wrong during Google login.');
         }
     };

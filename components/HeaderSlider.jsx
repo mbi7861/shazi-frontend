@@ -2,43 +2,15 @@
 import React, { useState, useEffect } from "react";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
+import { useProducts } from "@/context/ProductContext";
 
 const HeaderSlider = () => {
-  const [featuredProducts, setFeaturedProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { getFeaturedProducts, isLoading } = useProducts();
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [apiError, setApiError] = useState(false);
+  
+  // Get featured products from context
+  const featuredProducts = getFeaturedProducts();
 
-  useEffect(() => {
-    const loadFeaturedProducts = async () => {
-      try {
-        setLoading(true);
-        setApiError(false);
-
-        const response = await fetch('/api/product/featured');
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const result = await response.json();
-        if (result.success && result.products) {
-          setFeaturedProducts(result.products);
-        } else {
-          throw new Error(result.message || 'Failed to load featured products');
-        }
-      } catch (error) {
-        console.error('Error loading featured products:', error);
-        setApiError(true);
-        // Use fallback data when API fails
-        setFeaturedProducts([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadFeaturedProducts();
-  }, []);
 
   useEffect(() => {
     if (featuredProducts.length === 0) return;
@@ -84,7 +56,7 @@ const HeaderSlider = () => {
   // Use featured products if available, otherwise use fallback
   const sliderData = featuredProducts.length > 0 ? featuredProducts : fallbackData;
 
-  if (loading && featuredProducts.length === 0) {
+  if (isLoading && featuredProducts.length === 0) {
     return (
       <div className="overflow-hidden relative w-full">
         <div className="flex items-center justify-center bg-[#E6E9F2] py-8 md:px-14 px-5 mt-6 rounded-xl min-h-[300px]">

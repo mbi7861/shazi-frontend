@@ -14,10 +14,10 @@ export default function GoogleAuth({ isLogin, loginWithGoogle }) {
 
         const pollTimer = setInterval(() => {
             try {
-                if (!popup || popup.closed) {
-                    clearInterval(pollTimer);
-                    return;
-                }
+                // if (!popup || popup.closed) {
+                //     clearInterval(pollTimer);
+                //     return;
+                // }
 
                 const popupUrl = popup.location.href;
 
