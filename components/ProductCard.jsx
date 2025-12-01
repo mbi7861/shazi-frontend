@@ -3,18 +3,37 @@ import Image from 'next/image';
 import { assets } from '@/assets/assets';
 import { useRouter } from 'next/navigation';
 import DOMPurify from 'dompurify';
+import { useNavigationLoading } from '@/context/NavigationLoadingContext';
 
 const ProductCard = ({ product }) => {
     const router = useRouter();
+    const { setLoading } = useNavigationLoading();
     const currency = process.env.NEXT_PUBLIC_CURRENCY || 'Rs';
 
-    const offerPrice = product.prices[0].discounted_price
-    const imageUUID = product.primary_image || product.images?.[0]?.uuid;
+    // ---- FIXED: Get default or first product item ----
+    const defaultItem =
+        product.product_items?.find(item => item.is_default) ||
+        product.product_items?.[0];
+
+    // ---- FIXED: Ensure price exists ----
+    const price = defaultItem?.price?.discounted_price || 0;
+    const originalPrice = defaultItem?.price?.price;
+    const hasDiscount = defaultItem?.price?.discount_value !== null;
+
+    // ---- FIXED: Handle images like payload ----
+    const imageUUID =
+        product.primary_image ||
+        product.images?.find(img => img.is_preview)?.uuid ||
+        product.images?.[0]?.uuid;
+
     const imageUrl = imageUUID
-        ? `http://localhost/infinite-cart/public/storage/products/${imageUUID}` : '';
+        ? `http://localhost/infinite-cart/public/storage/products/${imageUUID}`
+        : '';
+
     return (
         <div
             onClick={() => {
+                setLoading(true);
                 router.push('/product/' + product.slug);
                 scrollTo(0, 0);
             }}
@@ -38,13 +57,17 @@ const ProductCard = ({ product }) => {
                 </button>
             </div>
 
-            <p className="md:text-base font-medium pt-2 w-full truncate">{product.title}</p>
+            <p className="md:text-base font-medium pt-2 w-full truncate">
+                {product.title}
+            </p>
+
             <div
                 className="w-full text-xs text-gray-500/70 max-sm:hidden truncate"
                 dangerouslySetInnerHTML={{
                     __html: DOMPurify.sanitize(product.small_description),
                 }}
             />
+
             <div className="flex items-center gap-2">
                 <p className="text-xs">{4.5}</p>
                 <div className="flex items-center gap-0.5">
@@ -65,11 +88,11 @@ const ProductCard = ({ product }) => {
 
             <div className="flex items-end justify-between w-full mt-1">
                 <p className="text-base font-medium">
-                    {currency} {product.prices[0].discounted_price}
-                    {product.prices[0].discount_value && (
+                    {currency} {price}
+                    {hasDiscount && (
                         <span className="text-base font-normal text-gray-800/60 line-through ml-2">
-            {currency} {product.prices[0].price}
-        </span>
+                            {currency} {originalPrice}
+                        </span>
                     )}
                 </p>
 

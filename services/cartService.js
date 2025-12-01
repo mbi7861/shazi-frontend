@@ -51,24 +51,30 @@ export const cartService = {
   },
 
   /**
-   * Add product to cart
-   * @param {Object} product - Product to add
+   * Add product item to cart
+   * @param {Object} productItem - Product item to add (with product data)
    * @param {number} quantity - Quantity to add (default: 1)
    * @returns {Object} - Updated cart object
    */
-  addToCart(product, quantity = 1) {
+  addToCart(productItem, quantity = 1) {
     try {
-      const productId = product.id;
-      const stock = product.stock ?? 0;
+      // Use product_item.id as the key for variant-based pricing
+      const itemId = productItem.id;
+      const stock = productItem.stock ?? 0;
       const cart = this.getCartFromStorage();
-      const currentQty = cart[productId]?.quantity || 0;
+      const currentQty = cart[itemId]?.quantity || 0;
       const newQty = currentQty + quantity;
 
       if (newQty > stock) {
         throw new Error(`Only ${stock} in stock`);
       }
 
-      cart[productId] = { quantity: newQty };
+      // Store product_item data with quantity
+      cart[itemId] = { 
+        quantity: newQty,
+        product_item_id: itemId,
+        product_id: productItem.product?.id || productItem.product_id,
+      };
       this.saveCartToStorage(cart);
       
       return cart;
@@ -78,14 +84,14 @@ export const cartService = {
   },
 
   /**
-   * Remove product from cart
-   * @param {string|number} productId - Product ID to remove
+   * Remove product item from cart
+   * @param {string|number} itemId - Product item ID to remove
    * @returns {Object} - Updated cart object
    */
-  removeFromCart(productId) {
+  removeFromCart(itemId) {
     try {
       const cart = this.getCartFromStorage();
-      delete cart[productId];
+      delete cart[itemId];
       this.saveCartToStorage(cart);
       return cart;
     } catch (error) {
@@ -94,17 +100,17 @@ export const cartService = {
   },
 
   /**
-   * Update product quantity in cart
-   * @param {string|number} productId - Product ID
+   * Update product item quantity in cart
+   * @param {string|number} itemId - Product item ID
    * @param {number} quantity - New quantity
-   * @param {number} stock - Product stock limit
+   * @param {number} stock - Product item stock limit
    * @returns {Object} - Updated cart object
    */
-  updateCartQuantity(productId, quantity, stock = null) {
+  updateCartQuantity(itemId, quantity, stock = null) {
     try {
       const cart = this.getCartFromStorage();
       
-      if (!cart[productId]) {
+      if (!cart[itemId]) {
         throw new Error('Item not found in cart');
       }
 
@@ -113,9 +119,9 @@ export const cartService = {
       }
 
       if (quantity <= 0) {
-        delete cart[productId];
+        delete cart[itemId];
       } else {
-        cart[productId].quantity = quantity;
+        cart[itemId].quantity = quantity;
       }
 
       this.saveCartToStorage(cart);
@@ -150,12 +156,13 @@ export const cartService = {
 
   /**
    * Get cart total amount
-   * @param {Array} cartItems - Cart items array
+   * @param {Array} cartItems - Cart items array (product items with product data)
    * @returns {number} - Total amount
    */
   getCartAmount(cartItems) {
     return cartItems.reduce((sum, item) => {
-      const price = item.prices?.[0]?.discounted_price || 0;
+      // Use price from product_item, not from nested prices array
+      const price = item.price?.discounted_price || 0;
       const qty = item.pivot?.quantity || 0;
       return sum + price * qty;
     }, 0);

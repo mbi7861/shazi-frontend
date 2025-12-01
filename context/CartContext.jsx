@@ -4,7 +4,6 @@ import { createContext, useContext, useEffect, useState, useMemo } from 'react';
 import { cartService } from '@/services';
 import toast from 'react-hot-toast';
 
-// Create Cart Context with default values
 export const CartContext = createContext({
   cartItems: [],
   cartCount: 0,
@@ -50,22 +49,24 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Add product to cart
-  const addToCart = (product, quantity = 1) => {
+  // Add product item to cart
+  const addToCart = (productItem, quantity = 1) => {
     try {
-      const updatedCart = cartService.addToCart(product, quantity);
+      const updatedCart = cartService.addToCart(productItem, quantity);
       
       // Update local state
       setCartItems(prev => {
-        const existing = prev.find(p => p.id === product.id);
-        const newQty = updatedCart[product.id]?.quantity || 0;
+        const itemId = productItem.id;
+        const existing = prev.find(p => p.id === itemId);
+        const newQty = updatedCart[itemId]?.quantity || 0;
         
         if (existing) {
           return prev.map(p =>
-            p.id === product.id ? { ...p, pivot: { quantity: newQty } } : p
+            p.id === itemId ? { ...p, pivot: { quantity: newQty } } : p
           );
         } else {
-          return [...prev, { ...product, pivot: { quantity: newQty } }];
+          // Store product_item with product data for display
+          return [...prev, { ...productItem, pivot: { quantity: newQty } }];
         }
       });
       
@@ -75,11 +76,11 @@ export const CartProvider = ({ children }) => {
     }
   };
 
-  // Remove product from cart
-  const removeFromCart = (productId) => {
+  // Remove product item from cart
+  const removeFromCart = (itemId) => {
     try {
-      cartService.removeFromCart(productId);
-      setCartItems(prev => prev.filter(item => item.id !== productId));
+      cartService.removeFromCart(itemId);
+      setCartItems(prev => prev.filter(item => item.id !== itemId));
       toast.success('Item removed from cart');
     } catch (error) {
       toast.error(error.message);
@@ -87,23 +88,23 @@ export const CartProvider = ({ children }) => {
   };
 
   // Update cart quantity
-  const updateCartQuantity = (productId, quantity) => {
+  const updateCartQuantity = (itemId, quantity) => {
     try {
-      const product = cartItems.find(p => p.id === productId);
-      if (!product) {
+      const productItem = cartItems.find(p => p.id === itemId);
+      if (!productItem) {
         toast.error('Item not found in cart');
         return;
       }
 
-      const stock = product.stock ?? 0;
-      const updatedCart = cartService.updateCartQuantity(productId, quantity, stock);
+      const stock = productItem.stock ?? 0;
+      const updatedCart = cartService.updateCartQuantity(itemId, quantity, stock);
       
       if (quantity <= 0) {
-        setCartItems(prev => prev.filter(item => item.id !== productId));
+        setCartItems(prev => prev.filter(item => item.id !== itemId));
         toast.success('Item removed from cart');
       } else {
         setCartItems(prev => prev.map(item =>
-          item.id === productId ? { ...item, pivot: { quantity } } : item
+          item.id === itemId ? { ...item, pivot: { quantity } } : item
         ));
         toast.success('Cart updated');
       }

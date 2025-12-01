@@ -11,7 +11,7 @@ export const productService = {
    * @returns {Promise<Object>} - Products data or throws error
    */
   async fetchProducts(filters = {}) {
-    try {
+        try {
       const params = new URLSearchParams(filters).toString();
       const { data } = await axiosInstance.get(`/products?${params}`);
       

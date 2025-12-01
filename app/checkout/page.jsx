@@ -117,6 +117,19 @@ export default function CheckoutPage() {
             const orderItems = storedCart ? JSON.parse(storedCart) : {};
 
             // Prepare order data for API Service
+            // Map cart items to order items - cart now uses product_item.id
+            const orderItemsArray = Object.entries(orderItems).map(([itemId, cartItem]) => {
+                // Find the corresponding cart item from cartItems to get full data
+                const fullItem = cartItems.find(item => item.id === parseInt(itemId));
+                return {
+                    product_item_id: parseInt(itemId), // Use product_item.id
+                    product_id: cartItem.product_id || fullItem?.product?.id, // Include product_id for reference
+                    quantity: cartItem.quantity || 1,
+                    price: fullItem?.price?.discounted_price || 0,
+                    currency: fullItem?.price?.currency || currency || 'PKR'
+                };
+            });
+
             const orderData = {
                 customer: {
                     email: formData.email,
@@ -134,12 +147,7 @@ export default function CheckoutPage() {
                     country: formData.country,
                     phone: formData.phone,
                 },
-                items: Object.values(orderItems).map(item => ({
-                    product_id: item.id,
-                    quantity: item.pivot?.quantity || 1,
-                    price: item.prices?.[0]?.discounted_price || 0,
-                    currency: item.prices?.[0]?.currency || 'PKR'
-                })),
+                items: orderItemsArray,
                 shipping_method: formData.shippingMethod,
                 payment_method: formData.paymentMethod,
                 discount_code: formData.discountCode,
@@ -458,30 +466,38 @@ export default function CheckoutPage() {
                                 Order <span className="font-semibold text-orange-600"> Summary</span>
                             </p>
                             <div className="space-y-4">
-                                {Object.values(cartItems).map((item) => (
-                                    <div key={item.id} className="flex items-center gap-4">
-                                        <div className="w-16 h-16 relative">
-                                            <Image
-                                                src={
-                                                    item.primary_image
-                                                        ? getImageUrl(item.primary_image)
-                                                        : item.images?.[0]?.uuid
-                                                            ? getImageUrl(item.images[0].uuid)
-                                                            : "/placeholder.svg"
-                                                }
-                                                alt={item.title}
-                                                width={64}
-                                                height={64}
-                                                className="object-cover rounded w-16 h-16"
-                                            />
+                                {cartItems.map((item) => {
+                                    const product = item.product || {};
+                                    const imageUrl = product.primary_image || 
+                                                    product.images?.find(img => img.is_preview)?.uuid || 
+                                                    product.images?.[0]?.uuid;
+                                    const price = item.price?.discounted_price || 0;
+                                    const quantity = item.pivot?.quantity || 0;
+                                    
+                                    return (
+                                        <div key={item.id} className="flex items-center gap-4">
+                                            <div className="w-16 h-16 relative">
+                                                <Image
+                                                    src={imageUrl ? getImageUrl(imageUrl) : "/placeholder.svg"}
+                                                    alt={product.title || 'Product'}
+                                                    width={64}
+                                                    height={64}
+                                                    className="object-cover rounded w-16 h-16"
+                                                />
+                                            </div>
+                                            <div className="flex-1">
+                                                <h3 className="font-medium">{product.title || 'Product'}</h3>
+                                                {item.variation_options && item.variation_options.length > 0 && (
+                                                    <p className="text-xs text-gray-500">
+                                                        {item.variation_options.map(opt => opt.value).join(', ')}
+                                                    </p>
+                                                )}
+                                                <p className="text-sm text-gray-500">Qty: {quantity}</p>
+                                            </div>
+                                            <p className="font-medium">{item.price?.currency || currency} {price.toFixed(2)}</p>
                                         </div>
-                                        <div className="flex-1">
-                                            <h3 className="font-medium">{item.title}</h3>
-                                            <p className="text-sm text-gray-500">Qty: {item.pivot?.quantity || 0}</p>
-                                        </div>
-                                        <p className="font-medium">{item.prices?.[0]?.currency} {(item.prices?.[0]?.discounted_price || 0).toFixed(2)}</p>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                                 <div className="border-t pt-4 space-y-2">
                                     <div className="flex justify-between">
                                         <span>Subtotal</span>
