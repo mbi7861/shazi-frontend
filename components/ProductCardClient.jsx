@@ -4,10 +4,12 @@ import { useCart } from "@/context/CartContext";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
+import { useNavigationLoading } from "@/context/NavigationLoadingContext";
 
 export default function ProductCardClient({ product }) {
     const { addToCart, cartItems } = useCart();
     const router = useRouter();
+    const { setLoading } = useNavigationLoading();
     const [isHovered, setIsHovered] = useState(false);
 
     const handleAddToCart = (e) => {
@@ -23,7 +25,10 @@ export default function ProductCardClient({ product }) {
 
     return (
         <div
-            onClick={() => router.push(`/product/${product.slug}`)}
+            onClick={() => {
+                setLoading(true);
+                router.push(`/product/${product.slug}`);
+            }}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             className="flex flex-col items-center gap-2 cursor-pointer group"

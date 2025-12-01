@@ -6,10 +6,12 @@ import { useProducts } from "@/context/ProductContext";
 import { useRouter } from "next/navigation";
 import {assets} from "@/assets/assets";
 import {getImageUrl} from "@/app/utils/utils";
+import { useNavigationLoading } from "@/context/NavigationLoadingContext";
 
 const CategoryHome = () => {
     const { categories } = useProducts();
     const router = useRouter();
+    const { setLoading } = useNavigationLoading();
     const settings = {
         infinite: true,
         slidesToShow: 5,
@@ -47,7 +49,10 @@ const CategoryHome = () => {
                 {categories.map((cat, idx) => (
                     <div key={idx} className="px-2">
                         <div className="text-center">
-                            <a onClick={() => router.push(`/category/${cat.slug}`)} title={cat.title}>
+                            <a onClick={() => {
+                                setLoading(true);
+                                router.push(`/category/${cat.slug}`);
+                            }} title={cat.title}>
                                 <img
                                     src={getImageUrl(cat.image?.uuid, "categories") || assets.logo}
 
