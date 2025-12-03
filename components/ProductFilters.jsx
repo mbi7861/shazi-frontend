@@ -68,7 +68,6 @@ const ProductFilters = ({
                     onClick={() => setIsMobileFiltersOpen(!isMobileFiltersOpen)}
                     className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg bg-white"
                 >
-                    <Image src={assets.filter_icon || "/filter-icon.svg"} alt="Filter" width={20} height={20} />
                     Filters
                     <span className="ml-auto text-sm text-gray-500">
                         {Object.keys(filters).filter(key => key !== 'per_page' && filters[key]).length} active

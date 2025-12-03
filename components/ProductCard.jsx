@@ -1,14 +1,40 @@
-import React from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { assets } from '@/assets/assets';
 import { useRouter } from 'next/navigation';
-import DOMPurify from 'dompurify';
-import { useNavigationLoading } from '@/context/NavigationLoadingContext';
+
+// Simple HTML tag stripper for server-side safety
+const stripHtmlTags = (html) => {
+    if (!html) return '';
+    if (typeof window === 'undefined') {
+        // Server-side: simple tag removal
+        return html.replace(/<[^>]*>/g, '').trim();
+    }
+    return html;
+};
 
 const ProductCard = ({ product }) => {
     const router = useRouter();
-    const { setLoading } = useNavigationLoading();
     const currency = process.env.NEXT_PUBLIC_CURRENCY || 'Rs';
+    const [sanitizedDescription, setSanitizedDescription] = useState('');
+
+    // Sanitize description on client side only
+    useEffect(() => {
+        if (typeof window !== 'undefined' && product.small_description) {
+            import('dompurify').then((DOMPurify) => {
+                const sanitized = DOMPurify.default.sanitize(product.small_description);
+                setSanitizedDescription(sanitized);
+            }).catch(() => {
+                // Fallback if DOMPurify fails
+                setSanitizedDescription(stripHtmlTags(product.small_description));
+            });
+        } else {
+            // Server-side fallback
+            setSanitizedDescription(stripHtmlTags(product.small_description));
+        }
+    }, [product.small_description]);
 
     // ---- FIXED: Get default or first product item ----
     const defaultItem =
@@ -33,7 +59,6 @@ const ProductCard = ({ product }) => {
     return (
         <div
             onClick={() => {
-                setLoading(true);
                 router.push('/product/' + product.slug);
                 scrollTo(0, 0);
             }}
@@ -61,12 +86,14 @@ const ProductCard = ({ product }) => {
                 {product.title}
             </p>
 
-            <div
-                className="w-full text-xs text-gray-500/70 max-sm:hidden truncate"
-                dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(product.small_description),
-                }}
-            />
+            {sanitizedDescription && (
+                <div
+                    className="w-full text-xs text-gray-500/70 max-sm:hidden truncate"
+                    dangerouslySetInnerHTML={{
+                        __html: sanitizedDescription,
+                    }}
+                />
+            )}
 
             <div className="flex items-center gap-2">
                 <p className="text-xs">{4.5}</p>

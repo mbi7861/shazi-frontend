@@ -4,12 +4,15 @@ import { assets } from "@/assets/assets";
 import Image from "next/image";
 import { useProducts } from "@/context/ProductContext";
 
-const HeaderSlider = () => {
+const HeaderSlider = ({ featuredProducts: ssrFeaturedProducts }) => {
   const { getFeaturedProducts, isLoading } = useProducts();
   const [currentSlide, setCurrentSlide] = useState(0);
   
-  // Get featured products from context
-  const featuredProducts = getFeaturedProducts();
+  // Get featured products from context if SSR products not provided
+  const contextFeaturedProducts = getFeaturedProducts();
+  const featuredProducts = ssrFeaturedProducts && ssrFeaturedProducts.length > 0 
+    ? ssrFeaturedProducts 
+    : contextFeaturedProducts;
 
 
   useEffect(() => {
@@ -54,9 +57,9 @@ const HeaderSlider = () => {
   ];
 
   // Use featured products if available, otherwise use fallback
-  const sliderData = featuredProducts.length > 0 ? featuredProducts : fallbackData;
+  const sliderData = featuredProducts && featuredProducts.length > 0 ? featuredProducts : fallbackData;
 
-  if (isLoading && featuredProducts.length === 0) {
+  if (isLoading && (!featuredProducts || featuredProducts.length === 0)) {
     return (
       <div className="overflow-hidden relative w-full">
         <div className="flex items-center justify-center bg-[#E6E9F2] py-8 md:px-14 px-5 mt-6 rounded-xl min-h-[300px]">
@@ -79,16 +82,17 @@ const HeaderSlider = () => {
       >
         {sliderData.map((slide, index) => {
           // Check if this is a featured product or fallback data
-          const isFeaturedProduct = slide.prices && slide.primary_image;
+          const isFeaturedProduct = slide.product_items || slide.primary_image || slide.images;
 
-          if (isFeaturedProduct) {
+          if (isFeaturedProduct && !slide.imgSrc) {
             // Featured product from API
-            const price = slide.prices?.[0]?.discounted_price || slide.prices?.[0]?.price || 0;
-            const imageUrl = slide.primary_image
-              ? `http://localhost/infinite-cart/public/storage/products/${slide.primary_image}`
-              : slide.images?.[0]?.uuid
-                ? `http://localhost/infinite-cart/public/storage/products/${slide.images[0].uuid}`
-                : "/placeholder.svg";
+            const defaultItem = slide.product_items?.find(item => item.is_default) || slide.product_items?.[0];
+            const price = defaultItem?.price?.discounted_price || defaultItem?.price?.price || 0;
+            const imageUUID = slide.primary_image || slide.images?.find(img => img.is_preview)?.uuid || slide.images?.[0]?.uuid;
+            const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_BASE_URL || process.env.IMAGE_BASE_URL || 'http://localhost/infinite-cart/public/storage';
+            const imageUrl = imageUUID
+              ? `${imageBaseUrl}/products/${imageUUID}`
+              : "/placeholder.svg";
 
             return (
               <div
@@ -103,13 +107,19 @@ const HeaderSlider = () => {
                   <p className="text-lg font-medium text-gray-700 mt-2">
                     {price > 0 ? `Rs. ${price}` : 'Price on request'}
                   </p>
-                  <p className="text-sm text-gray-600 mt-1">{slide.offer}</p>
+                  {slide.offer && <p className="text-sm text-gray-600 mt-1">{slide.offer}</p>}
                   <div className="flex gap-3 mt-6">
-                    <button className="bg-orange-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-700 transition-colors">
-                      {slide.buttonText1}
+                    <button 
+                      onClick={() => window.location.href = `/product/${slide.slug}`}
+                      className="bg-orange-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-700 transition-colors"
+                    >
+                      {slide.buttonText1 || 'Buy now'}
                     </button>
-                    <button className="border border-orange-600 text-orange-600 px-6 py-3 rounded-lg font-medium hover:bg-orange-50 transition-colors">
-                      {slide.buttonText2}
+                    <button 
+                      onClick={() => window.location.href = '/all-products'}
+                      className="border border-orange-600 text-orange-600 px-6 py-3 rounded-lg font-medium hover:bg-orange-50 transition-colors"
+                    >
+                      {slide.buttonText2 || 'Find more'}
                     </button>
                   </div>
                 </div>

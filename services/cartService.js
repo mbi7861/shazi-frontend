@@ -15,7 +15,8 @@ export const cartService = {
       const { data } = await axiosInstance.post('/cart-products', { cart });
       
       if (data?.status) {
-        return data.data.cartProducts || [];
+        console.log(data.data.cartItems); 
+        return data.data.cartItems || [];
       } else {
         throw new Error(data?.message || 'Failed to load cart');
       }

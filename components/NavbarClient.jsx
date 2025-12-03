@@ -2,20 +2,18 @@
 
 import { useEffect, useState } from 'react';
 import { assets, BagIcon, BoxIcon, CartIcon, HomeIcon } from "@/assets/assets";
-import NavigationLink from "./NavigationLink";
+import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import AuthModal from './AuthModal';
 import { useSearchParams, useRouter } from "next/navigation";
 import CartModal from "./CartModal";
-import { useNavigationLoading } from "@/context/NavigationLoadingContext";
 
 export default function NavbarClient() {
     const { cartCount } = useCart();
     const { userData } = useAuth();
     const router = useRouter();
-    const { setLoading } = useNavigationLoading();
     const [authOpen, setAuthOpen] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
     const [search, setSearch] = useState('');
@@ -33,7 +31,6 @@ export default function NavbarClient() {
     };
 
     const handleSearch = () => {
-        setLoading(true);
         router.push(`/all-products?search=${encodeURIComponent(search.trim())}`);
     };
 
@@ -45,10 +42,10 @@ export default function NavbarClient() {
     return (
         <>
             <div className="flex items-center gap-4 lg:gap-8 max-md:hidden">
-                <NavigationLink href="/" className="hover:text-gray-900 transition">Home</NavigationLink>
-                <NavigationLink href="/all-products" className="hover:text-gray-900 transition">Shop</NavigationLink>
-                <NavigationLink href="/" className="hover:text-gray-900 transition">About Us</NavigationLink>
-                <NavigationLink href="/contact-us" className="hover:text-gray-900 transition">Contact</NavigationLink>
+                <Link href="/" className="hover:text-gray-900 transition">Home</Link>
+                <Link href="/all-products" className="hover:text-gray-900 transition">Shop</Link>
+                <Link href="/" className="hover:text-gray-900 transition">About Us</Link>
+                <Link href="/contact-us" className="hover:text-gray-900 transition">Contact</Link>
             </div>
 
             <ul className="hidden md:flex items-center gap-4">
@@ -72,10 +69,7 @@ export default function NavbarClient() {
                 </div>
                 {userData ? (
                     <>
-                        <button onClick={() => {
-                            setLoading(true);
-                            router.push('/my-orders');
-                        }}
+                        <button onClick={() => router.push('/my-orders')}
                                 className="flex items-center gap-2 text-sm hover:text-gray-900 transition">
                             <BagIcon/>
                         </button>
@@ -95,10 +89,7 @@ export default function NavbarClient() {
                 {userData ? (
                     <>
                         <button
-                            onClick={() => {
-                                setLoading(true);
-                                router.push('/');
-                            }}
+                            onClick={() => router.push('/')}
                             className="hidden sm:flex items-center gap-1 text-sm hover:text-gray-900 transition"
                         >
                             <HomeIcon />
@@ -106,10 +97,7 @@ export default function NavbarClient() {
                         </button>
 
                         <button
-                            onClick={() => {
-                                setLoading(true);
-                                router.push('/all-products');
-                            }}
+                            onClick={() => router.push('/all-products')}
                             className="hidden sm:flex items-center gap-1 text-sm hover:text-gray-900 transition"
                         >
                             <BoxIcon />
@@ -122,10 +110,7 @@ export default function NavbarClient() {
                                 <span className="absolute -top-2 -right-3 text-xs text-white bg-primary w-4 h-4 flex items-center justify-center rounded-full">{cartCount}</span>
                             )}
                         </div>
-                        <button onClick={() => {
-                            setLoading(true);
-                            router.push('/my-orders');
-                        }}
+                        <button onClick={() => router.push('/my-orders')}
                                 className="flex items-center gap-1 text-sm hover:text-gray-900 transition">
                             <BagIcon/>
                             Orders

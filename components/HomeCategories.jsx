@@ -6,12 +6,13 @@ import { useProducts } from "@/context/ProductContext";
 import { useRouter } from "next/navigation";
 import {assets} from "@/assets/assets";
 import {getImageUrl} from "@/app/utils/utils";
-import { useNavigationLoading } from "@/context/NavigationLoadingContext";
 
-const CategoryHome = () => {
-    const { categories } = useProducts();
+const CategoryHome = ({ categories: ssrCategories }) => {
+    const { categories: contextCategories } = useProducts();
     const router = useRouter();
-    const { setLoading } = useNavigationLoading();
+    
+    // Use SSR categories if available, otherwise fall back to context
+    const categories = ssrCategories && ssrCategories.length > 0 ? ssrCategories : contextCategories;
     const settings = {
         infinite: true,
         slidesToShow: 5,
@@ -38,8 +39,8 @@ const CategoryHome = () => {
             <div className="flex items-center justify-between mb-4">
                 <h3 className="text-2xl font-medium text-left ">Shop by Categories</h3>
                 <a
-                    href="/collections/all"
-                    className="text-sm border-b border-[#eb492f] text-gray-800 hover:text-[#eb492f]"
+                    onClick={() => router.push('/categories')}
+                    className="text-sm border-b border-[#eb492f] text-gray-800 hover:text-[#eb492f] cursor-pointer"
                 >
                     View all
                 </a>
@@ -49,20 +50,20 @@ const CategoryHome = () => {
                 {categories.map((cat, idx) => (
                     <div key={idx} className="px-2">
                         <div className="text-center">
-                            <a onClick={() => {
-                                setLoading(true);
-                                router.push(`/category/${cat.slug}`);
-                            }} title={cat.title}>
+                            <div 
+                                onClick={() => router.push(`/all-products?category=${cat.slug}`)} 
+                                title={cat.title}
+                                className="cursor-pointer"
+                            >
                                 <img
                                     src={getImageUrl(cat.image?.uuid, "categories") || assets.logo}
-
                                     alt={cat.title}
                                     className="mx-auto max-h-40 object-cover aspect-square rounded-lg hover:scale-105 transition-transform duration-300"
                                 />
-                            </a>
+                            </div>
                             <a
-                                href={cat.link}
-                                className="block mt-2 text-sm font-medium text-black hover:text-blue-500"
+                                onClick={() => router.push(`/all-products?category=${cat.slug}`)}
+                                className="block mt-2 text-sm font-medium text-black hover:text-orange-600 cursor-pointer transition-colors"
                             >
                                 {cat.title}
                             </a>

@@ -5,7 +5,6 @@ import 'slick-carousel/slick/slick-theme.css';
 import { AppProvider } from "@/context/AppProvider";
 import { Toaster } from "react-hot-toast";
 import Script from "next/script";
-import NavigationLoader from "@/components/NavigationLoader";
 
 const outfit = Outfit({ subsets: ['latin'], weight: ["300", "400", "500"] })
 
@@ -23,7 +22,6 @@ export default function RootLayout({ children }) {
           strategy="beforeInteractive"
       />
         <AppProvider>
-          <NavigationLoader />
           {children}
           <Toaster />
         </AppProvider>

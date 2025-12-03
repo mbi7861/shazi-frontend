@@ -5,10 +5,11 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useProducts } from "@/context/ProductContext";
 import { useEffect, useState, useCallback } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 
 const AllProducts = () => {
-    const { fetchProducts } = useProducts();
+    const { fetchProducts, pagination } = useProducts();
+    const router = useRouter();
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -17,11 +18,13 @@ const AllProducts = () => {
 
     const searchParams = useSearchParams();
     const search = searchParams.get('search') || '';
+    const category = searchParams.get('category') || '';
 
     // Filter state
     const [filters, setFilters] = useState({
         per_page: 16,
-        search: search
+        search: search,
+        category: category
     });
 
     // Price range state
@@ -50,11 +53,8 @@ const AllProducts = () => {
             if (result) {
                 setProducts(result.products || []);
                 setCategories(result.categories || []);
-                // Extract total count from pagination if available
-                if (result.products?.data) {
-                    setTotalProducts(result.products.total || 0);
-                    setCurrentPage(result.products.current_page || 1);
-                }
+                setTotalProducts(result.products.length || 0);
+                setCurrentPage(pagination.current_page || 1);
             }
         } catch (error) {
             console.error('Error loading products:', error);
@@ -70,18 +70,24 @@ const AllProducts = () => {
         loadProducts(filtersWithPage);
     };
 
-    // Handle search parameter changes
+    // Handle search and category parameter changes
     useEffect(() => {
-        const newFilters = { ...filters, search };
+        const newFilters = { 
+            per_page: filters.per_page || 16,
+            search: search,
+            category: category
+        };
         setFilters(newFilters);
-        if (search !== filters.search) {
-            debouncedFilterChange(newFilters);
-        }
-    }, [search]);
+        loadProducts(newFilters);
+    }, [search, category]);
 
-    // Initial load
+    // Initial load - only run once on mount
     useEffect(() => {
-        loadProducts({ per_page: 15, search });
+        const initialFilters = { per_page: 15 };
+        if (search) initialFilters.search = search;
+        if (category) initialFilters.category = category;
+        loadProducts(initialFilters);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Handle pagination
@@ -96,8 +102,19 @@ const AllProducts = () => {
             <Navbar />
             <div className="flex flex-col items-start px-6 md:px-16 lg:px-32">
                 <div className="flex flex-col items-end pt-12 w-full">
-                    <p className="text-2xl font-medium">All products</p>
-                    <div className="w-16 h-0.5 bg-orange-600 rounded-full"></div>
+                    
+                    {category && (
+                        <button
+                            onClick={() => {
+                                router.push('/all-products');
+                                setFilters({ per_page: 16 });
+                                loadProducts({ per_page: 15 });
+                            }}
+                            className="mt-2 text-sm text-orange-600 hover:text-orange-700 underline"
+                        >
+                            Clear category filter
+                        </button>
+                    )}
                 </div>
 
                 {/* Results Summary */}
@@ -121,7 +138,15 @@ const AllProducts = () => {
                         filters={filters}
                         setFilters={setFilters}
                         categories={categories}
-                        onFilterChange={debouncedFilterChange}
+                        onFilterChange={(newFilters) => {
+                            // Update URL when category filter changes
+                            const params = new URLSearchParams();
+                            if (newFilters.search) params.set('search', newFilters.search);
+                            if (newFilters.category) params.set('category', newFilters.category);
+                            const queryString = params.toString();
+                            router.push(queryString ? `/all-products?${queryString}` : '/all-products', { scroll: false });
+                            debouncedFilterChange(newFilters);
+                        }}
                         priceRange={priceRange}
                         setPriceRange={setPriceRange}
                     />
