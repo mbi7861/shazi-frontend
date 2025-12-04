@@ -54,7 +54,7 @@ const AllProducts = () => {
                 setProducts(result.products || []);
                 setCategories(result.categories || []);
                 setTotalProducts(result.products.length || 0);
-                setCurrentPage(pagination.current_page || 1);
+                setCurrentPage(pagination?.current_page || 1);
             }
         } catch (error) {
             console.error('Error loading products:', error);

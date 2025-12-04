@@ -33,7 +33,6 @@ export const CartProvider = ({ children }) => {
 
   // Computed values
   const cartCount = useMemo(() => cartService.getCartCount(cartItems), [cartItems]);
-  console.log(cartCount);
   const cartAmount = useMemo(() => cartService.getCartAmount(cartItems), [cartItems]);
 
   // Fetch cart products from API

@@ -15,7 +15,6 @@ import { CartProvider } from './CartContext';
  *           └── {children}
  */
 export const AppProvider = ({ children }) => {
-  console.log('AppProvider');
   return (
     <AuthProvider>
       <ProductProvider>

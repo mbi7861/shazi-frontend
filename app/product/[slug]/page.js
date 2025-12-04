@@ -2,13 +2,12 @@ import ProductView from "./ProductView";
 import axios from "axios";
 
 const ProductPage = async ({ params }) => {
-    console.log('params', params);
-    const { id } = await params;
+    const { slug } = params; // no need for await
 
     try {
         const { data } = await axios.get(
-            `${process.env.BASE_URL}/products/${id}`,
-            { next: { revalidate: 60 } }
+            `${process.env.BASE_URL}/products/${slug}`,
+            { next: { revalidate: 60 } } // optional: ISR caching
         );
 
         if (!data.status || !data.data?.product) {
