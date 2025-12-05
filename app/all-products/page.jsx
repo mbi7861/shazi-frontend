@@ -22,7 +22,7 @@ const AllProducts = () => {
 
     // Filter state
     const [filters, setFilters] = useState({
-        per_page: 16,
+        per_page: 15,
         search: search,
         category: category
     });
