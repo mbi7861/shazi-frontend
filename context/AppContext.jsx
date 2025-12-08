@@ -157,10 +157,10 @@ export const AppContextProvider = ({ children }) => {
                 const existing = prev.find(p => p.id === productId);
                 if (existing) {
                     return prev.map(p =>
-                        p.id === productId ? { ...p, pivot: { quantity: newQty } } : p
+                        p.id === productId ? { ...p, quantity: newQty } : p
                     );
                 } else {
-                    return [...prev, { ...product, pivot: { quantity: newQty } }];
+                    return [...prev, { ...product, quantity: newQty }];
                 }
             });
 
@@ -208,7 +208,7 @@ export const AppContextProvider = ({ children }) => {
             } else {
                 cart[itemId].quantity = quantity;
                 setCartItems(prev => prev.map(item =>
-                    item.id === itemId ? { ...item, pivot: { quantity } } : item
+                    item.id === itemId ? { ...item, quantity } : item
                 ));
                 toast.success('Cart updated');
             }
@@ -221,14 +221,14 @@ export const AppContextProvider = ({ children }) => {
     };
 
     const updateCartCount = () => {
-        const count = cartItems.reduce((sum, item) => sum + (item.pivot?.quantity || 0), 0);
+        const count = cartItems.reduce((sum, item) => sum + (item.quantity || 0), 0);
         setCartCount(count);
     };
 
     const updateCartAmount = () => {
         const amount = cartItems.reduce((sum, item) => {
             const price = item.prices?.[0]?.discounted_price || 0;
-            const qty = item.pivot?.quantity || 0;
+            const qty = item.quantity || 0;
             return sum + price * qty;
         }, 0);
         setCartAmount(amount);

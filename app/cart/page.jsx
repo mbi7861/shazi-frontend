@@ -54,7 +54,7 @@ const Cart = () => {
               <tbody>
               {
                 cartItems.map((item) => {
-                const quantity = item.pivot?.quantity || 0;
+                const quantity = item.quantity || 0;
                 // Use price from product_item, not from nested prices array
                 const price = item.price?.discounted_price || 0;
                 const total = (price * quantity);

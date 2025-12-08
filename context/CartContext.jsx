@@ -8,7 +8,7 @@ export const CartContext = createContext({
   cartItems: [],
   cartCount: 0,
   cartAmount: 0,
-  isLoading: false,
+  isCartLoading: true,
   addToCart: () => {},
   removeFromCart: () => {},
   updateCartQuantity: () => {},
@@ -29,7 +29,7 @@ export const useCart = () => {
 // Cart Provider Component
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isCartLoading, setisCartLoading] = useState(true);
 
   // Computed values
   const cartCount = useMemo(() => cartService.getCartCount(cartItems), [cartItems]);
@@ -37,15 +37,18 @@ export const CartProvider = ({ children }) => {
 
   // Fetch cart products from API
   const fetchCartProducts = async () => {
-    setIsLoading(true);
+    setisCartLoading(true);
     try {
       const cart = cartService.getCartFromStorage();
+      console.log("LOCAL STORAGE CART:", cart);
+
       const products = await cartService.fetchCartProducts(cart);
       setCartItems(products);
+      console.log(products);
     } catch (error) {
       toast.error(error.message);
     } finally {
-      setIsLoading(false);
+      setisCartLoading(false);
     }
   };
 
@@ -62,11 +65,11 @@ export const CartProvider = ({ children }) => {
         
         if (existing) {
           return prev.map(p =>
-            p.id === itemId ? { ...p, pivot: { quantity: newQty } } : p
+            p.id === itemId ? { ...p, quantity: newQty } : p
           );
         } else {
           // Store product_item with product data for display
-          return [...prev, { ...productItem, pivot: { quantity: newQty } }];
+          return [...prev, { ...productItem, quantity: newQty }];
         }
       });
       
@@ -104,7 +107,7 @@ export const CartProvider = ({ children }) => {
         toast.success('Item removed from cart');
       } else {
         setCartItems(prev => prev.map(item =>
-          item.id === itemId ? { ...item, pivot: { quantity } } : item
+          item.id === itemId ? { ...item, quantity } : item
         ));
         toast.success('Cart updated');
       }
@@ -139,14 +142,14 @@ export const CartProvider = ({ children }) => {
     cartItems,
     cartCount,
     cartAmount,
-    isLoading,
+    isCartLoading,
     addToCart,
     removeFromCart,
     updateCartQuantity,
     clearCart,
     fetchCartProducts,
     refreshCart,
-  }), [cartItems, cartCount, cartAmount, isLoading]);
+  }), [cartItems, cartCount, cartAmount, isCartLoading]);
 
   return (
     <CartContext.Provider value={value}>

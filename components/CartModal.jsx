@@ -45,7 +45,7 @@ const CartModal = ({ isOpen, onClose }) => {
                         </div>
                     ) : (
                         cartItems.map((item) => {
-                            const quantity = item.pivot?.quantity || 0;
+                            const quantity = item.quantity || 0;
                             // Use price from product_item, not from nested prices array
                             const price = item.price?.discounted_price || 0;
                             const subtotal = quantity * price;
@@ -104,17 +104,29 @@ const CartModal = ({ isOpen, onClose }) => {
                         <span>Rs {cartAmount.toLocaleString()}</span>
                     </div>
                     <button
-                        onClick={() => router.push('/cart')}
+                        onClick={() => {
+                            router.push('/checkout');
+                            onClose();
+                        }}
                         className="w-full bg-[#ea580c] hover:bg-[#001A33] text-white font-semibold py-2 rounded"
                     >
-                        Proceed to Cart
+                        Go to Checkout
                     </button>
                     <button
+                        onClick={() => {
+                            router.push('/cart');
+                            onClose();
+                        }}
+                        className="mt-2 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 rounded"
+                    >
+                        View Cart
+                    </button>
+                    {/* <button
                         onClick={onClose}
                         className="mt-2 w-full text-sm text-gray-600 underline hover:text-gray-800"
                     >
                         Continue shopping
-                    </button>
+                    </button> */}
                 </div>
             </div>
         </div>

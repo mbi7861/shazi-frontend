@@ -20,7 +20,7 @@ const stripePromise = loadStripe(
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { cartItems, cartAmount, cartLoading } = useCart();
+  const { cartItems, cartAmount, isCartLoading } = useCart();
   const { userData } = useAuth();
   const currency = process.env.NEXT_PUBLIC_CURRENCY || "Rs";
   const stripeRef = useRef();
@@ -48,13 +48,12 @@ export default function CheckoutPage() {
   const total = subtotal + shippingCost;
 
   useEffect(() => {
-    if (!cartItems.length) {
-      toast.error(
-        "Cart is empty. Please add items to your cart before checkout."
-      );
-      redirect("/cart");
+    if (isCartLoading) return;
+    if (cartItems.length === 0) {
+      toast.error("Cart is empty. Please add items first.");
+      router.replace("/cart");
     }
-  }, [cartItems]);
+  }, [isCartLoading, cartItems]);
 
   useEffect(() => {
     const savedData = localStorage.getItem("checkoutFormData");
@@ -117,15 +116,14 @@ export default function CheckoutPage() {
       const storedCart = localStorage.getItem("cart");
       const orderItems = storedCart ? JSON.parse(storedCart) : {};
 
-   
       const orderItemsArray = Object.entries(orderItems).map(
         ([itemId, cartItem]) => {
           const fullItem = cartItems.find(
             (item) => item.id === parseInt(itemId)
           );
           return {
-            product_item_id: parseInt(itemId), 
-            product_id: cartItem.product_id || fullItem?.product?.id, 
+            product_item_id: parseInt(itemId),
+            product_id: cartItem.product_id || fullItem?.product?.id,
             quantity: cartItem.quantity || 1,
             price: fullItem?.price?.discounted_price || 0,
             currency: fullItem?.price?.currency || currency || "PKR",
@@ -223,17 +221,35 @@ export default function CheckoutPage() {
     }
   };
 
-  // Show loading or redirect if cart is empty
-  // if (cartCount === 0) {
-  //     return (
-  //         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-  //             <div className="text-center">
-  //                 <h2 className="text-2xl font-bold mb-4">Your cart is empty</h2>
-  //                 <button onClick={() => router.push("/")}>Continue Shopping</button>
-  //             </div>
-  //         </div>
-  //     )
-  // }
+  if (isCartLoading) {
+    return (
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <div className="flex-1 container mx-auto px-4 py-8">
+          <div className="flex flex-col-reverse lg:flex-row gap-8">
+            {/* Form Section - 70% */}
+            <div className="lg:w-3/5">
+              <div className="h-6 bg-gray-200 rounded w-1/3 mb-3"></div>
+
+              <div className="space-y-4">
+                <div className="h-10 bg-gray-200 rounded"></div>
+                <div className="h-10 bg-gray-200 rounded"></div>
+                <div className="h-10 bg-gray-200 rounded"></div>
+                <div className="h-10 bg-gray-200 rounded"></div>
+              </div>
+            </div>
+
+            {/* Summary Section - 30% */}
+            <div className="lg:w-2/5">
+              <div className="h-6 bg-gray-200 rounded w-1/2 mb-3"></div>
+              <div className="h-24 bg-gray-200 rounded"></div>
+              <div className="h-10 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -408,8 +424,9 @@ export default function CheckoutPage() {
                   disabled={isLoading}
                 >
                   {isLoading ? (
-                    <span className="flex items-center gap-2">
-                      <LoadingSpinner /> Processing...
+                    <span className="flex items-center gap-2 justify-center">
+                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                      Processing...
                     </span>
                   ) : (
                     "Complete order"
@@ -434,7 +451,7 @@ export default function CheckoutPage() {
                     product.images?.find((img) => img.is_preview)?.uuid ||
                     product.images?.[0]?.uuid;
                   const price = item.price?.discounted_price || 0;
-                  const quantity = item.pivot?.quantity || 0;
+                  const quantity = item.quantity || 0;
 
                   return (
                     <div key={item.id} className="flex items-center gap-4">

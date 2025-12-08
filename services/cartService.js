@@ -59,7 +59,7 @@ export const cartService = {
   addToCart(productItem, quantity = 1) {
     try {
       // Use product_item.id as the key for variant-based pricing
-      const itemId = productItem.id;
+      const itemId = productItem.product_item_id ?? productItem.id;
       const stock = productItem.stock ?? 0;
       const cart = this.getCartFromStorage();
       const currentQty = cart[itemId]?.quantity || 0;
@@ -151,7 +151,7 @@ export const cartService = {
    * @returns {number} - Total item count
    */
   getCartCount(cartItems) {
-    return cartItems.reduce((sum, item) => sum + (item.pivot?.quantity || 0), 0);
+    return cartItems.reduce((sum, item) => sum + (item.quantity || 0), 0);
   },
 
   /**
@@ -163,7 +163,7 @@ export const cartService = {
     return cartItems.reduce((sum, item) => {
       // Use price from product_item, not from nested prices array
       const price = item.price?.discounted_price || 0;
-      const qty = item.pivot?.quantity || 0;
+      const qty = item.quantity || 0;
       return sum + price * qty;
     }, 0);
   }

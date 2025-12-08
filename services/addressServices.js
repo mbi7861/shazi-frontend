@@ -5,8 +5,8 @@ export const addressServices = {
     try {
       const { data } = await axiosInstance.get("/addresses");
 
-    if (data.status) {
-      return data.data || [];
+    if (data.s) {
+      return data.d || [];
     }
 
     throw new Error(data.message || "Failed to load addresses.");
