@@ -5,7 +5,7 @@ import OrderSummary from "@/components/OrderSummary";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import { useCart } from "@/context/CartContext";
-import { useAuth } from "@/context/AuthContext";
+// import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import {getImageUrl} from "@/app/utils/utils";
 import AuthModal from "@/components/AuthModal";
@@ -15,13 +15,13 @@ const Cart = () => {
   const closeAuthModal = () => setAuthOpen(false);
 
   const { cartItems, updateCartQuantity, removeFromCart, cartCount } = useCart();
-  const { userData } = useAuth();
+  // const { userData } = useAuth();
   const router = useRouter();
-  useEffect(() => {
-    if (!userData) {
-      setAuthOpen(true);
-    }
-  }, [userData]);
+  // useEffect(() => {
+  //   if (!userData) {
+  //     setAuthOpen(true);
+  //   }
+  // }, [userData]);
   return (
     <>
       <Navbar />
@@ -135,9 +135,9 @@ const Cart = () => {
         </div>
         <OrderSummary />
       </div>
-      {authOpen && (
+      {/* {authOpen && (
           <AuthModal isOpen={authOpen} onClose={closeAuthModal} />
-      )}
+      )} */}
     </>
   );
 };

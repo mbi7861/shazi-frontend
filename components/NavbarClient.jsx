@@ -7,13 +7,14 @@ import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
 import AuthModal from './AuthModal';
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter , usePathname } from "next/navigation";
 import CartModal from "./CartModal";
 
 export default function NavbarClient() {
     const { cartCount } = useCart();
     const { userData } = useAuth();
     const router = useRouter();
+    const pathname = usePathname();
     const [authOpen, setAuthOpen] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
     const [search, setSearch] = useState('');
@@ -38,6 +39,15 @@ export default function NavbarClient() {
     const closeAuthModal = () => setAuthOpen(false);
     const openCartModal = () => setCartOpen(true);
     const closeCartModal = () => setCartOpen(false);
+    const handleClick = () => {
+        console.log(pathname);
+        
+        if (pathname === '/checkout') {
+          router.push('/cart');
+        } else {
+          openCartModal();
+        }
+      };
 
     return (
         <>
@@ -61,7 +71,7 @@ export default function NavbarClient() {
                     <Image className="w-4 h-4" onClick={handleSearch} src={assets.search_icon} alt="search icon"/>
                 </div>
 
-                <div onClick={openCartModal} className="relative cursor-pointer">
+                <div onClick={handleClick} className="relative cursor-pointer">
                     <CartIcon/>
                     {cartCount > 0 && (
                         <span className="absolute -top-2 -right-3 text-xs text-white bg-primary w-4 h-4 flex items-center justify-center rounded-full">{cartCount}</span>
@@ -104,7 +114,7 @@ export default function NavbarClient() {
                             Products
                         </button>
 
-                        <div onClick={openCartModal} className="relative cursor-pointer">
+                        <div onClick={handleClick} className="relative cursor-pointer">
                             <CartIcon/>
                             {cartCount > 0 && (
                                 <span className="absolute -top-2 -right-3 text-xs text-white bg-primary w-4 h-4 flex items-center justify-center rounded-full">{cartCount}</span>
