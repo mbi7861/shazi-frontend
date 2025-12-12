@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
-import { validateCheckoutForm } from "../utils/validation";
+import { validateEmail } from "../utils/validation";
 import Navbar from "@/components/Navbar";
 import { apiServiceService } from "@/app/utils/apiService";
 import CheckoutForm from "@/components/checkout/CheckoutForm";
@@ -26,24 +26,19 @@ export default function CheckoutPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: userData?.email || "",
-    country: "Pakistan",
-    firstName: userData?.first_name || "",
-    lastName: userData?.last_name || "",
-    address: "",
-    apartment: "",
-    city: "",
-    postalCode: "",
-    phone: userData?.phone || "",
     shippingMethod: "standard",
     paymentMethod: "cod",
     sameAsBilling: true,
     discountCode: "",
+    address_id: null
   });
 
   const [errors, setErrors] = useState({});
+  const [selectedAddressId, setSelectedAddressId] = useState(null);
   const shippingCost = 0;
   const subtotal = cartAmount || 0;
   const total = subtotal + shippingCost;
+  const isLoggedIn = !!userData;
 
   useEffect(() => {
     if (isCartLoading) return;
@@ -52,6 +47,14 @@ export default function CheckoutPage() {
       router.replace("/cart");
     }
   }, [isCartLoading, cartItems]);
+
+  // Clear guest address when user logs in
+  useEffect(() => {
+    if (isLoggedIn) {
+      setSelectedAddressId(null);
+      setFormData((prev) => ({ ...prev, address_id: null }));
+    }
+  }, [isLoggedIn]);
 
   useEffect(() => {
     const savedData = localStorage.getItem("checkoutFormData");
@@ -77,37 +80,34 @@ export default function CheckoutPage() {
   };
 
   const handleAddressSelect = (selectedAddress) => {
-    setFormData((prev) => ({
-      ...prev,
-      address: selectedAddress.address,
-      apartment: selectedAddress.apartment,
-      city: selectedAddress.city,
-      country: selectedAddress.country,
-      firstName: selectedAddress.first_name,
-      lastName: selectedAddress.last_name,
-      postalCode: selectedAddress.postal_code,
-      phone: selectedAddress.phone,
-    }));
-    toast.success("Address selected");
+    if (selectedAddress.id) {
+      setSelectedAddressId(selectedAddress.id);
+      setFormData((prev) => ({
+        ...prev,
+        address_id: selectedAddress.id,
+      }));
+      // toast.success("Address selected");
+    }
   };
 
   const handleValidation = () => {
-    try {
-      const validationResult = validateCheckoutForm(formData);
-      setErrors({});
-      return { success: true, data: validationResult };
-    } catch (error) {
-      if (error.errors) {
-        const formattedErrors = {};
-        error.errors.forEach((err) => {
-          const field = err.path[0];
-          formattedErrors[field] = err.message;
-        });
-        setErrors(formattedErrors);
-      }
-      toast.error("Please fix the errors in the form.");
-      return { success: false, errors: formattedErrors };
+    // Only validate email
+    const emailValidation = validateEmail(formData.email);
+    if (!emailValidation.isValid) {
+      setErrors({ email: emailValidation.error });
+      toast.error("Please enter a valid email address.");
+      return { success: false, errors: { email: emailValidation.error } };
     }
+    
+    // Check if address is selected
+    if (!formData.address_id) {
+      setErrors({ address_id: "Please select an address" });
+      toast.error("Please select a shipping address.");
+      return { success: false, errors: { address_id: "Please select an address" } };
+    }
+
+    setErrors({});
+    return { success: true };
   };
 
   const handleSubmit = async (e) => {
@@ -147,20 +147,8 @@ export default function CheckoutPage() {
       const orderData = {
         customer: {
           email: formData.email,
-          first_name: formData.firstName,
-          last_name: formData.lastName,
-          phone: formData.phone,
         },
-        shipping_address: {
-          first_name: formData.firstName,
-          last_name: formData.lastName,
-          address: formData.address,
-          apartment: formData.apartment,
-          city: formData.city,
-          postal_code: formData.postalCode,
-          country: formData.country,
-          phone: formData.phone,
-        },
+        address_id: formData.address_id,
         items: orderItemsArray,
         shipping_method: formData.shippingMethod,
         payment_method: formData.paymentMethod,
@@ -169,7 +157,6 @@ export default function CheckoutPage() {
         shipping_cost: shippingCost,
         total: total,
         currency: currency || "PKR",
-        // Add Stripe payment method ID if card payment
         ...(formData.paymentMethod === "card" && {
           stripe_payment_method_id:
             await stripeRef.current?.getPaymentMethodId(),
@@ -231,6 +218,7 @@ export default function CheckoutPage() {
             stripePromise={stripePromise}
             stripeRef={stripeRef}
             onAddressSelect={handleAddressSelect}
+            userData={userData}
           />
 
           <CheckoutOrderSummary

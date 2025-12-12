@@ -5,16 +5,19 @@ export const addressServices = {
     try {
       const { data } = await axiosInstance.get("/addresses");
 
-    if (data.s) {
-      return data.d || [];
-    }
+      if (data.status) {
+        return { success: true, data: data.data };
+      }
 
-    throw new Error(data.message || "Failed to load addresses.");
-  } catch (error) {
-    console.error("Error fetching addresses:", error);
-    return [];
-  }
-},
+      console.error(data.message);
+    } catch (error) {
+      console.error("Error fetching addresses:", error);
+      if (error.response?.data) {
+        return { success: false, error: error.response.data };
+      }
+      return { success: false, error: error.message };
+    }
+  },
 
 /**
  * Add new address
@@ -22,10 +25,16 @@ export const addressServices = {
   async addAddress(addressData) {
     try {
       const { data } = await axiosInstance.post("/addresses", addressData);
-      return data;
+      if (data.status) {
+        return { success: true, data: data.data  };
+      }
+      return { success: false, ...data };
     } catch (error) {
       console.error("Add Address Error:", error);
-      return error.response.data;
+      if (error.response?.data) {
+        return { success: false, ...error.response.data };
+      }
+      return { success: false, message: error.message };
     }
 },
 
@@ -33,14 +42,20 @@ export const addressServices = {
  * Update existing address
  */
   async updateAddress(addressId, updatedData) {
-  try {
-    const { data } = await axiosInstance.put(`/addresses/${addressId}`, updatedData);
-    return data;
-  } catch (error) {
-    console.error("Update Address Error:", error);
-    return error.response.data;
-  }
-},
+    try {
+      const { data } = await axiosInstance.post(`/addresses/${addressId}`, updatedData);
+      if (data.status) {
+        return { success: true, data: data.data };
+      }
+      return { success: false, ...data };
+    } catch (error) {
+      console.error("Update Address Error:", error);
+      if (error.response?.data) {
+        return { success: false, ...error.response.data };
+      }
+      return { success: false, message: error.message };
+    }
+  },
 
 /**
  * Delete address

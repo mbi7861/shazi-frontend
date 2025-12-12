@@ -61,6 +61,7 @@ const LocationPickerModal = ({ isOpen, onClose, onConfirm }) => {
 
             // Add current location button
             const currentLocationButton = document.createElement("button");
+            currentLocationButton.type = "button"; // Prevent form submission
             currentLocationButton.textContent = "📍";
             currentLocationButton.title = "Use current location";
             Object.assign(currentLocationButton.style, {
@@ -72,7 +73,9 @@ const LocationPickerModal = ({ isOpen, onClose, onConfirm }) => {
                 cursor: "pointer",
             });
 
-            currentLocationButton.addEventListener("click", () => {
+            currentLocationButton.addEventListener("click", (e) => {
+                e.preventDefault(); // Prevent any default behavior
+                e.stopPropagation(); // Stop event bubbling
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition((position) => {
                         const pos = {

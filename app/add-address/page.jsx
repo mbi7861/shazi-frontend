@@ -18,7 +18,7 @@ const AddAddress = () => {
     const [address, setAddress] = useState({
         fullName: '',
         phoneNumber: '',
-        pincode: '',
+        zip_code: '',
         area: '',
         city: '',
         state: '',
@@ -56,7 +56,7 @@ const AddAddress = () => {
             setAddress((prev) => ({
                 ...prev,
                 address, // Full address
-                pincode: pin,
+                zip_code: pin,
                 city,
                 state,
                 country,
@@ -138,9 +138,9 @@ const AddAddress = () => {
                             <input
                                 className="mt-1 px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-700"
                                 type="text"
-                                placeholder="Pin code"
-                                onChange={(e) => setAddress({ ...address, pincode: e.target.value })}
-                                value={address.pincode}
+                                placeholder="Zip code"
+                                onChange={(e) => setAddress({ ...address, zip_code: e.target.value })}
+                                value={address.zip_code}
                             />
                         </label>
 

@@ -6,7 +6,7 @@ import Cookies from 'js-cookie';
 const apiService = axios.create({
     baseURL: apiServiceConfig.baseURL,
     timeout: apiServiceConfig.timeout,
-    withCredentials: true,
+    withCredentials: false,
 });
 
 // Request interceptor to add authentication token

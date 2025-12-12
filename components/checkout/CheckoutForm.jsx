@@ -1,7 +1,6 @@
 "use client";
 import AddressList from "@/components/AddressList";
 import CashOnDelivery from "./payment-methods/CashOnDelivery";
-import BankDeposit from "./payment-methods/BankDeposit";
 import CardPayment from "./payment-methods/CardPayment";
 
 export default function CheckoutForm({
@@ -13,7 +12,11 @@ export default function CheckoutForm({
   stripePromise,
   stripeRef,
   onAddressSelect,
+  userData,
 }) {
+  const isLoggedIn = !!userData;
+  console.log(formData);
+  
   return (
     <div className="lg:w-3/5">
       <div className="bg-white rounded shadow-md p-6">
@@ -22,11 +25,39 @@ export default function CheckoutForm({
           <span className="font-semibold text-orange-600"> Address</span>
         </p>
         <form onSubmit={onSubmit} className="space-y-3">
+          {/* Email Input */}
+          <div className="mb-4">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+            Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={(e) => onInputChange("email", e.target.value)}
+              disabled={isLoggedIn}
+              className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 ${
+                errors.email ? "border-red-500" : "border-gray-300"
+              } ${isLoggedIn ? "bg-gray-100 cursor-not-allowed" : "bg-white"}`}
+              placeholder="Enter your email"
+            />
+            {errors.email && (
+              <p className="mt-1 text-sm text-red-500">{errors.email}</p>
+            )}
+          </div>
+
           <AddressList
             onSelect={(selectedAddress) => {
               onAddressSelect(selectedAddress);
             }}
           />
+          {errors.address_id && (
+            <p className="mt-1 text-sm text-red-500">{errors.address_id}</p>
+          )}
 
           {/* Payment Method */}
           <div className="space-y-4">
@@ -41,13 +72,9 @@ export default function CheckoutForm({
               All transactions are secure and encrypted.
             </p>
             <div className="space-y-4">
+
               <CashOnDelivery
                 isSelected={formData.paymentMethod === "cod"}
-                onSelect={(value) => onInputChange("paymentMethod", value)}
-              />
-
-              <BankDeposit
-                isSelected={formData.paymentMethod === "bank"}
                 onSelect={(value) => onInputChange("paymentMethod", value)}
               />
 
