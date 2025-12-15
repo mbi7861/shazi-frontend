@@ -51,6 +51,7 @@ export default function CheckoutForm({
           </div>
 
           <AddressList
+          prevAddressId={formData.address_id ?? null}
             onSelect={(selectedAddress) => {
               onAddressSelect(selectedAddress);
             }}

@@ -8,7 +8,7 @@ import { MapPin, Plus } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { countries, getStatesByCountry } from "@/lib/countriesStates";
 
-export default function AddressList({ onSelect }) {
+export default function AddressList({ prevAddressId ,onSelect }) {
     const { userData } = useAuth();
     const isLoggedIn = !!userData;
 
@@ -26,9 +26,12 @@ export default function AddressList({ onSelect }) {
     const fetchAddresses = async () => {
         try {
             const res = await AddressLib.getAddresses();
-
-            const data = res?.data || (Array.isArray(res) ? res : []);
-            setAddresses(data);
+            if (!res.success) {
+                toast.error(res.message || "Could not load addresses");
+                setAddresses([]);
+                return;
+              }
+              setAddresses(res.data ?? []);
         } catch (error) {
             console.error(error);
             toast.error("Could not load addresses");
@@ -42,12 +45,20 @@ export default function AddressList({ onSelect }) {
         fetchAddresses();
     }, [isLoggedIn]);
     useEffect(() => {
-        if (addresses.length > 0 && !selectedAddressId) {
-            const first = addresses[0];
-            setSelectedAddressId(first.id);
-            onSelect?.(first);
+        if (!addresses.length) return;
+      
+        let selected = null;
+      
+        if (prevAddressId) {
+          selected = addresses.find(a => a.id === prevAddressId) || null;
         }
-    }, [addresses]);
+              if (!selected) {
+          selected = addresses[0];
+        }
+        setSelectedAddressId(selected.id);
+        onSelect?.(selected);
+      }, [addresses, prevAddressId]);
+      
     // -----------------------------
     // SELECT ADDRESS
     // -----------------------------
@@ -70,81 +81,9 @@ export default function AddressList({ onSelect }) {
     };
 
     // -----------------------------
-    // SAVE ADDRESS
-    // -----------------------------
-    const handleSave = async (form) => {
-        setAddressErrors({});
-
-        // Convert country name to country code
-        const countryName = form.country || "Pakistan";
-        const countryObj = countries.find(c => c.name === countryName);
-        const countryCode = countryObj ? countryObj.code : "PK";
-
-        // Convert state name to state code
-        const states = getStatesByCountry(countryCode);
-        const stateObj = states.find(s => s.name === form.state);
-        const stateCode = stateObj ? stateObj.code : form.state;
-
-        const payload = {
-            first_name: form.firstName || "",
-            last_name: form.lastName || "",
-            phone: form.phoneNumber,
-            address: form.address,
-            address_2: form.apartment || "",
-            city: form.city,
-            state_code: stateCode,
-            country_code: countryCode,
-            zip_code: form.zip_code || "",
-        };
-
-        try {
-            const res = editData
-                ? await AddressLib.updateAddress(editData.id, payload)
-                : await AddressLib.addAddress(payload);
-
-            if (res.success || res?.data?.id) {
-                toast.success("Address saved");
-                fetchAddresses();
-                setModalOpen(false);
-                return;
-            }
-
-            // VALIDATION ERRORS
-            if (res.errors) {
-                const mapped = {};
-                const fieldMap = {
-                    first_name: "firstName",
-                    last_name: "lastName",
-                    phone: "phoneNumber",
-                    zip_code: "zip_code",
-                    state_code: "state",
-                    country_code: "country",
-                };
-
-                for (const key in res.errors) {
-                    const mappedKey = fieldMap[key] || key;
-                    mapped[mappedKey] = Array.isArray(res.errors[key])
-                        ? res.errors[key][0]
-                        : res.errors[key];
-                }
-
-                setAddressErrors(mapped);
-                toast.error("Fix errors in the form");
-                return;
-            }
-
-            toast.error(res.message || "Error saving address");
-
-        } catch (error) {
-            console.error(error);
-            toast.error("Something went wrong");
-        }
-    };
-
-    // -----------------------------
     // LOADING STATE
     // -----------------------------
-    if (loading) return <p>Loading addresses...</p>;
+    if (loading) return <p className="text-center">Loading addresses...</p>;
 
     // -----------------------------
     // JSX
@@ -256,7 +195,7 @@ export default function AddressList({ onSelect }) {
             <AddAddressModal
                 isOpen={modalOpen}
                 onClose={() => setModalOpen(false)}
-                onSave={handleSave}
+                onSuccess={() => fetchAddresses()}
                 editData={editData}
                 errors={addressErrors}
             />
