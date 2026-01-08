@@ -9,8 +9,8 @@ import Script from "next/script";
 const outfit = Outfit({ subsets: ['latin'], weight: ["300", "400", "500"] })
 
 export const metadata = {
-  title: "Dilawar - Traders ",
-  description: "Your safety is our first priority",
+  title: "Dilawar Traders",
+  description: "Your safety is our best priority",
 };
 
 export default function RootLayout({ children }) {

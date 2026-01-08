@@ -20,3 +20,6 @@ const ProductProperties = ({ properties }) => {
 
 export default ProductProperties;
 
+
+
+

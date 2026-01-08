@@ -17,3 +17,6 @@ const ProductPrice = ({ price, originalPrice, hasDiscount }) => {
 
 export default ProductPrice;
 
+
+
+

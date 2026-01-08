@@ -16,11 +16,12 @@ export default function CardPayment({
           id="card"
           name="paymentMethod"
           value="card"
+          disabled={true}
           checked={isSelected}
           onChange={(e) => onSelect(e.target.value)}
         />
         <label htmlFor="card" className="font-medium">
-          Pay with Card
+          Pay with Card (Coming Soon)
         </label>
       </div>
 

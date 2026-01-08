@@ -13,7 +13,7 @@ import { fetchProductsSSR, fetchCategoriesSSR, getFeaturedProducts } from "@/lib
 // SEO Metadata
 export const metadata = {
   title: "Dilawar Traders - Your Trusted Online Shopping Destination",
-  description: "Discover a wide range of quality products at Dilawar Traders. Shop electronics, fashion, home essentials, and more with fast delivery and secure checkout. Your safety is our first priority.",
+  description: "Discover a wide range of quality products at Dilawar Traders. Shop breakers, lights, heaters, and other electrical home supplies with fast delivery and secure checkout. Your safety is our best priority.",
   keywords: "online shopping, ecommerce, electronics, fashion, home essentials, Dilawar Traders, quality products, fast delivery",
   authors: [{ name: "Dilawar Traders" }],
   openGraph: {
@@ -124,7 +124,7 @@ export default async function Home() {
                 <HeaderSlider featuredProducts={featuredProducts} />
                 <HomeProducts products={products} />
                 <HomeCategories categories={categories} />
-                <FeaturedProduct />
+                {/* <FeaturedProduct /> */}
                 <Banner />
                 <WhyShopWithUs />
                 {/*<NewsLetter />*/}

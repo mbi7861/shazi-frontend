@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState, useMemo } from 'react';
+import { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
 import { cartService } from '@/services';
 import toast from 'react-hot-toast';
 
@@ -36,7 +36,7 @@ export const CartProvider = ({ children }) => {
   const cartAmount = useMemo(() => cartService.getCartAmount(cartItems), [cartItems]);
 
   // Fetch cart products from API
-  const fetchCartProducts = async () => {
+  const fetchCartProducts = useCallback(async () => {
     setisCartLoading(true);
     try {
       const cart = cartService.getCartFromStorage();
@@ -50,7 +50,7 @@ export const CartProvider = ({ children }) => {
     } finally {
       setisCartLoading(false);
     }
-  };
+  }, []);
 
   // Add product item to cart
   const addToCart = (productItem, quantity = 1) => {
@@ -121,6 +121,7 @@ export const CartProvider = ({ children }) => {
     try {
       cartService.clearCart();
       setCartItems([]);
+      localStorage.removeItem("cart");
       toast.success('Cart cleared');
     } catch (error) {
       toast.error(error.message);
@@ -136,6 +137,27 @@ export const CartProvider = ({ children }) => {
   useEffect(() => {
     fetchCartProducts();
   }, []);
+
+  // Listen for storage changes (e.g., when cart is cleared from another tab or after order)
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (e.key === 'cart' || e.type === 'cartUpdated') {
+        // Cart was modified, refresh cart products
+        fetchCartProducts();
+      }
+    };
+
+    // Listen for storage events (cross-tab communication)
+    window.addEventListener('storage', handleStorageChange);
+
+    // Also listen for custom storage events (same-tab communication)
+    window.addEventListener('cartUpdated', handleStorageChange);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('cartUpdated', handleStorageChange);
+    };
+  }, [fetchCartProducts]);
 
   // Memoized context value to prevent unnecessary re-renders
   const value = useMemo(() => ({

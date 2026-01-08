@@ -52,7 +52,7 @@ export default function NavbarClient() {
     return (
         <>
             <div className="flex items-center gap-4 lg:gap-8 max-md:hidden">
-                <Link href="/" className="hover:text-gray-900 transition">Home</Link>
+                {/* <Link href="/" className="hover:text-gray-900 transition">Home</Link> */}
                 <Link href="/all-products" className="hover:text-gray-900 transition">Shop</Link>
                 <Link href="/" className="hover:text-gray-900 transition">About Us</Link>
                 <Link href="/contact-us" className="hover:text-gray-900 transition">Contact</Link>
@@ -95,7 +95,7 @@ export default function NavbarClient() {
             <AuthModal isOpen={authOpen} onClose={closeAuthModal}/>
             <CartModal isOpen={cartOpen} onClose={closeCartModal} />
             
-            <div className="flex items-center md:hidden gap-3">
+            <div className="flex items-center md:hidden gap-4">
                 {userData ? (
                     <>
                         <button
@@ -114,12 +114,7 @@ export default function NavbarClient() {
                             Products
                         </button>
 
-                        <div onClick={handleClick} className="relative cursor-pointer">
-                            <CartIcon/>
-                            {cartCount > 0 && (
-                                <span className="absolute -top-2 -right-3 text-xs text-white bg-primary w-4 h-4 flex items-center justify-center rounded-full">{cartCount}</span>
-                            )}
-                        </div>
+                        
                         <button onClick={() => router.push('/my-orders')}
                                 className="flex items-center gap-1 text-sm hover:text-gray-900 transition">
                             <BagIcon/>
@@ -127,10 +122,18 @@ export default function NavbarClient() {
                         </button>
                     </>
                 ) : (
-                    <button onClick={openAuthModal} className="flex items-center gap-2 hover:text-gray-900 transition">
+                    <>
+                    <div onClick={handleClick} className="relative cursor-pointer">
+                            <CartIcon/>
+                            {cartCount > 0 && (
+                                <span className="absolute -top-2 -right-3 text-xs text-white bg-primary w-4 h-4 flex items-center justify-center rounded-full">{cartCount}</span>
+                            )}
+                        </div>
+                    <button onClick={openAuthModal} className="flex items-center gap-2  hover:text-gray-900 transition">
                         <Image src={assets.user_icon} alt="user icon"/>
-                        Account
-                    </button>
+                        <h1 className="hidden md:block">Account</h1> 
+                        </button>
+                    </>
                 )}
             </div>
         </>

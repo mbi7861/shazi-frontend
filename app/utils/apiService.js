@@ -17,12 +17,12 @@ apiService.interceptors.request.use(
         if (authToken) {
             config.headers['AUTH-TOKEN'] = authToken;
         }
-        
+
         // Add API token if configured
         if (apiServiceConfig.apiToken) {
             config.headers['Authorization'] = `Bearer ${apiServiceConfig.apiToken}`;
         }
-        
+
         return config;
     },
     (error) => Promise.reject(error)
@@ -46,22 +46,32 @@ export const apiServiceService = {
     // Create order
     async createOrder(orderData) {
         try {
-            const response = await apiService.post(apiServiceConfig.endpoints.checkout, orderData);
-            return { success: true, data: response.data };
+            const { data } = await apiService.post(apiServiceConfig.endpoints.checkout, orderData);
+            if (data.status) {
+                return { success: true, data: data.data };
+            }
+            return {
+                success: false, data: null, message: data.message, errors: data.errors || {}
+            };
         } catch (error) {
-            console.error('API Service Error:', error);
-            return { success: false, error: error.response?.data || error.message };
+            console.error("Add Address Error:", error);
+            return { success: false, message: "Something Went Wrong", errors: {} };
         }
     },
 
     // Get orders
     async getOrders() {
         try {
-            const response = await apiService.get(apiServiceConfig.endpoints.orders);
-            return { success: true, data: response.data };
+            const data = await apiService.get(apiServiceConfig.endpoints.orders);
+            if (data.status) {
+                return { success: true, data: data.data };
+            }
+            return {
+                success: false, data: null, message: data.message, errors: data.errors || {}
+            };
         } catch (error) {
-            console.error('API Service Error:', error);
-            return { success: false, error: error.response?.data || error.message };
+            console.error("Add Address Error:", error);
+            return { success: false, message: "Something Went Wrong", errors: {} };
         }
     },
 

@@ -32,3 +32,6 @@ const BuyNowButton = ({ currentItem, productData, className = "" }) => {
 
 export default BuyNowButton;
 
+
+
+

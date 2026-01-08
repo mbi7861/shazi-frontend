@@ -27,3 +27,6 @@ const AddToCartButton = ({ currentItem, productData, className = "" }) => {
 
 export default AddToCartButton;
 
+
+
+

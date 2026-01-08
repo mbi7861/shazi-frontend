@@ -27,3 +27,6 @@ const RelatedProductsGrid = ({ relatedProducts }) => {
 
 export default RelatedProductsGrid;
 
+
+
+

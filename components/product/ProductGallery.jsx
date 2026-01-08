@@ -15,7 +15,7 @@ const ProductGallery = ({ images, productTitle, primaryImage }) => {
 
     return (
         <div className="px-5 lg:px-16 xl:px-20">
-            <div className="rounded-lg overflow-hidden bg-gray-500/10 mb-4">
+            <div className="rounded-lg overflow-hidden bg-gray-500/10 mb-4 aspect-square">
                 <Image
                     src={getImageUrl(mainImage)}
                     alt={productTitle}
@@ -31,7 +31,7 @@ const ProductGallery = ({ images, productTitle, primaryImage }) => {
                     <div
                         key={index}
                         onClick={() => setMainImage(image.uuid)}
-                        className="cursor-pointer rounded-lg overflow-hidden bg-gray-500/10"
+                        className="cursor-pointer rounded-lg overflow-hidden bg-gray-500/10 aspect-square"
                     >
                         <Image
                             src={getImageUrl(image.uuid)}
@@ -48,4 +48,7 @@ const ProductGallery = ({ images, productTitle, primaryImage }) => {
 };
 
 export default ProductGallery;
+
+
+
 

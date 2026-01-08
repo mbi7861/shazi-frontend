@@ -14,20 +14,6 @@ const HeaderSlider = ({ featuredProducts: ssrFeaturedProducts }) => {
     ? ssrFeaturedProducts 
     : contextFeaturedProducts;
 
-
-  useEffect(() => {
-    if (featuredProducts.length === 0) return;
-
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % featuredProducts.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [featuredProducts.length]);
-
-  const handleSlideChange = (index) => {
-    setCurrentSlide(index);
-  };
-
   // Fallback data if no featured products are available
   const fallbackData = [
     {
@@ -35,7 +21,7 @@ const HeaderSlider = ({ featuredProducts: ssrFeaturedProducts }) => {
       title: "Experience Pure Sound - Your Perfect Headphones Awaits!",
       offer: "Limited Time Offer 30% Off",
       buttonText1: "Buy now",
-      buttonText2: "Find more",
+      buttonText2: "Explore more",
       imgSrc: assets.header_headphone_image,
     },
     {
@@ -58,6 +44,19 @@ const HeaderSlider = ({ featuredProducts: ssrFeaturedProducts }) => {
 
   // Use featured products if available, otherwise use fallback
   const sliderData = featuredProducts && featuredProducts.length > 0 ? featuredProducts : fallbackData;
+
+  useEffect(() => {
+    if (sliderData.length === 0) return;
+
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % sliderData.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [sliderData.length]);
+
+  const handleSlideChange = (index) => {
+    setCurrentSlide(index);
+  };
 
   if (isLoading && (!featuredProducts || featuredProducts.length === 0)) {
     return (
@@ -100,7 +99,7 @@ const HeaderSlider = ({ featuredProducts: ssrFeaturedProducts }) => {
                 className="flex flex-col-reverse md:flex-row items-center justify-between bg-[#E6E9F2] py-8 md:px-14 px-5 mt-6 rounded-xl min-w-full"
               >
                 <div className="md:pl-8 mt-10 md:mt-0">
-                  <p className="md:text-base text-orange-600 pb-1">Featured Product</p>
+                  <p className="md:text-base text-orange-600 pb-1">Featured Category</p>
                   <h1 className="max-w-lg md:text-[40px] md:leading-[48px] text-2xl font-semibold">
                     {slide.title}
                   </h1>
@@ -109,17 +108,17 @@ const HeaderSlider = ({ featuredProducts: ssrFeaturedProducts }) => {
                   </p>
                   {slide.offer && <p className="text-sm text-gray-600 mt-1">{slide.offer}</p>}
                   <div className="flex gap-3 mt-6">
-                    <button 
+                    {/* <button 
                       onClick={() => window.location.href = `/product/${slide.slug}`}
                       className="bg-orange-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-700 transition-colors"
                     >
                       {slide.buttonText1 || 'Buy now'}
-                    </button>
+                    </button> */}
                     <button 
                       onClick={() => window.location.href = '/all-products'}
                       className="border border-orange-600 text-orange-600 px-6 py-3 rounded-lg font-medium hover:bg-orange-50 transition-colors"
                     >
-                      {slide.buttonText2 || 'Find more'}
+                      {slide.buttonText2 || 'Explore more'}
                     </button>
                   </div>
                 </div>
@@ -142,15 +141,15 @@ const HeaderSlider = ({ featuredProducts: ssrFeaturedProducts }) => {
                 className="flex flex-col-reverse md:flex-row items-center justify-between bg-[#E6E9F2] py-8 md:px-14 px-5 mt-6 rounded-xl min-w-full"
               >
                 <div className="md:pl-8 mt-10 md:mt-0">
-                  <p className="md:text-base text-orange-600 pb-1">Featured Product</p>
+                  <p className="md:text-base text-orange-600 pb-1">Featured Category</p>
                   <h1 className="max-w-lg md:text-[40px] md:leading-[48px] text-2xl font-semibold">
                     {slide.title}
                   </h1>
                   <p className="text-sm text-gray-600 mt-1">{slide.offer}</p>
                   <div className="flex gap-3 mt-6">
-                    <button className="bg-orange-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-700 transition-colors">
+                    {/* <button className="bg-orange-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-700 transition-colors">
                       {slide.buttonText1}
-                    </button>
+                    </button> */}
                     <button className="border border-orange-600 text-orange-600 px-6 py-3 rounded-lg font-medium hover:bg-orange-50 transition-colors">
                       {slide.buttonText2}
                     </button>

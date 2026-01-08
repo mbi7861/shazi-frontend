@@ -18,7 +18,7 @@ const stripePromise = loadStripe(
 
 export default function CheckoutPage() {
   const router = useRouter();
-  const { cartItems, cartAmount, isCartLoading } = useCart();
+  const { cartItems, cartAmount, isCartLoading, clearCart } = useCart();
   const { userData } = useAuth();
   const currency = process.env.NEXT_PUBLIC_CURRENCY || "Rs";
   const stripeRef = useRef();
@@ -34,6 +34,7 @@ export default function CheckoutPage() {
   });
 
   const [errors, setErrors] = useState({});
+  const [idempotencyKey, setIdempotencyKey] = useState(null);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
   const shippingCost = 0;
   const subtotal = cartAmount || 0;
@@ -86,21 +87,17 @@ export default function CheckoutPage() {
         ...prev,
         address_id: selectedAddress.id,
       }));
-      // toast.success("Address selected");
     }
   };
 
   const handleValidation = () => {
-    // Only validate email
     const emailValidation = validateEmail(formData.email);
     if (!emailValidation.isValid) {
       setErrors({ email: emailValidation.error });
       toast.error("Please enter a valid email address.");
       return { success: false, errors: { email: emailValidation.error } };
     }
-    
-    // Check if address is selected
-    if (!formData.address_id) {
+        if (!formData.address_id) {
       setErrors({ address_id: "Please select an address" });
       toast.error("Please select a shipping address.");
       return { success: false, errors: { address_id: "Please select an address" } };
@@ -110,90 +107,156 @@ export default function CheckoutPage() {
     return { success: true };
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const validation = handleValidation();
-    if (!validation.success) {
+useEffect(() => {
+  const key = `order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+  setIdempotencyKey(key);
+}, []);
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  
+  const validation = handleValidation();
+  if (!validation.success) {
+    return;
+  }
+  console.log(formData.paymentMethod);
+  
+  if (formData.paymentMethod === "card") {
+    const paymentMethodId = await stripeRef.current?.getPaymentMethodId();
+    if (!paymentMethodId) {
+      toast.error("Please enter valid card details");
       return;
     }
-    if (formData.paymentMethod == "card") {
-      const paymentMethodId = await stripeRef.current?.getPaymentMethodId();
-      if (!paymentMethodId) {
-        return;
+  }
+
+  const submittedOrder = localStorage.getItem(`order_${idempotencyKey}`);
+  if (submittedOrder) {
+    const orderData = JSON.parse(submittedOrder);
+    toast.info("Redirecting to your order...");
+    router.push(`/orders/${orderData.order_id}`);
+    return;
+  }
+
+  setIsLoading(true);
+
+  try {
+    const storedCart = localStorage.getItem("cart");
+    const orderItems = storedCart ? JSON.parse(storedCart) : {};
+
+    const orderItemsArray = Object.entries(orderItems).map(
+      ([itemId, cartItem]) => {
+        const fullItem = cartItems.find(
+          (item) => item.id === parseInt(itemId)
+        );
+        return {
+          product_item_id: parseInt(itemId),
+          product_id: cartItem.product_id || fullItem?.product?.id,
+          quantity: cartItem.quantity || 1,
+          price: fullItem?.price?.discounted_price || 0,
+          currency: fullItem?.price?.currency || currency || "PKR",
+        };
       }
+    );
+
+    const orderData = {
+      idempotency_key: idempotencyKey,
+      customer: {
+        email: formData.email,
+      },
+      address_id: formData.address_id,
+      items: orderItemsArray,
+      shipping_method: formData.shippingMethod,
+      payment_method: formData.paymentMethod,
+      discount_code: formData.discountCode,
+      subtotal: subtotal,
+      shipping_cost: shippingCost,
+      total: total,
+      currency: currency || "PKR",
+      ...(formData.paymentMethod === "card" && {
+        stripe_payment_method_id:
+          await stripeRef.current?.getPaymentMethodId(),
+      }),
+    };
+
+    const result = await apiServiceService.createOrder(orderData);    
+    if (!result.success) {
+      console.log(result);
+      if (result.errors && Object.keys(result.errors).length > 0) {
+        const errorMessages = Object.values(result.errors)
+          .flat()
+          .join(", ");
+        console.log('errorMessages', errorMessages);
+        toast.error(errorMessages || "Please fix the errors in the form");
+      } else {
+        toast.error(result.message || "Failed to create order");
+      }
+      return;
     }
+    console.log('order response', result.data);
+    const orderResponse = result.data;
+    const orderId = orderResponse.id;
 
-    setIsLoading(true);
+    // Store order data in localStorage for the order-placed page
+    localStorage.setItem(
+      `order_${idempotencyKey}`,
+      JSON.stringify({
+        order_id: orderId,
+        timestamp: Date.now(),
+      })
+    );
+    
+    // Store full order data temporarily for order-placed page (cleared after 24 hours)
+    localStorage.setItem(
+      `order_data_${orderId}`,
+      JSON.stringify({
+        ...orderResponse,
+        stored_at: Date.now()
+      })
+    );
 
-    try {
-      const storedCart = localStorage.getItem("cart");
-      const orderItems = storedCart ? JSON.parse(storedCart) : {};
+    toast.success("Order placed successfully!");
+    localStorage.removeItem("checkoutFormData");
+    
+    // Clear cart from context to update UI
+    clearCart();
+    
+    // Dispatch custom event to notify other components
+    window.dispatchEvent(new Event('cartUpdated'));
+    
+    router.push(`/order-placed?order_id=${orderId}`);
+  } catch (error) {
+    console.error("Order submission error:", error);
+    toast.error(
+      error.message ||
+        "There was an error processing your order. Please try again."
+    );
+  } finally {
+    setIsLoading(false);
+  }
+};
+useEffect(() => {
+  const cleanupOldOrders = () => {
+    const keys = Object.keys(localStorage);
+    const now = Date.now();
+    const ONE_DAY = 24 * 60 * 60 * 1000;
 
-      const orderItemsArray = Object.entries(orderItems).map(
-        ([itemId, cartItem]) => {
-          const fullItem = cartItems.find(
-            (item) => item.id === parseInt(itemId)
-          );
-          return {
-            product_item_id: parseInt(itemId),
-            product_id: cartItem.product_id || fullItem?.product?.id,
-            quantity: cartItem.quantity || 1,
-            price: fullItem?.price?.discounted_price || 0,
-            currency: fullItem?.price?.currency || currency || "PKR",
-          };
+    keys.forEach((key) => {
+      if (key.startsWith("order_")) {
+        try {
+          const data = JSON.parse(localStorage.getItem(key));
+          if (data.timestamp && now - data.timestamp > ONE_DAY) {
+            localStorage.removeItem(key);
+          }
+        } catch (e) {
+          // Invalid data, remove it
+          localStorage.removeItem(key);
         }
-      );
-
-      const orderData = {
-        customer: {
-          email: formData.email,
-        },
-        address_id: formData.address_id,
-        items: orderItemsArray,
-        shipping_method: formData.shippingMethod,
-        payment_method: formData.paymentMethod,
-        discount_code: formData.discountCode,
-        subtotal: subtotal,
-        shipping_cost: shippingCost,
-        total: total,
-        currency: currency || "PKR",
-        ...(formData.paymentMethod === "card" && {
-          stripe_payment_method_id:
-            await stripeRef.current?.getPaymentMethodId(),
-        }),
-      };
-
-      // Send to API Service via our Next.js API route
-      const result = await apiServiceService.createOrder(orderData);
-
-      if (!result.success) {
-        throw new Error(result.error || "Failed to create order");
       }
-
-      toast.success(
-        `Order Placed Successfully! Order ID: ${
-          result.data.order_id || result.data.id
-        }`
-      );
-
-      // Clear localStorage after successful order
-      localStorage.removeItem("checkoutFormData");
-      localStorage.removeItem("cart");
-
-      // Redirect to success page
-      router.push(
-        `/order-placed?orderId=${result.data.order_id || result.data.id}`
-      );
-    } catch (error) {
-      console.error("Order submission error:", error);
-      toast.error(
-        error.message ||
-          "There was an error processing your order. Please try again."
-      );
-    } finally {
-      setIsLoading(false);
-    }
+    });
   };
+
+  cleanupOldOrders();
+}, []);
 
   if (isCartLoading) {
     return (
