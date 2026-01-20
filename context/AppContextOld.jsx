@@ -6,11 +6,12 @@ import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import axiosInstance from "@/app/api/axiosInstance";
 import '../app/utils/utils';
+import { apiServiceConfig } from "@/app/config/apiService";
 
 export const AppContext = createContext();
 export const useAppContext = () => useContext(AppContext);
 
-const BASE_URL = process.env.BASE_URL || 'http://localhost/infinite-cart/public/api';
+const BASE_URL = apiServiceConfig.baseURL;
 
 export const AppContextProvider = (props) => {
     const currency = process.env.NEXT_PUBLIC_CURRENCY;

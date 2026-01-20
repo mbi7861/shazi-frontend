@@ -27,6 +27,7 @@ const registerSchema = z.object({
 
 export default function AuthModal({ isOpen, onClose }) {
     const [isLogin, setIsLogin] = useState(true);
+    const [isGoogleLoading, setIsGoogleLoading] = useState(false);
     const { fetchUserData } = useAuth();
 
     const {
@@ -66,10 +67,12 @@ export default function AuthModal({ isOpen, onClose }) {
     const loginWithGoogle = async ({ code, status }) => {
         console.log(code,status);
         if (!code || status === false) {
+            setIsGoogleLoading(false);
             toast.error('Google authentication failed.');
             return;
         }
         try {
+            setIsGoogleLoading(true);
             const endpoint = isLogin
                 ? 'auth/social-login/google'
                 : 'auth/social-register/google';
@@ -87,6 +90,8 @@ export default function AuthModal({ isOpen, onClose }) {
         } catch (error) {
                 console.log(error);
             toast.error(error.response?.data?.msg || 'Something went wrong during Google login.');
+        } finally {
+            setIsGoogleLoading(false);
         }
     };
 
@@ -95,6 +100,11 @@ export default function AuthModal({ isOpen, onClose }) {
             <div className="flex items-center justify-center min-h-screen px-4">
                 <div className="fixed inset-0 bg-black bg-opacity-30" aria-hidden="true"></div>
                 <div className="relative bg-white w-full max-w-md mx-auto rounded-2xl shadow-lg z-50 p-6">
+                    {isGoogleLoading && (
+                        <div className="absolute inset-0 z-10 bg-white/70 backdrop-blur-[1px] rounded-2xl flex items-center justify-center">
+                            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-orange-600" />
+                        </div>
+                    )}
                     <button onClick={onClose} className="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
                         <X size={20} />
                     </button>
@@ -107,7 +117,12 @@ export default function AuthModal({ isOpen, onClose }) {
                         {isLogin ? 'Welcome back!' : 'Get started by creating your account.'}
                     </p>
 
-                    <GoogleAuth isLogin={isLogin} loginWithGoogle={loginWithGoogle} />
+                    <GoogleAuth
+                        isLogin={isLogin}
+                        loginWithGoogle={loginWithGoogle}
+                        onStart={() => setIsGoogleLoading(true)}
+                        onCancel={() => setIsGoogleLoading(false)}
+                    />
 
 
                     <div className="flex items-center gap-2 text-gray-400 text-sm mb-4">

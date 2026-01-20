@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import Slider from 'react-slick';
-import Image from "next/image";
 import { useProducts } from "@/context/ProductContext";
 import { useRouter } from "next/navigation";
 import {assets} from "@/assets/assets";

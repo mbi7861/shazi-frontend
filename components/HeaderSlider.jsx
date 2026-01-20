@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
 import { useProducts } from "@/context/ProductContext";
+import { apiServiceConfig } from "@/app/config/apiService";
 
 const HeaderSlider = ({ featuredProducts: ssrFeaturedProducts }) => {
   const { getFeaturedProducts, isLoading } = useProducts();
@@ -88,7 +89,7 @@ const HeaderSlider = ({ featuredProducts: ssrFeaturedProducts }) => {
             const defaultItem = slide.product_items?.find(item => item.is_default) || slide.product_items?.[0];
             const price = defaultItem?.price?.discounted_price || defaultItem?.price?.price || 0;
             const imageUUID = slide.primary_image || slide.images?.find(img => img.is_preview)?.uuid || slide.images?.[0]?.uuid;
-            const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_BASE_URL || process.env.IMAGE_BASE_URL || 'http://localhost/infinite-cart/public/storage';
+            const imageBaseUrl = apiServiceConfig.imageBaseUrl;
             const imageUrl = imageUUID
               ? `${imageBaseUrl}/products/${imageUUID}`
               : "/placeholder.svg";

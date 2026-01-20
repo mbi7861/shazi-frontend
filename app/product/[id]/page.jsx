@@ -1,13 +1,15 @@
 import ProductView from "./ProductView";
 import axios from "axios";
+import { apiServiceConfig, getApiServiceUrl } from "@/app/config/apiService";
 
 const ProductPage = async ({ params }) => {
     console.log('params', params);
     const { id } = await params;
 
     try {
+        const productUrl = getApiServiceUrl(`${apiServiceConfig.endpoints.products}/${id}`);
         const { data } = await axios.get(
-            `${process.env.BASE_URL}/products/${id}`,
+            productUrl,
             { next: { revalidate: 60 } }
         );
 

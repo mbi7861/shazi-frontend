@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { assets } from '@/assets/assets';
 import { useRouter } from 'next/navigation';
+import { apiServiceConfig } from '@/app/config/apiService';
 
 // Simple HTML tag stripper for server-side safety
 const stripHtmlTags = (html) => {
@@ -53,7 +54,7 @@ const ProductCard = ({ product }) => {
         product.images?.[0]?.uuid;
 
     const imageUrl = imageUUID
-        ? `http://localhost/infinite-cart/public/storage/products/${imageUUID}`
+        ? `${apiServiceConfig.imageBaseUrl}/products/${imageUUID}`
         : '';
 
     return (

@@ -1,20 +1,21 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
+import { apiServiceConfig, getApiServiceUrl } from '@/app/config/apiService';
 
 export async function POST(request) {
     try {
         const orderData = await request.json();
         
         // API Service endpoint for checkout
-        const apiServiceUrl = process.env.API_SERVICE_URL || 'http://localhost/infinite-cart/public/api';
+        const checkoutUrl = getApiServiceUrl(apiServiceConfig.endpoints.checkout);
         
-        const response = await axios.post(`${apiServiceUrl}/checkout`, orderData, {
+        const response = await axios.post(checkoutUrl, orderData, {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
             },
             // Add any required authentication headers for your API Service
-            'Authorization': `Bearer ${process.env.API_SERVICE_TOKEN || ''}`,
+            'Authorization': `Bearer ${apiServiceConfig.apiToken || ''}`,
         });
         
         return NextResponse.json({

@@ -1,4 +1,6 @@
-const BASE_URL = process.env.IMAGE_BASE_URL || 'http://localhost/infinite-cart/public/storage';
+import { apiServiceConfig } from "@/app/config/apiService";
+
+const BASE_URL = apiServiceConfig.imageBaseUrl;
 
 export const getImageUrl = (imageUUID, folder = 'products') => {
     if (!imageUUID) return '';

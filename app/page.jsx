@@ -1,14 +1,12 @@
 import HeaderSlider from "@/components/HeaderSlider";
 import HomeProducts from "@/components/HomeProducts";
 import Banner from "@/components/Banner";
-import NewsLetter from "@/components/NewsLetter";
-import FeaturedProduct from "@/components/FeaturedProduct";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import CartModal from "@/components/CartModal";
 import WhyShopWithUs from "@/components/WhyShopWithUs";
 import HomeCategories from "@/components/HomeCategories";
 import { fetchProductsSSR, fetchCategoriesSSR, getFeaturedProducts } from "@/lib/serverApi";
+import { apiServiceConfig } from "@/app/config/apiService";
 
 // SEO Metadata
 export const metadata = {
@@ -40,7 +38,7 @@ export const metadata = {
     },
   },
   alternates: {
-    canonical: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
+    canonical: apiServiceConfig.siteUrl,
   },
 };
 
@@ -60,8 +58,8 @@ export default async function Home() {
         "@type": "Store",
         "name": "Dilawar Traders",
         "description": "Your Trusted Online Shopping Destination",
-        "url": process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
-        "logo": `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/logo.svg`,
+        "url": apiServiceConfig.siteUrl,
+        "logo": `${apiServiceConfig.siteUrl}/logo.svg`,
         "priceRange": "$$",
         "address": {
             "@type": "PostalAddress",
@@ -74,7 +72,7 @@ export default async function Home() {
             "@type": "SearchAction",
             "target": {
                 "@type": "EntryPoint",
-                "urlTemplate": `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/all-products?search={search_term_string}`
+                "urlTemplate": `${apiServiceConfig.siteUrl}/all-products?search={search_term_string}`
             },
             "query-input": "required name=search_term_string"
         }
@@ -85,7 +83,7 @@ export default async function Home() {
         const defaultItem = product.product_items?.find(item => item.is_default) || product.product_items?.[0];
         const price = defaultItem?.price?.discounted_price || defaultItem?.price?.price || 0;
         const imageUUID = product.primary_image || product.images?.[0]?.uuid;
-        const imageBaseUrl = process.env.NEXT_PUBLIC_IMAGE_BASE_URL || process.env.IMAGE_BASE_URL || 'http://localhost/infinite-cart/public/storage';
+        const imageBaseUrl = apiServiceConfig.imageBaseUrl;
         const imageUrl = imageUUID 
             ? `${imageBaseUrl}/products/${imageUUID}`
             : '';
@@ -101,7 +99,7 @@ export default async function Home() {
                 "price": price,
                 "priceCurrency": process.env.NEXT_PUBLIC_CURRENCY || "PKR",
                 "availability": "https://schema.org/InStock",
-                "url": `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/product/${product.slug}`
+                "url": `${apiServiceConfig.siteUrl}/product/${product.slug}`
             }
         };
     });

@@ -17,8 +17,6 @@ apiService.interceptors.request.use(
         if (authToken) {
             config.headers['AUTH-TOKEN'] = authToken;
         }
-
-        // Add API token if configured
         if (apiServiceConfig.apiToken) {
             config.headers['Authorization'] = `Bearer ${apiServiceConfig.apiToken}`;
         }
@@ -33,9 +31,7 @@ apiService.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response?.status === 401) {
-            // Handle unauthorized access
             Cookies.remove('AUTH-TOKEN');
-            // Redirect to login or show auth modal
         }
         return Promise.reject(error);
     }

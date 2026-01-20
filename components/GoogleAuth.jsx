@@ -1,10 +1,11 @@
 'use client';
 import React from 'react';
 
-export default function GoogleAuth({ isLogin, loginWithGoogle }) {
+export default function GoogleAuth({ isLogin, loginWithGoogle, onStart, onCancel }) {
 
 
     const handleGoogleSignIn = () => {
+        if (onStart) onStart();
         const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
         const redirectUri = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI;
 
@@ -14,10 +15,11 @@ export default function GoogleAuth({ isLogin, loginWithGoogle }) {
 
         const pollTimer = setInterval(() => {
             try {
-                // if (!popup || popup.closed) {
-                //     clearInterval(pollTimer);
-                //     return;
-                // }
+                if (!popup || popup.closed) {
+                    clearInterval(pollTimer);
+                    if (onCancel) onCancel();
+                    return;
+                }
 
                 const popupUrl = popup.location.href;
 
@@ -31,7 +33,6 @@ export default function GoogleAuth({ isLogin, loginWithGoogle }) {
                 }
             } catch (e) {
                 console.log(e)
-                // loginWithGoogle({ code: null, status: false });
             }
         }, 500);
     };

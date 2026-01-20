@@ -1,9 +1,10 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { getOrCreateSessionId } from '@/app/utils/utils';
+import { apiServiceConfig } from '@/app/config/apiService';
 
 const axiosInstance = axios.create({
-    baseURL: process.env.BASE_URL || 'http://localhost/infinite-cart/public/api',
+    baseURL: apiServiceConfig.baseURL,
     credentials: 'include'
 });
 

@@ -1,8 +1,12 @@
 // API Service Configuration
+const DEFAULT_API_BASE_URL = 'http://localhost/infinite-cart/public/api';
+const DEFAULT_SITE_URL = 'http://localhost:3000';
+const DEFAULT_IMAGE_BASE_URL = 'http://localhost/infinite-cart/public/storage';
+
 export const apiServiceConfig = {
-    // Base URL for API Service
-    baseURL: process.env.NEXT_PUBLIC_API_SERVICE_URL || 'http://localhost/infinite-cart/public/api',
-    timeout: 10000,
+    baseURL: process.env.NEXT_PUBLIC_API_URL || DEFAULT_API_BASE_URL,
+    siteUrl: process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL,
+    imageBaseUrl: process.env.NEXT_PUBLIC_IMAGE_BASE_URL || DEFAULT_IMAGE_BASE_URL,
     apiToken: process.env.API_SERVICE_TOKEN || '',
     endpoints: {
         checkout: '/checkout',
