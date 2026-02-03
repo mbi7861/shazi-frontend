@@ -8,6 +8,7 @@ export default function CheckoutOrderSummary({
   shippingCost,
   total,
   currency,
+  isShippingLoading,
 }) {
   return (
     <div className="lg:w-2/5">
@@ -67,14 +68,24 @@ export default function CheckoutOrderSummary({
             <div className="flex justify-between">
               <span>Shipping</span>
               <span>
-                {shippingCost > 0
-                  ? `${currency} ${shippingCost.toFixed(2)}`
-                  : "Free"}
+                {isShippingLoading ? (
+                  <span className="inline-block h-4 w-20 rounded bg-gray-200 animate-pulse" />
+                ) : shippingCost > 0 ? (
+                  `${currency} ${shippingCost.toFixed(2)}`
+                ) : (
+                  "Free"
+                )}
               </span>
             </div>
             <div className="flex justify-between font-semibold text-lg">
               <span>Total</span>
-              <span>Rs {total.toFixed(2)}</span>
+              <span>
+                {isShippingLoading ? (
+                  <span className="inline-block h-5 w-24 rounded bg-gray-200 animate-pulse" />
+                ) : (
+                  `Rs ${total.toFixed(2)}`
+                )}
+              </span>
             </div>
           </div>
         </div>

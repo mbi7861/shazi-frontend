@@ -11,6 +11,8 @@ import { apiServiceService } from "@/app/utils/apiService";
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import CheckoutOrderSummary from "@/components/checkout/CheckoutOrderSummary";
 import CheckoutSkeleton from "@/components/checkout/CheckoutSkeleton";
+import { shippingService } from "@/services/shippingService";
+import { countries, getStatesByCountry } from "@/lib/countriesStates";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -36,7 +38,9 @@ export default function CheckoutPage() {
   const [errors, setErrors] = useState({});
   const [idempotencyKey, setIdempotencyKey] = useState(null);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
-  const shippingCost = 0;
+  const [selectedAddress, setSelectedAddress] = useState(null);
+  const [shippingCost, setShippingCost] = useState(0);
+  const [isShippingLoading, setIsShippingLoading] = useState(false);
   const subtotal = cartAmount || 0;
   const total = subtotal + shippingCost;
   const isLoggedIn = !!userData;
@@ -53,6 +57,7 @@ export default function CheckoutPage() {
   useEffect(() => {
     if (isLoggedIn) {
       setSelectedAddressId(null);
+      setSelectedAddress(null);
       setFormData((prev) => ({ ...prev, address_id: null }));
     }
   }, [isLoggedIn]);
@@ -73,6 +78,11 @@ export default function CheckoutPage() {
     localStorage.setItem("checkoutFormData", JSON.stringify(formData));
   }, [formData]);
 
+  useEffect(() => {
+    if (!selectedAddress) return;
+    calculateShippingForAddress(selectedAddress);
+  }, [selectedAddress, cartItems]);
+
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
@@ -83,10 +93,76 @@ export default function CheckoutPage() {
   const handleAddressSelect = (selectedAddress) => {
     if (selectedAddress.id) {
       setSelectedAddressId(selectedAddress.id);
+      setSelectedAddress(selectedAddress);
       setFormData((prev) => ({
         ...prev,
         address_id: selectedAddress.id,
       }));
+    }
+  };
+
+  const getCountryCode = (address) => {
+    const rawCountry = address?.country_code || address?.country || "PK";
+    if (rawCountry.length === 2) return rawCountry.toUpperCase();
+
+    const matchedCountry = countries.find(
+      (country) => country.name.toLowerCase() === rawCountry.toLowerCase()
+    );
+    return matchedCountry?.code || "PK";
+  };
+
+  const getStateCode = (address) => {
+    if (address?.state_code) return address.state_code;
+
+    const rawState = address?.state || "";
+    const countryCode = getCountryCode(address);
+    const states = getStatesByCountry(countryCode);
+    const matchedState = states.find(
+      (state) =>
+        state.code.toUpperCase() === rawState.toUpperCase() ||
+        state.name.toLowerCase() === rawState.toLowerCase()
+    );
+
+    return matchedState?.code || rawState;
+  };
+
+  const calculateShippingForAddress = async (address) => {
+    if (!address || cartItems.length === 0) {
+      setShippingCost(0);
+      return;
+    }
+
+    const items = cartItems.map((item) => ({
+      product_item_id: item.product_item_id ?? item.id,
+      quantity: item.quantity || 1,
+    }));
+
+    const stateCode = getStateCode(address);
+    const city = address.city || "";
+
+    setIsShippingLoading(true);
+    try {
+      const result = await shippingService.calculateShipping({
+        items,
+        city,
+        stateCode,
+      });
+
+      if (!result.success) {
+        toast.error(result.message || "Unable to calculate shipping");
+        setShippingCost(0);
+        return;
+      }
+
+      const shippingAmount =
+        result.data?.shipping_cost ?? result.data?.shippingCost ?? 0;
+      setShippingCost(Number(shippingAmount) || 0);
+    } catch (error) {
+      console.error("Shipping calculation error:", error);
+      toast.error("Unable to calculate shipping");
+      setShippingCost(0);
+    } finally {
+      setIsShippingLoading(false);
     }
   };
 
@@ -276,6 +352,7 @@ useEffect(() => {
             formData={formData}
             errors={errors}
             isLoading={isLoading}
+            isShippingLoading={isShippingLoading}
             onInputChange={handleInputChange}
             onSubmit={handleSubmit}
             stripePromise={stripePromise}
@@ -290,6 +367,7 @@ useEffect(() => {
             shippingCost={shippingCost}
             total={total}
             currency={currency}
+            isShippingLoading={isShippingLoading}
           />
         </div>
       </div>

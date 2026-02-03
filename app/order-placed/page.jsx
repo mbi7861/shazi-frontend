@@ -260,20 +260,21 @@ const OrderPlaced = () => {
               {orderData.order_items.map((item, index) => (
                 <div key={item.id || index} className="flex justify-between items-start py-4 border-b border-gray-100 last:border-0">
                   <div className="flex-1">
+                    <h4 className="text-lg font-semibold text-gray-800">{item.title}</h4>
                     <p className="font-medium text-gray-800">SKU: {item.sku}</p>
                     <p className="text-sm text-gray-500 mt-1">Quantity: {item.quantity}</p>
-                    {item.order_item_price && (
+                    {item.price && (
                       <p className="text-sm text-gray-600 mt-1">
-                        Price: {formatCurrency(item.order_item_price.discounted_price || item.order_item_price.price, item.order_item_price.currency)}
+                        Price: {formatCurrency(item.price.discounted_price, item.price.currency)}
                       </p>
                     )}
                   </div>
                   <div className="text-right">
-                    {item.order_item_price && (
+                    {item.price && (
                       <p className="font-semibold text-gray-800">
                         {formatCurrency(
-                          (item.order_item_price.discounted_price || item.order_item_price.price) * item.quantity,
-                          item.order_item_price.currency
+                          item.price.discounted_price * item.quantity,
+                          item.price.currency
                         )}
                       </p>
                     )}

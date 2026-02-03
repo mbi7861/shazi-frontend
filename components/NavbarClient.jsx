@@ -17,6 +17,7 @@ export default function NavbarClient() {
     const pathname = usePathname();
     const [authOpen, setAuthOpen] = useState(false);
     const [cartOpen, setCartOpen] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [search, setSearch] = useState('');
     const searchParams = useSearchParams();
 
@@ -24,6 +25,10 @@ export default function NavbarClient() {
         const initialSearch = searchParams.get('search') || '';
         setSearch(initialSearch);
     }, [searchParams]);
+
+    useEffect(() => {
+        setMobileMenuOpen(false);
+    }, [pathname]);
 
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
@@ -96,6 +101,7 @@ export default function NavbarClient() {
             <CartModal isOpen={cartOpen} onClose={closeCartModal} />
             
             <div className="flex items-center md:hidden gap-4">
+                
                 {userData ? (
                     <>
                         <button
@@ -135,6 +141,64 @@ export default function NavbarClient() {
                         </button>
                     </>
                 )}
+                <button
+                    type="button"
+                    onClick={() => setMobileMenuOpen((prev) => !prev)}
+                    className="inline-flex items-center justify-center w-10 h-10 rounded-md text-gray-600 hover:text-orange-600 transition-colors"
+                    aria-label="Toggle navigation"
+                    aria-expanded={mobileMenuOpen}
+                    aria-controls="mobile-full-nav"
+                >
+                    <span className="flex flex-col gap-1">
+                        <span className="block h-0.5 w-5 bg-current"></span>
+                        <span className="block h-0.5 w-5 bg-current"></span>
+                        <span className="block h-0.5 w-5 bg-current"></span>
+                    </span>
+                </button>
+            </div>
+
+            <div
+                id="mobile-full-nav"
+                className={`fixed inset-0 z-30 bg-white md:hidden ${
+                    mobileMenuOpen ? 'block' : 'hidden'
+                }`}
+            >
+                <div className="flex h-full flex-col">
+                    <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
+                        <span className="text-lg font-semibold text-gray-700"></span>
+                        <button
+                            type="button"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="inline-flex items-center justify-center w-10 h-10 rounded-md text-gray-500 hover:text-orange-600hover:bg-orange-50 transition-colors"
+                            aria-label="Close menu"
+                        >
+                            <span className="text-3xl leading-none">×</span>
+                        </button>
+                    </div>
+                    <div className="flex flex-col gap-4 px-6 py-6 text-base">
+                        <Link
+                            href="/all-products"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="hover:text-gray-900 transition"
+                        >
+                            Shop
+                        </Link>
+                        <Link
+                            href="/"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="hover:text-gray-900 transition"
+                        >
+                            About Us
+                        </Link>
+                        <Link
+                            href="/contact-us"
+                            onClick={() => setMobileMenuOpen(false)}
+                            className="hover:text-gray-900 transition"
+                        >
+                            Contact
+                        </Link>
+                    </div>
+                </div>
             </div>
         </>
     );

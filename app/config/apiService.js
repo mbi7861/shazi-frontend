@@ -13,6 +13,7 @@ export const apiServiceConfig = {
         orders: '/orders',
         discount: '/discount',
         shipping: '/shipping',
+        shippingCalculate: '/shipping-calculate',
         address: '/address',
         products: '/products',
         categories: '/categories',

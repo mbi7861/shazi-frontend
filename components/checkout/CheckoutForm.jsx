@@ -7,6 +7,7 @@ export default function CheckoutForm({
   formData,
   errors,
   isLoading,
+  isShippingLoading,
   onInputChange,
   onSubmit,
   stripePromise,
@@ -15,7 +16,6 @@ export default function CheckoutForm({
   userData,
 }) {
   const isLoggedIn = !!userData;
-  console.log(formData);
   
   return (
     <div className="lg:w-3/5">
@@ -91,12 +91,17 @@ export default function CheckoutForm({
           <button
             type="submit"
             className="w-full bg-orange-600 text-white py-5 mt-5 hover:bg-orange-700"
-            disabled={isLoading}
+            disabled={isLoading || isShippingLoading}
           >
             {isLoading ? (
               <span className="flex items-center gap-2 justify-center">
                 <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
                 Processing...
+              </span>
+            ) : isShippingLoading ? (
+              <span className="flex items-center gap-2 justify-center">
+                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                Calculating shipping...
               </span>
             ) : (
               "Complete order"
