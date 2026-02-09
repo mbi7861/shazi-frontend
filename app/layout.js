@@ -11,12 +11,22 @@ const outfit = Outfit({ subsets: ['latin'], weight: ["300", "400", "500"] })
 export const metadata = {
   title: "Dilawar Traders",
   description: "Your safety is our best priority",
+  icons: {
+    icon: [
+      { url: "/assets/favicon.png", type: "image/png" },
+      { url: "/favicon.ico" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/assets/favicon.png",
+  },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      
       <body className={outfit.className}>
+        
       <Script
           src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
           strategy="beforeInteractive"

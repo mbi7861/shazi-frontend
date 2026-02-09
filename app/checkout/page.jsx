@@ -58,9 +58,18 @@ export default function CheckoutPage() {
     if (isLoggedIn) {
       setSelectedAddressId(null);
       setSelectedAddress(null);
-      setFormData((prev) => ({ ...prev, address_id: null }));
+      setFormData((prev) => ({
+        ...prev,
+        address_id: null,
+        email: userData?.email || prev.email,
+      }));
     }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (!userData?.email) return;
+    setFormData((prev) => ({ ...prev, email: userData.email }));
+  }, [userData?.email]);
 
   useEffect(() => {
     const savedData = localStorage.getItem("checkoutFormData");

@@ -50,7 +50,6 @@ export default async function Home() {
     ]);
 
     const products = productsData.products || [];
-    const featuredProducts = getFeaturedProducts(products);
 
     // Generate structured data for SEO
     const structuredData = {
@@ -119,13 +118,12 @@ export default async function Home() {
             ))}
             <Navbar />
             <div className="px-6 md:px-16 lg:px-32">
-                <HeaderSlider featuredProducts={featuredProducts} />
+                <HeaderSlider />
                 <HomeProducts products={products} />
                 <HomeCategories categories={categories} />
                 {/* <FeaturedProduct /> */}
                 <Banner />
                 <WhyShopWithUs />
-                {/*<NewsLetter />*/}
             </div>
             <Footer />
         </>

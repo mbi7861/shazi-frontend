@@ -31,16 +31,14 @@ export const orderService = {
    */
   async fetchOrders(filters = {}) {
     try {
-      const params = new URLSearchParams(filters).toString();
-      const { data } = await axiosInstance.get(`/orders?${params}`);
-      
+      const { data } = await axiosInstance.get("/orders");
       if (data.status) {
-        return data.data;
-      } else {
-        throw new Error(data.message || 'Failed to load orders');
+        return { success: true, data: data.data };
       }
+      return { success: false, data: null, message: data.message, errors: data.errors || {} };
     } catch (error) {
-      throw new Error(error?.response?.data?.message || error.message || 'Error fetching orders');
+      console.error("Error fetching orders:", error);
+      return { success: false, message: "Something Went Wrong", errors: {} };
     }
   },
 

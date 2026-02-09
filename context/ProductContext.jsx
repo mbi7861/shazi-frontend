@@ -17,7 +17,6 @@ export const ProductContext = createContext({
   searchProducts: async () => {},
   setFilters: () => {},
   clearFilters: () => {},
-  getFeaturedProducts: () => [],
 });
 
 // Custom hook to use Product Context

@@ -1,7 +1,16 @@
 // API Service Configuration
-const DEFAULT_API_BASE_URL = 'https://infinite-cart-master-brgweq.laravel.cloud/api';
-const DEFAULT_SITE_URL = 'https://infinite-cart-frontend-3b7kjm3hm-labourer-web-apps-projects.vercel.app/';
-const DEFAULT_IMAGE_BASE_URL = 'https://infinite-cart-master-brgweq.laravel.cloud/storage';
+let DEFAULT_API_BASE_URL = '';
+let DEFAULT_SITE_URL = '';
+let DEFAULT_IMAGE_BASE_URL = '';
+if (process.env.NODE_ENV === 'production') {
+    DEFAULT_API_BASE_URL = 'https://infinite-cart-master-brgweq.laravel.cloud/api';
+    DEFAULT_SITE_URL = 'https://infinite-cart-frontend-3b7kjm3hm-labourer-web-apps-projects.vercel.app/';
+    DEFAULT_IMAGE_BASE_URL = 'https://infinite-cart-master-brgweq.laravel.cloud/storage';
+} else {
+    DEFAULT_API_BASE_URL = 'http://localhost/infinite-cart/public/api';
+    DEFAULT_SITE_URL = 'http://localhost:3000/';
+    DEFAULT_IMAGE_BASE_URL = 'http://localhost/infinite-cart/public/storage';
+}
 
 export const apiServiceConfig = {
     baseURL: process.env.NEXT_PUBLIC_API_URL || DEFAULT_API_BASE_URL,

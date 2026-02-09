@@ -43,10 +43,9 @@ export default function AuthModal({ isOpen, onClose }) {
             const url = isLogin ? 'auth/login' : 'auth/register';
 
             const response = await axiosInstance.post(url, data);
-
             if (response?.data?.status) {
                 const token = response.data.data.session.session_token;
-                Cookies.setItem('AUTH-TOKEN', token);
+                Cookies.set('AUTH-TOKEN', token);
                 await fetchUserData(); // Refresh user data from context
                 toast.success(response.data.msg || (isLogin ? 'Login successful!' : 'Registration successful!'));
                 onClose();

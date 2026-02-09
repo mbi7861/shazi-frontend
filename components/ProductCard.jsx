@@ -63,7 +63,7 @@ const ProductCard = ({ product }) => {
                 router.push('/product/' + product.slug);
                 scrollTo(0, 0);
             }}
-            className="flex flex-col items-start gap-0.5 max-w-[200px] w-full cursor-pointer"
+            className="flex flex-col items-start gap-0.5 w-full cursor-pointer"
         >
             <div className="cursor-pointer group relative bg-gray-500/10 rounded-lg w-full h-52 flex items-center justify-center">
                 <Image
@@ -86,7 +86,7 @@ const ProductCard = ({ product }) => {
             <p className="md:text-base font-medium pt-2 w-full truncate">
                 {product.title}
             </p>
-
+{/* 
             {sanitizedDescription && (
                 <div
                     className="w-full text-xs text-gray-500/70 max-sm:hidden truncate"
@@ -94,7 +94,7 @@ const ProductCard = ({ product }) => {
                         __html: sanitizedDescription,
                     }}
                 />
-            )}
+            )} */}
 
             <div className="flex items-center gap-2">
                 <p className="text-xs">{4.5}</p>

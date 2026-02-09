@@ -3,6 +3,7 @@
 import { AuthProvider } from './AuthContext';
 import { ProductProvider } from './ProductContext';
 import { CartProvider } from './CartContext';
+import { OrderProvider } from './OrderContext';
 
 /**
  * App Provider
@@ -17,11 +18,13 @@ import { CartProvider } from './CartContext';
 export const AppProvider = ({ children }) => {
   return (
     <AuthProvider>
-      <ProductProvider>
-        <CartProvider>
-          {children}
-        </CartProvider>
-      </ProductProvider>
+      <OrderProvider>
+        <ProductProvider>
+          <CartProvider>
+            {children}
+          </CartProvider>
+        </ProductProvider>
+      </OrderProvider>
     </AuthProvider>
   );
 };
