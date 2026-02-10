@@ -67,7 +67,7 @@ const HeaderSlider = () => {
                     </Link>
                   </div>
                 </div>
-                <div className="flex-1 flex justify-center md:justify-end">
+                <div className="flex-1 flex justify-center">
                   <Image
                     src={slide.imgSrc}
                     alt={slide.title}

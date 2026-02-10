@@ -78,7 +78,7 @@ const OrderSummary = () => {
       </h2>
       <hr className="border-gray-500/30 my-5" />
       <div className="space-y-6">
-        <div>
+        {/* <div>
           <label className="text-base font-medium uppercase text-gray-600 block mb-2">
             Select Address
           </label>
@@ -135,9 +135,9 @@ const OrderSummary = () => {
               Apply
             </button>
           </div>
-        </div>
+        </div> */}
 
-        <hr className="border-gray-500/30 my-5" />
+        {/* <hr className="border-gray-500/30 my-5" /> */}
 
         <div className="space-y-4">
           <div className="flex justify-between text-base font-medium">

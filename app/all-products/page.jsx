@@ -106,7 +106,7 @@ const AllProducts = () => {
                     {category && (
                         <button
                             onClick={() => {
-                                router.push('/all-products');
+                                window.history.replaceState(null, '', '/all-products');
                                 setFilters({ per_page: 16 });
                                 loadProducts({ per_page: 15 });
                             }}
