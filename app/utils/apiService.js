@@ -39,21 +39,6 @@ apiService.interceptors.response.use(
 
 // API Service functions
 export const apiServiceService = {
-    // Create order
-    async createOrder(orderData) {
-        try {
-            const { data } = await apiService.post(apiServiceConfig.endpoints.checkout, orderData);
-            if (data.status) {
-                return { success: true, data: data.data };
-            }
-            return {
-                success: false, data: null, message: data.message, errors: data.errors || {}
-            };
-        } catch (error) {
-            console.error("Add Address Error:", error);
-            return { success: false, message: "Something Went Wrong", errors: {} };
-        }
-    },
 
     // Get orders
     async getOrders() {
@@ -67,6 +52,23 @@ export const apiServiceService = {
             };
         } catch (error) {
             console.error("Add Address Error:", error);
+            return { success: false, message: "Something Went Wrong", errors: {} };
+        }
+    },
+
+    // Get order by id
+    async getOrderById(orderId) {
+        try {
+            const endpoint = apiServiceConfig.endpoints.orderDetails.replace('{id}', orderId);
+            const { data } = await apiService.get(endpoint);
+            if (data.status) {
+                return { success: true, data: data.data };
+            }
+            return {
+                success: false, data: null, message: data.message, errors: data.errors || {}
+            };
+        } catch (error) {
+            console.error("Get Order Error:", error);
             return { success: false, message: "Something Went Wrong", errors: {} };
         }
     },

@@ -9,8 +9,8 @@ const Banner = () => {
           <div className="flex-[3] flex justify-center">
               <Image
                   className="max-w-40 md:max-w-56"
-                  src={assets.jbl_soundbox_image}
-                  alt="jbl_soundbox_image"
+                  src={assets.banner1}
+                  alt="banner1"
               />
           </div>
 
@@ -32,12 +32,12 @@ const Banner = () => {
           <div className="flex-[3] hidden md:flex justify-center ">
               <Image
                   className="hidden md:block max-w-40 md:max-w-56"
-                  src={assets.md_controller_image}
+                  src={assets.banner1}
                   alt="md_controller_image"
               />
               <Image
                   className="md:hidden max-w-40"
-                  src={assets.sm_controller_image}
+                  src={assets.banner1}
                   alt="sm_controller_image"
               />
           </div>

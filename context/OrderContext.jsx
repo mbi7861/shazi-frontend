@@ -26,10 +26,7 @@ export const OrderProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchOrders = useCallback(async () => {
-    if (!isAuthenticated) {
-      setOrders([]);
-      return;
-    }
+
     setIsLoading(true);
     try {
       const result = await orderService.fetchOrders();
@@ -47,7 +44,6 @@ export const OrderProvider = ({ children }) => {
       setIsLoading(false);
     }
   }, [isAuthenticated]);
-
   const refreshOrders = async () => {
     await fetchOrders();
   };

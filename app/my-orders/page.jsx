@@ -2,14 +2,12 @@
 import React from "react";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
-import { useAuth } from "@/context/AuthContext";
 import { useOrders } from "@/context/OrderContext";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import Loading from "@/components/Loading";
 
 const MyOrders = () => {
-    const { isAuthenticated } = useAuth();
     const { orders, isLoading } = useOrders();
     const currency = process.env.NEXT_PUBLIC_CURRENCY || "Rs";
 
@@ -21,9 +19,7 @@ const MyOrders = () => {
             <div className="flex flex-col justify-between px-6 md:px-16 lg:px-32 py-6 min-h-screen">
                 <div className="space-y-5">
                     <h2 className="text-lg font-medium mt-6">My Orders</h2>
-                    {!isAuthenticated ? (
-                        <p className="text-sm text-gray-500">Please log in to view your orders.</p>
-                    ) : isLoading ? (
+                    { isLoading ? (
                         <Loading />
                     ) : orders.length === 0 ? (
                         <p className="text-sm text-gray-500">You have no orders yet.</p>

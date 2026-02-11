@@ -22,6 +22,7 @@
     "next-auth": "^4.24.11",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-floating-whatsapp": "^5.0.8",
     "react-hook-form": "^7.58.1",
     "react-hot-toast": "^2.5.1",
     "react-slick": "^0.30.3",

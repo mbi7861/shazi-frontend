@@ -20,3 +20,8 @@
 .bg-primary {
     background-color: rgb(234 88 12 / var(--tw-text-opacity, 1));
 }
+
+.styles-module_buttonSend__kXjja {
+    display: flex;
+    justify-content: center;
+}

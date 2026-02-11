@@ -1,10 +1,9 @@
 'use client'
-import { assets } from '@/assets/assets'
 import { useRouter, useSearchParams } from 'next/navigation';
-import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import Navbar from '@/components/Navbar'
 import Link from 'next/link'
+import { orderService } from "@/services/orderService";
 
 const OrderPlaced = () => {
   const router = useRouter();
@@ -13,93 +12,31 @@ const OrderPlaced = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Try to get order data from URL params or localStorage
     const orderId = searchParams.get('order_id');
-    const orderDataParam = searchParams.get('order_data');
-    
-    if (orderDataParam) {
-      // If order data is in URL params (for backwards compatibility)
-      try {
-        const parsedData = JSON.parse(decodeURIComponent(orderDataParam));
-        setOrderData(parsedData);
-        setLoading(false);
-        return;
-      } catch (error) {
-        console.error('Error parsing order data from URL:', error);
-      }
-    }
-    
-    if (orderId) {
-      // First try to get full order data from localStorage
-      const storedOrderData = localStorage.getItem(`order_data_${orderId}`);
-      if (storedOrderData) {
-        try {
-          const parsedData = JSON.parse(storedOrderData);
-          // Remove stored_at timestamp if present
-          const { stored_at, ...orderData } = parsedData;
-          setOrderData(orderData);
-          setLoading(false);
-          return;
-        } catch (error) {
-          console.error('Error parsing stored order data:', error);
-        }
-      }
-      
-      // Fallback to order_${orderId} format
-      const storedOrder = localStorage.getItem(`order_${orderId}`);
-      if (storedOrder) {
-        try {
-          const parsedData = JSON.parse(storedOrder);
-          setOrderData(parsedData);
-          setLoading(false);
-          return;
-        } catch (error) {
-          console.error('Error parsing stored order:', error);
-        }
-      }
-      
+
+    if (!orderId) {
       setLoading(false);
       return;
     }
-    
-    // Try to get the most recent order data from localStorage
-    const keys = Object.keys(localStorage);
-    const orderDataKeys = keys.filter(key => key.startsWith('order_data_'));
-    if (orderDataKeys.length > 0) {
-      // Get the most recent order data
-      const latestKey = orderDataKeys.sort().reverse()[0];
-      const storedOrder = localStorage.getItem(latestKey);
-      if (storedOrder) {
-        try {
-          const parsedData = JSON.parse(storedOrder);
-          const { stored_at, ...orderData } = parsedData;
-          setOrderData(orderData);
-          setLoading(false);
-          return;
-        } catch (error) {
-          console.error('Error parsing stored order:', error);
+
+    const fetchOrder = async () => {
+      try {
+        const result = await orderService.getOrderById(orderId);
+        if (result.success) {
+          setOrderData(result.data);
+        } else {
+          console.error(result.message || 'Failed to fetch order');
+          setOrderData(null);
         }
+      } catch (error) {
+        console.error('Error fetching order:', error);
+        setOrderData(null);
+      } finally {
+        setLoading(false);
       }
-    }
-    
-    // Fallback to order_ keys
-    const orderKeys = keys.filter(key => key.startsWith('order_') && !key.startsWith('order_data_'));
-    if (orderKeys.length > 0) {
-      const latestKey = orderKeys.sort().reverse()[0];
-      const storedOrder = localStorage.getItem(latestKey);
-      if (storedOrder) {
-        try {
-          const parsedData = JSON.parse(storedOrder);
-          setOrderData(parsedData);
-          setLoading(false);
-          return;
-        } catch (error) {
-          console.error('Error parsing stored order:', error);
-        }
-      }
-    }
-    
-    setLoading(false);
+    };
+
+    fetchOrder();
   }, [searchParams]);
 
   const formatDate = (dateString) => {
@@ -210,7 +147,7 @@ const OrderPlaced = () => {
             </div>
             <div>
               <p className="text-sm text-gray-500 mb-1">Email</p>
-              <p className="text-lg text-gray-800">{orderData.email || 'N/A'}</p>
+              <p className="text-lg text-gray-800">{orderData.email || orderData.customer?.email || 'N/A'}</p>
             </div>
             <div>
               <p className="text-sm text-gray-500 mb-1">Order Date</p>

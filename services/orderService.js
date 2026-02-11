@@ -1,4 +1,5 @@
 import axiosInstance from '@/app/api/axiosInstance';
+import { apiServiceConfig } from '@/app/config/apiService';
 
 /**
  * Order Service
@@ -12,17 +13,18 @@ export const orderService = {
    */
   async createOrder(orderData) {
     try {
-      const { data } = await axiosInstance.post('/orders', orderData);
-      
-      if (data.status) {
-        return data.data;
-      } else {
-        throw new Error(data.message || 'Order creation failed');
-      }
+        const { data } = await axiosInstance.post(apiServiceConfig.endpoints.checkout, orderData);
+        if (data.status) {
+            return { success: true, data: data.data };
+        }
+        return {
+            success: false, data: null, message: data.message, errors: data.errors || {}
+        };
     } catch (error) {
-      throw new Error(error?.response?.data?.message || error.message || 'Order creation error');
+        console.error("Add Address Error:", error);
+        return { success: false, message: "Something Went Wrong", errors: {} };
     }
-  },
+},
 
   /**
    * Fetch user orders
@@ -47,19 +49,21 @@ export const orderService = {
    * @param {string|number} orderId - Order ID
    * @returns {Promise<Object>} - Order data or throws error
    */
-  async fetchOrderById(orderId) {
+  async getOrderById(orderId) {
     try {
-      const { data } = await axiosInstance.get(`/orders/${orderId}`);
-      
-      if (data.status) {
-        return data.data;
-      } else {
-        throw new Error(data.message || 'Failed to load order');
-      }
+        const endpoint = apiServiceConfig.endpoints.orderDetails.replace('{id}', orderId);
+        const { data } = await axiosInstance.get(endpoint);
+        if (data.status) {
+            return { success: true, data: data.data };
+        }
+        return {
+            success: false, data: null, message: data.message, errors: data.errors || {}
+        };
     } catch (error) {
-      throw new Error(error?.response?.data?.message || error.message || 'Error fetching order');
+        console.error("Get Order Error:", error);
+        return { success: false, message: "Something Went Wrong", errors: {} };
     }
-  },
+},
 
   /**
    * Cancel order

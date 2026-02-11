@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
+import { orderService } from "@/services/orderService";
 import { validateEmail } from "../utils/validation";
 import Navbar from "@/components/Navbar";
-import { apiServiceService } from "@/app/utils/apiService";
 import CheckoutForm from "@/components/checkout/CheckoutForm";
 import CheckoutOrderSummary from "@/components/checkout/CheckoutOrderSummary";
 import CheckoutSkeleton from "@/components/checkout/CheckoutSkeleton";
@@ -22,6 +22,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { cartItems, cartAmount, isCartLoading, clearCart } = useCart();
   const { userData } = useAuth();
+  
   const currency = process.env.NEXT_PUBLIC_CURRENCY || "Rs";
   const stripeRef = useRef();
 
@@ -214,14 +215,6 @@ const handleSubmit = async (e) => {
     }
   }
 
-  const submittedOrder = localStorage.getItem(`order_${idempotencyKey}`);
-  if (submittedOrder) {
-    const orderData = JSON.parse(submittedOrder);
-    toast.info("Redirecting to your order...");
-    router.push(`/orders/${orderData.order_id}`);
-    return;
-  }
-
   setIsLoading(true);
 
   try {
@@ -263,7 +256,7 @@ const handleSubmit = async (e) => {
       }),
     };
 
-    const result = await apiServiceService.createOrder(orderData);    
+    const result = await orderService.createOrder(orderData);    
     if (!result.success) {
       console.log(result);
       if (result.errors && Object.keys(result.errors).length > 0) {
@@ -278,70 +271,23 @@ const handleSubmit = async (e) => {
       return;
     }
     console.log('order response', result.data);
-    const orderResponse = result.data;
-    const orderId = orderResponse.id;
-
-    // Store order data in localStorage for the order-placed page
-    localStorage.setItem(
-      `order_${idempotencyKey}`,
-      JSON.stringify({
-        order_id: orderId,
-        timestamp: Date.now(),
-      })
-    );
-    
-    // Store full order data temporarily for order-placed page (cleared after 24 hours)
-    localStorage.setItem(
-      `order_data_${orderId}`,
-      JSON.stringify({
-        ...orderResponse,
-        stored_at: Date.now()
-      })
-    );
+    const orderId = result.data;
 
     toast.success("Order placed successfully!");
     localStorage.removeItem("checkoutFormData");
-    
-    // Clear cart from context to update UI
+
     clearCart();
     
-    // Dispatch custom event to notify other components
     window.dispatchEvent(new Event('cartUpdated'));
     
     router.push(`/order-placed?order_id=${orderId}`);
   } catch (error) {
     console.error("Order submission error:", error);
-    toast.error(
-      error.message ||
-        "There was an error processing your order. Please try again."
-    );
+    toast.error( error.message ||  "There was an error processing your order. Please try again.");
   } finally {
     setIsLoading(false);
   }
 };
-useEffect(() => {
-  const cleanupOldOrders = () => {
-    const keys = Object.keys(localStorage);
-    const now = Date.now();
-    const ONE_DAY = 24 * 60 * 60 * 1000;
-
-    keys.forEach((key) => {
-      if (key.startsWith("order_")) {
-        try {
-          const data = JSON.parse(localStorage.getItem(key));
-          if (data.timestamp && now - data.timestamp > ONE_DAY) {
-            localStorage.removeItem(key);
-          }
-        } catch (e) {
-          // Invalid data, remove it
-          localStorage.removeItem(key);
-        }
-      }
-    });
-  };
-
-  cleanupOldOrders();
-}, []);
 
   if (isCartLoading) {
     return (
