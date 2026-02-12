@@ -122,9 +122,8 @@ export const CartProvider = ({ children }) => {
       cartService.clearCart();
       setCartItems([]);
       localStorage.removeItem("cart");
-      toast.success('Cart cleared');
     } catch (error) {
-      toast.error(error.message);
+      console.error(error.message);
     }
   };
 
@@ -138,7 +137,6 @@ export const CartProvider = ({ children }) => {
     fetchCartProducts();
   }, []);
 
-  // Listen for storage changes (e.g., when cart is cleared from another tab or after order)
   useEffect(() => {
     const handleStorageChange = (e) => {
       if (e.key === 'cart' || e.type === 'cartUpdated') {

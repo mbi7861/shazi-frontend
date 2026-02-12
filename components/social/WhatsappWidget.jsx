@@ -1,8 +1,8 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { FloatingWhatsApp } from "react-floating-whatsapp";
 import { assets } from "@/assets/assets";
-
 
 const WhatsappWidget = ({
   phoneNumber,
@@ -16,10 +16,24 @@ const WhatsappWidget = ({
   notificationSound = true,
   darkMode = false,
   className,
+  delay = 3000, // default 3 seconds
 }) => {
-  if (!phoneNumber) {
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    if (!phoneNumber) return;
+
+    const timer = setTimeout(() => {
+      setShow(true);
+    }, delay);
+
+    return () => clearTimeout(timer);
+  }, [phoneNumber, delay]);
+
+  if (!phoneNumber || !show) {
     return null;
   }
+
   return (
     <div className={className}>
       <FloatingWhatsApp
@@ -40,4 +54,3 @@ const WhatsappWidget = ({
 };
 
 export default WhatsappWidget;
-

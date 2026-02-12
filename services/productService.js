@@ -14,18 +14,19 @@ export const productService = {
         try {
       const params = new URLSearchParams(filters).toString();
       const { data } = await axiosInstance.get(`/products?${params}`);
-      
       if (data.status) {
         return {
           products: data.data.products,
           pagination: data.data.pagination || null
         };
-      } else {
-        throw new Error(data.message || 'Failed to load products');
-      }
-    } catch (error) {
-      throw new Error(error?.response?.data?.message || error.message || 'Error fetching products');
     }
+    return {
+        success: false, data: null, message: data.message, errors: data.errors || {}
+    };
+    } catch (error) {
+      console.error("Get Products Error:", error);
+      return { success: false, message: "Something Went Wrong", errors: {} };
+      }
   },
 
   /**
@@ -37,13 +38,15 @@ export const productService = {
       const { data } = await axiosInstance.get('/categories');
       
       if (data.status) {
-        return data.data;
-      } else {
-        throw new Error(data.message || 'Failed to load categories');
-      }
-    } catch (error) {
-      throw new Error(error?.response?.data?.message || error.message || 'Error fetching categories');
+        return { success: true, data: data.data };
     }
+    return {
+        success: false, data: null, message: data.message, errors: data.errors || {}
+    };
+    } catch (error) {
+      console.error("Get Categories Error:", error);
+      return { success: false, message: "Something Went Wrong", errors: {} };
+        }
   },
 
   /**

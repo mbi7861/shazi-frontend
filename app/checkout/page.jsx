@@ -13,6 +13,7 @@ import CheckoutOrderSummary from "@/components/checkout/CheckoutOrderSummary";
 import CheckoutSkeleton from "@/components/checkout/CheckoutSkeleton";
 import { shippingService } from "@/services/shippingService";
 import { countries, getStatesByCountry } from "@/lib/countriesStates";
+import { startTransition } from "react";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -204,9 +205,7 @@ const handleSubmit = async (e) => {
   const validation = handleValidation();
   if (!validation.success) {
     return;
-  }
-  console.log(formData.paymentMethod);
-  
+  }  
   if (formData.paymentMethod === "card") {
     const paymentMethodId = await stripeRef.current?.getPaymentMethodId();
     if (!paymentMethodId) {
@@ -270,22 +269,18 @@ const handleSubmit = async (e) => {
       }
       return;
     }
-    console.log('order response', result.data);
-    const orderId = result.data;
-
-    toast.success("Order placed successfully!");
     localStorage.removeItem("checkoutFormData");
 
+    
+    startTransition(() => {
+      router.replace(`/order-placed?order_id=${result.data}`);
+    });
+    toast.success("Order Placed successfully");
     clearCart();
-    
     window.dispatchEvent(new Event('cartUpdated'));
-    
-    router.push(`/order-placed?order_id=${orderId}`);
   } catch (error) {
     console.error("Order submission error:", error);
     toast.error( error.message ||  "There was an error processing your order. Please try again.");
-  } finally {
-    setIsLoading(false);
   }
 };
 
