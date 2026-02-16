@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { AddressLib } from "@/lib/address";
 import AddAddressModal from "@/components/AddAddressModal";
 import toast from "react-hot-toast";
-import { MapPin, Plus } from "lucide-react";
+import { MapPin, Plus, Trash2 } from "lucide-react";
+
+const MAX_ADDRESSES = 5;
 import { useAuth } from "@/context/AuthContext";
 import { countries, getStatesByCountry } from "@/lib/countriesStates";
 
@@ -81,6 +83,35 @@ export default function AddressList({ prevAddressId ,onSelect }) {
     };
 
     // -----------------------------
+    // DELETE HANDLER
+    // -----------------------------
+    const handleDelete = async (e, address) => {
+        e.stopPropagation();
+        if (!confirm("Are you sure you want to delete this address?")) return;
+
+        try {
+            const res = await AddressLib.deleteAddress(address.id);
+            if (res.success) {
+                toast.success("Address deleted");
+                const remaining = addresses.filter((a) => a.id !== address.id);
+                setAddresses(remaining);
+                if (selectedAddressId === address.id && remaining.length > 0) {
+                    setSelectedAddressId(remaining[0].id);
+                    onSelect?.(remaining[0]);
+                } else if (remaining.length === 0) {
+                    setSelectedAddressId(null);
+                    onSelect?.(null);
+                }
+            } else {
+                toast.error(res.message || "Could not delete address");
+            }
+        } catch (error) {
+            console.error(error);
+            toast.error("Could not delete address");
+        }
+    };
+
+    // -----------------------------
     // LOADING STATE
     // -----------------------------
     if (loading) return <p className="text-center">Loading addresses...</p>;
@@ -91,15 +122,22 @@ export default function AddressList({ prevAddressId ,onSelect }) {
     return (
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
             {/* Header */}
-            <div className="flex justify-end mb-4">
-                <button
-                    type="button"
-                    onClick={openAddModal}
-                    className="bg-orange-600 text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-orange-700"
-                >
-                    <Plus size={18} />
-                    Add New
-                </button>
+            <div className="flex justify-between items-center mb-4">
+                {addresses.length >= MAX_ADDRESSES && (
+                    <p className="text-sm text-gray-500">Maximum 5 addresses. Delete one to add another.</p>
+                )}
+                <div className="ml-auto">
+                    {addresses.length < MAX_ADDRESSES && (
+                        <button
+                            type="button"
+                            onClick={openAddModal}
+                            className="bg-orange-600 text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-orange-700"
+                        >
+                            <Plus size={18} />
+                            Add New
+                        </button>
+                    )}
+                </div>
             </div>
 
             {/* No Address */}
@@ -157,17 +195,27 @@ export default function AddressList({ prevAddressId ,onSelect }) {
                                     )}
                                 </div>
 
-                                {/* Edit Button */}
-                                <button
-                                    type="button"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        openEditModal(address);
-                                    }}
-                                    className="text-orange-600 underline text-sm"
-                                >
-                                    Edit
-                                </button>
+                                {/* Edit & Delete Buttons */}
+                                <div className="flex items-center gap-2">
+                                    <button
+                                        type="button"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            openEditModal(address);
+                                        }}
+                                        className="text-orange-600 underline text-sm"
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={(e) => handleDelete(e, address)}
+                                        className="text-red-600 hover:text-red-700 p-1 rounded hover:bg-red-50"
+                                        title="Delete address"
+                                    >
+                                        <Trash2 size={18} />
+                                    </button>
+                                </div>
 
                                 {/* Check mark */}
                                 {isSelected && (
