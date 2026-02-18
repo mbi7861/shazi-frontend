@@ -2,7 +2,9 @@
 const nextConfig = {
     reactStrictMode: false,
     images: {
-        domains: ['localhost'],
+        domains: [
+            'mbi-s3.s3.eu-north-1.amazonaws.com'
+        ],
         remotePatterns: [
             {
                 protocol: 'https',
