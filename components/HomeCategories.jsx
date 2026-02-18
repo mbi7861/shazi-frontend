@@ -6,12 +6,11 @@ import { useRouter } from "next/navigation";
 import {assets} from "@/assets/assets";
 import {getImageUrl} from "@/app/utils/utils";
 
-const CategoryHome = ({ categories: ssrCategories }) => {
+const CategoryHome = ({ categories}) => {
     const { categories: contextCategories } = useProducts();
     const router = useRouter();
     
     // Use SSR categories if available, otherwise fall back to context
-    const categories = ssrCategories && ssrCategories.length > 0 ? ssrCategories : contextCategories;
     const settings = {
         infinite: true,
         slidesToShow: 5,
