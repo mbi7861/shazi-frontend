@@ -6,34 +6,38 @@ import { useRouter } from "next/navigation";
 import {getImageUrl} from "@/app/utils/utils";
 import Image from "next/image";
 
-const CategoryHome = ({ categories}) => {
+const CategoryHome = ({ categories }) => {
     const { categories: contextCategories } = useProducts();
     const router = useRouter();
-    
-    // Use SSR categories if available, otherwise fall back to context
+
+    // Triple the slides so slick's wrap point is in the middle of identical content (reduces visible break)
+    const slides = [...categories, ...categories, ...categories];
+
     const settings = {
         infinite: true,
         slidesToShow: 5,
         slidesToScroll: 1,
         autoplay: true,
+        autoplaySpeed: 4000,
         arrows: true,
+        speed: 700,
+        cssEase: "cubic-bezier(0.4, 0, 0.2, 1)",
+        waitForAnimate: false,
+        useTransform: true,
+        pauseOnHover: false,
         responsive: [
             {
                 breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3,
-                },
+                settings: { slidesToShow: Math.min(3, categories.length) },
             },
             {
                 breakpoint: 640,
-                settings: {
-                    slidesToShow: 2,
-                },
+                settings: { slidesToShow: Math.min(2, categories.length) },
             },
         ],
     };
     return (
-        <div className="w-full py-8">
+        <div className="home-categories-slider w-full py-8 overflow-hidden">
             <div className="flex items-center justify-between mb-4">
                 <h3 className="text-2xl font-medium text-left ">Shop by Categories</h3>
                 <a
@@ -45,15 +49,14 @@ const CategoryHome = ({ categories}) => {
             </div>
 
             <Slider {...settings}>
-                {categories.map((cat, idx) => (
-                    <div key={idx} className="px-2">
+                {slides.map((cat, idx) => (
+                    <div key={`${cat.slug}-${idx}`} className="px-2">
                         <div className="text-center">
-                            <div 
-                                onClick={() => router.push(`/all-products?category=${cat.slug}`)} 
+                            <div
+                                onClick={() => router.push(`/all-products?category=${cat.slug}`)}
                                 title={cat.title}
                                 className="cursor-pointer"
                             >
-
                                 <Image
                                     src={getImageUrl(cat.image?.uuid, "categories")}
                                     alt={cat.title}
