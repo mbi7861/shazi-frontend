@@ -3,8 +3,8 @@ import React from "react";
 import Slider from 'react-slick';
 import { useProducts } from "@/context/ProductContext";
 import { useRouter } from "next/navigation";
-import {assets} from "@/assets/assets";
 import {getImageUrl} from "@/app/utils/utils";
+import Image from "next/image";
 
 const CategoryHome = ({ categories}) => {
     const { categories: contextCategories } = useProducts();
@@ -53,9 +53,12 @@ const CategoryHome = ({ categories}) => {
                                 title={cat.title}
                                 className="cursor-pointer"
                             >
-                                <img
-                                    src={getImageUrl(cat.image?.uuid, "categories") || assets.logo}
+
+                                <Image
+                                    src={getImageUrl(cat.image?.uuid, "categories")}
                                     alt={cat.title}
+                                    width={180}
+                                    height={180}
                                     className="mx-auto max-h-40 object-cover aspect-square rounded-lg hover:scale-105 transition-transform duration-300"
                                 />
                             </div>

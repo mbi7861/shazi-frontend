@@ -77,31 +77,6 @@ export default async function Home() {
         }
     };
 
-    // Product structured data
-    const productStructuredData = products.slice(0, 5).map(product => {
-        const defaultItem = product.product_items?.find(item => item.is_default) || product.product_items?.[0];
-        const price = defaultItem?.price?.discounted_price || defaultItem?.price?.price || 0;
-        const imageUUID = product.primary_image || product.images?.[0]?.uuid;
-        const imageBaseUrl = apiServiceConfig.imageBaseUrl;
-        const imageUrl = imageUUID 
-            ? `${imageBaseUrl}/products/${imageUUID}`
-            : '';
-
-        return {
-            "@context": "https://schema.org",
-            "@type": "Product",
-            "name": product.title,
-            "description": product.small_description || product.title,
-            "image": imageUrl,
-            "offers": {
-                "@type": "Offer",
-                "price": price,
-                "priceCurrency": process.env.NEXT_PUBLIC_CURRENCY || "PKR",
-                "availability": "https://schema.org/InStock",
-                "url": `${apiServiceConfig.siteUrl}/product/${product.slug}`
-            }
-        };
-    });
 
     return (
         <>
@@ -109,13 +84,6 @@ export default async function Home() {
                 type="application/ld+json"
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
             />
-            {productStructuredData.map((data, index) => (
-                <script
-                    key={index}
-                    type="application/ld+json"
-                    dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
-                />
-            ))}
             <Navbar />
             <div className="px-6 md:px-16 lg:px-32">
                 <HeaderSlider />
