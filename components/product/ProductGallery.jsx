@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { getImageUrl } from "@/app/utils/utils";
 
@@ -8,6 +8,11 @@ const ProductGallery = ({ images, productTitle, primaryImage }) => {
     const [mainImage, setMainImage] = useState(
         primaryImage || images?.[0]?.uuid || null
     );
+
+    // Update main image when variant's primary_image changes
+    useEffect(() => {
+        setMainImage(primaryImage || images?.[0]?.uuid || null);
+    }, [primaryImage, images]);
 
     if (!images || images.length === 0) {
         return null;

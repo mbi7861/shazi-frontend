@@ -68,7 +68,7 @@ const ProductView = ({ initialProduct, relatedProducts }) => {
                     <ProductGallery
                         images={productData.images}
                         productTitle={productData.title}
-                        primaryImage={productData.primary_image}
+                        primaryImage={currentItem?.primary_image || productData.primary_image}
                     />
 
                     <div className="flex flex-col">

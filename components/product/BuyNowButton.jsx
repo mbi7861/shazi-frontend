@@ -7,7 +7,6 @@ import { useAuth } from "@/context/AuthContext";
 
 const BuyNowButton = ({ currentItem, productData, className = "" }) => {
     const { addToCart } = useCart();
-    const { userData } = useAuth();
     const router = useRouter();
 
     const handleBuyNow = () => {
@@ -16,7 +15,7 @@ const BuyNowButton = ({ currentItem, productData, className = "" }) => {
                 ...currentItem,
                 product: productData,
             });
-            router.push(userData ? '/checkout' : '');
+            router.push( '/checkout');
         }
     };
 

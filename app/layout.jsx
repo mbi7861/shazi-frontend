@@ -34,7 +34,7 @@ export default function RootLayout({ children }) {
       />
         <AppProvider>
           {children}
-          <WhatsappWidget phoneNumber="03105045353" />
+          <WhatsappWidget phoneNumber="+923105045353" />
           <Toaster />
         </AppProvider>
       </body>

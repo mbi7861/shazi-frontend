@@ -27,7 +27,7 @@ export default function GoogleAuth({ isLogin, loginWithGoogle, onStart, onCancel
                     console.log(popupUrl)
                     const urlParams = new URL(popupUrl).searchParams;
                     const code = urlParams.get('code');
-                    popup.close();
+                    // popup.close();
                     clearInterval(pollTimer);
                     loginWithGoogle({ code: code, status: true });
                 }
