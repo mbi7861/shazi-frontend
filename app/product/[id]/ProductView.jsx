@@ -87,7 +87,7 @@ const ProductView = ({ initialProduct, relatedProducts }) => {
                         </div>
 
                         <div
-                            className="text-gray-600 mt-3"
+                            className="text-gray-600 mt-3 overflow-auto"
                             dangerouslySetInnerHTML={{
                                 __html: DOMPurify.sanitize(productData.description),
                             }}
