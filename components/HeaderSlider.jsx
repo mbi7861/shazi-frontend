@@ -10,15 +10,15 @@ const HeaderSlider = () => {
   const sliderData = [
     {
       id: 1,
-      title: "Experience Breakers - Your Safety Awaits!",
+      title: "Premium Breakers - Your Safety First!",
       offer: "Limited Time Offer 30% Off",
       link: "/all-products?category=breakers",
       imgSrc: assets.categories.breakers,
     },
     {
       id: 2,
-      title: "Next-Level Sockets - Discover safe Socket!",
-      offer: "Hurry up only few lefts!",
+      title: "Quality Sockets - Safe & Reliable Power",
+      offer: "Hurry, only a few left!",
       link: "/all-products?category=sockets",
       imgSrc: assets.categories.sockets,
     },

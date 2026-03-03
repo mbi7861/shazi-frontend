@@ -9,6 +9,7 @@ const ProductFilters = ({
     setFilters, 
     categories, 
     onFilterChange,
+    onClearFilters,
     priceRange,
     setPriceRange 
 }) => {
@@ -84,7 +85,7 @@ const ProductFilters = ({
                 <div className="flex items-center justify-between mb-6">
                     <h3 className="text-lg font-semibold text-gray-900">Filters</h3>
                     <button
-                        onClick={clearAllFilters}
+                        onClick={onClearFilters || clearAllFilters}
                         className="text-sm text-orange-600 hover:text-orange-700"
                     >
                         Clear all

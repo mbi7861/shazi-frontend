@@ -9,7 +9,7 @@ const HomeProducts = ({ products: ssrProducts }) => {
     const router = useRouter();
     
     // Use SSR products if available, otherwise fall back to context
-    const products = ssrProducts && ssrProducts.length > 0 ? ssrProducts : contextProducts;
+    const products = ssrProducts;
     
     return (
         <div className="flex flex-col items-center pt-14">

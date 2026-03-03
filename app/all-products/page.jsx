@@ -97,22 +97,28 @@ const AllProducts = () => {
         loadProducts(newFilters);
     };
 
+    const clearFilters = useCallback(() => {
+        router.push('/all-products', { scroll: false });
+        setFilters({ per_page: 15 });
+        setPriceRange({ min: '', max: '' });
+        setCurrentPage(1);
+        loadProducts({ per_page: 15 });
+    }, [router]);
+
+    const hasActiveFilters = search || category || priceRange.min || priceRange.max || filters.sortBy;
+
     return (
         <>
             <Navbar />
             <div className="flex flex-col items-start px-6 md:px-16 lg:px-32">
                 <div className="flex flex-col items-end pt-12 w-full">
                     
-                    {category && (
+                    {hasActiveFilters && (
                         <button
-                            onClick={() => {
-                                window.history.replaceState(null, '', '/all-products');
-                                setFilters({ per_page: 16 });
-                                loadProducts({ per_page: 15 });
-                            }}
+                            onClick={clearFilters}
                             className="mt-2 text-sm text-orange-600 hover:text-orange-700 underline"
                         >
-                            Clear category filter
+                            Clear filters
                         </button>
                     )}
                 </div>
@@ -138,6 +144,7 @@ const AllProducts = () => {
                         filters={filters}
                         setFilters={setFilters}
                         categories={categories}
+                        onClearFilters={clearFilters}
                         onFilterChange={(newFilters) => {
                             // Update URL when category filter changes
                             const params = new URLSearchParams();
@@ -214,11 +221,7 @@ const AllProducts = () => {
                             <div className="text-center py-12">
                                 <p className="text-gray-500 text-lg">No products found matching your criteria.</p>
                                 <button
-                                    onClick={() => {
-                                        setFilters({ per_page: 15 });
-                                        setPriceRange({ min: '', max: '' });
-                                        loadProducts({ per_page: 15 });
-                                    }}
+                                    onClick={clearFilters}
                                     className="mt-4 px-6 py-2 bg-orange-600 text-white rounded-md hover:bg-orange-700"
                                 >
                                     Clear Filters

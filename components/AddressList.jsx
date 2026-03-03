@@ -185,14 +185,6 @@ export default function AddressList({ prevAddressId ,onSelect }) {
                                 {/* Details */}
                                 <div className="flex-1">
                                     <p className="font-semibold">{fullName}</p>
-                                    <p className="text-sm text-gray-600">{address.address}</p>
-                                    <p className="text-sm text-gray-600">
-                                        {address.city}, {stateDisplayName}, {countryDisplayName}
-                                    </p>
-
-                                    {address.phone && (
-                                        <p className="text-sm text-gray-600">Phone: {address.phone}</p>
-                                    )}
                                 </div>
 
                                 {/* Edit & Delete Buttons */}
@@ -234,6 +226,16 @@ export default function AddressList({ prevAddressId ,onSelect }) {
                                     </div>
                                 )}
                             </div>
+                            <div className="mx-5">
+                                    <p className="text-sm text-gray-600">{address.address}</p>
+                                    <p className="text-sm text-gray-600">
+                                        {address.city}, {stateDisplayName}, {countryDisplayName}
+                                    </p>
+
+                                    {address.phone && (
+                                        <p className="text-sm text-gray-600">Phone: {address.phone}</p>
+                                    )}
+                                    </div>
                         </div>
                     );
                 })}
