@@ -245,7 +245,17 @@ export default function AddressList({ prevAddressId ,onSelect }) {
             <AddAddressModal
                 isOpen={modalOpen}
                 onClose={() => setModalOpen(false)}
-                onSuccess={() => fetchAddresses()}
+                onSuccess={(address, { isEdit } = {}) => {
+                    if (!address) return;
+                    setAddresses((prev) => {
+                        if (isEdit) {
+                            return prev.map((a) => (a.id === address.id ? address : a));
+                        }
+                        return [...prev, address];
+                    });
+                    setSelectedAddressId(address.id);
+                    onSelect?.(address);
+                }}
                 editData={editData}
                 errors={addressErrors}
             />

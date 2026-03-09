@@ -14,7 +14,7 @@ export const metadata = {
 };
 
 export default async function CategoriesPage() {
-    const categories = await fetchCategoriesSSR();
+    const {data} = await fetchCategoriesSSR();
 
     return (
         <>
@@ -30,7 +30,7 @@ export default async function CategoriesPage() {
                     </p>
                 </div>
 
-                <CategoryGrid categories={categories} />
+                <CategoryGrid categories={data} />
             </div>
             <Footer />
         </>

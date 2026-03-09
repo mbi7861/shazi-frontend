@@ -51,7 +51,7 @@ const CartModal = ({ isOpen, onClose }) => {
                             const subtotal = quantity * price;
                             // Get image from product data
                             const product = item.product || {};
-                            const imageUrl = product.primary_image || 
+                            const imageUrl = item.primary_image || 
                                             product.images?.find(img => img.is_preview)?.uuid || 
                                             product.images?.[0]?.uuid;
 

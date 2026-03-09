@@ -1,6 +1,4 @@
-import Image from "next/image";
 import Link from "next/link";
-import { assets } from "@/assets/assets";
 import NavbarClient from "./NavbarClient";
 
 export default function Navbar() {

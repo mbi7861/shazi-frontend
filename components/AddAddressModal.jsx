@@ -223,7 +223,8 @@ export default function AddAddressModal({
 
       if (res.success || res?.data?.id) {
         toast.success("Address saved successfully");
-        onSuccess?.(); // Callback to reload addresses
+        // Pass newly created/updated address back to caller
+        onSuccess?.(res.data, { isEdit: !!editData });
         reset(); // Reset form
         onClose();
         return;

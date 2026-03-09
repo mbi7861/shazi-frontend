@@ -26,6 +26,7 @@ export default function CheckoutPage() {
   
   const currency = process.env.NEXT_PUBLIC_CURRENCY || "Rs";
   const stripeRef = useRef();
+  const orderSuccessRef = useRef(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -49,6 +50,7 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     if (isCartLoading) return;
+    if (orderSuccessRef.current) return; // Skip when cart was cleared after successful order
     if (cartItems.length === 0) {
       toast.error("Cart is empty. Please add items first.");
       router.replace("/cart");
@@ -270,14 +272,14 @@ const handleSubmit = async (e) => {
       return;
     }
     localStorage.removeItem("checkoutFormData");
+    orderSuccessRef.current = true; // Prevent cart-empty useEffect from redirecting to /cart
 
-    
-    startTransition(() => {
-      router.replace(`/order-placed?order_id=${result.data}`);
-    });
     toast.success("Order Placed successfully");
     clearCart();
     window.dispatchEvent(new Event('cartUpdated'));
+    startTransition(() => {
+      router.replace(`/order-placed?order_id=${result.data}`);
+    });
   } catch (error) {
     console.error("Order submission error:", error);
     toast.error( error.message ||  "There was an error processing your order. Please try again.");

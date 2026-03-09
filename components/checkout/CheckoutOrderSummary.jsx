@@ -21,7 +21,7 @@ export default function CheckoutOrderSummary({
           {cartItems.map((item) => {
             const product = item.product || {};
             const imageUrl =
-              product.primary_image ||
+              item.primary_image ||
               product.images?.find((img) => img.is_preview)?.uuid ||
               product.images?.[0]?.uuid;
             const price = item.price?.discounted_price || 0;

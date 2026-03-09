@@ -40,11 +40,9 @@ export const CartProvider = ({ children }) => {
     setisCartLoading(true);
     try {
       const cart = cartService.getCartFromStorage();
-      console.log("LOCAL STORAGE CART:", cart);
 
       const products = await cartService.fetchCartProducts(cart);
       setCartItems(products);
-      console.log(products);
     } catch (error) {
       toast.error(error.message);
     } finally {
