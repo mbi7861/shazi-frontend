@@ -18,7 +18,7 @@
   display: none;
 }
 .bg-primary {
-    background-color: rgb(234 88 12 / var(--tw-text-opacity, 1));
+    background-color: black;
 }
 
 /* Smooth category slider transitions - GPU acceleration */

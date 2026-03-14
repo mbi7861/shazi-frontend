@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'production') {
     DEFAULT_SITE_URL = 'https://infinite-cart-frontend-3b7kjm3hm-labourer-web-apps-projects.vercel.app/';
     DEFAULT_IMAGE_BASE_URL = 'https://mbi-s3.s3.eu-north-1.amazonaws.com';
 } else {
-    DEFAULT_API_BASE_URL = 'http://localhost/infinite-cart/public/api';
+    DEFAULT_API_BASE_URL = 'http://localhost/shazi/public/api';
     DEFAULT_SITE_URL = 'http://localhost:3000/';
     DEFAULT_IMAGE_BASE_URL = 'https://mbi-s3.s3.eu-north-1.amazonaws.com';
 }

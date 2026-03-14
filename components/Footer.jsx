@@ -5,35 +5,41 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#E6E9F2] mt-10">
-      <div className="flex flex-col md:flex-row items-start justify-center px-6 md:px-16 lg:px-32 gap-10 py-14 border-b border-gray-500/30 text-gray-500">
+    <footer className="relative mt-10 overflow-hidden">
+      {/* Background image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${assets.footerBg?.src ?? assets.footerBg})` }}
+      />
+      {/* Overlay for readability */}
+      <div className="absolute inset-0" />
+      <div className="relative flex flex-col md:flex-row items-start justify-center px-6 md:px-16 lg:px-32 gap-10 py-14 border-b border-white/20 text-gray-100">
         <div className="w-4/5">
           {/*<Image className="w-28 md:w-32" src={assets.logo} alt="logo" />*/}
-          <h3 className="text-2xl md:text-2xl text-orange-600"> <span
-              className="font-semibold">Dilawar Traders</span></h3>
-          <p className=" text-sm text-gray-600 font-medium">
+          <Image src={assets.logo} alt="logo" width={200} />
+          <p className=" text-sm text-white/90 font-medium">
             Your safety is our best priority
           </p>
-          <p className="mt-6 text-sm">
+          <p className="mt-6 text-sm text-gray-200">
             Dilawar Traders is your trusted source for quality electrical and home supplies. We specialize in breakers, lights, heaters, and other essential electronics for your home. With a commitment to safety and reliability, we provide products that meet the highest standards to keep your home and family safe.
           </p>
         </div>
 
         <div className="w-1/2 flex items-center justify-start md:justify-center">
           <div>
-            <h2 className="font-medium text-gray-900 mb-5">Company Information</h2>
-            <ul className="text-sm space-y-2">
+            <h2 className="font-medium text-white mb-5">Company Information</h2>
+            <ul className="text-sm space-y-2 text-gray-200">
               <li>
-                <Link className="hover:underline transition" href="/">Home</Link>
+                <Link className="hover:underline transition text-gray-100 hover:text-white" href="/">Home</Link>
               </li>
               <li>
-                <Link className="hover:underline transition" href="/about-us">About us</Link>
+                <Link className="hover:underline transition text-gray-100 hover:text-white" href="/about-us">About us</Link>
               </li>
               <li>
-                <Link className="hover:underline transition" href="/contact-us">Contact us</Link>
+                <Link className="hover:underline transition text-gray-100 hover:text-white" href="/contact-us">Contact us</Link>
               </li>
               <li>
-                <Link className="hover:underline transition" href="/privacy-policy">Privacy policy</Link>
+                <Link className="hover:underline transition text-gray-100 hover:text-white" href="/privacy-policy">Privacy policy</Link>
               </li>
             </ul>
           </div>
@@ -41,15 +47,15 @@ const Footer = () => {
 
         <div className="w-1/2 flex items-start justify-start md:justify-center">
           <div>
-            <h2 className="font-medium text-gray-900 mb-5">Get in touch</h2>
-            <div className="text-sm space-y-2">
+            <h2 className="font-medium text-white mb-5">Get in touch</h2>
+            <div className="text-sm space-y-2 text-gray-200">
               <p>Contact us for inquiries</p>
               <p>info@dilawartraders.com</p>
             </div>
           </div>
         </div>
       </div>
-      <p className="py-4 text-center text-xs md:text-sm">
+      <p className="relative py-4 text-center text-xs md:text-sm text-gray-300">
         Copyright 2025 © dilawarTraders.com All Right Reserved.
       </p>
     </footer>

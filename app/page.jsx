@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhyShopWithUs from "@/components/WhyShopWithUs";
 import HomeCategories from "@/components/HomeCategories";
+import HeroSection from "@/components/HeroSection";
 import { fetchProductsSSR, fetchCategoriesSSR, getFeaturedProducts } from "@/lib/serverApi";
 import { apiServiceConfig } from "@/app/config/apiService";
 
@@ -85,8 +86,8 @@ export default async function Home() {
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
             />
             <Navbar />
+            <HeroSection />
             <div className="px-6 md:px-16 lg:px-32">
-                <HeaderSlider />
                 <HomeProducts products={products} />
                 <HomeCategories categories={categories.data} />
                 {/* <FeaturedProduct /> */}
