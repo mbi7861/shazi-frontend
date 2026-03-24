@@ -8,8 +8,8 @@ import toast from 'react-hot-toast';
 export const OrderContext = createContext({
   orders: [],
   isLoading: false,
-  fetchOrders: async () => {},
-  refreshOrders: async () => {},
+  fetchOrders: async () => { },
+  refreshOrders: async () => { },
 });
 
 export const useOrders = () => {

@@ -8,9 +8,8 @@ import { useEffect, useState, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
 const AllProducts = () => {
-  const { fetchProducts, pagination , categories } = useProducts();
-  console.log(categories);
-  
+  const { fetchProducts, pagination, categories } = useProducts();
+
   const router = useRouter();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -123,7 +122,7 @@ const AllProducts = () => {
             to be worn for a lifetime.
           </p>
         </div> */}
-        <div className="flex flex-col items-end pt-12 w-full">
+        <div className="flex flex-col items-end w-full">
           {hasActiveFilters && (
             <button
               onClick={clearFilters}
@@ -219,11 +218,10 @@ const AllProducts = () => {
                         <button
                           key={page}
                           onClick={() => handlePageChange(page)}
-                          className={`px-3 py-2 border rounded-md ${
-                            currentPage === page
-                              ? "bg-primary text-white border-orange-600"
-                              : "border-gray-300 hover:bg-gray-50"
-                          }`}
+                          className={`px-3 py-2 border rounded-md ${currentPage === page
+                            ? "bg-primary text-white border-orange-600"
+                            : "border-gray-300 hover:bg-gray-50"
+                            }`}
                         >
                           {page}
                         </button>

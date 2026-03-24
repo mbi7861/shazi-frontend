@@ -1,11 +1,11 @@
 'use client'
 
-import {useForm} from "react-hook-form"
-import {zodResolver} from "@hookform/resolvers/zod"
-import {z} from "zod"
-import {useState} from "react"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
+import { useState } from "react"
 import Navbar from "@/components/Navbar";
-import {assets} from "@/assets/assets";
+import { assets } from "@/assets/assets";
 import Image from "next/image";
 
 const contactSchema = z.object({
@@ -22,7 +22,7 @@ export default function ContactForm() {
     const {
         register,
         handleSubmit,
-        formState: {errors, isSubmitting},
+        formState: { errors, isSubmitting },
         reset,
     } = useForm({
         resolver: zodResolver(contactSchema),
@@ -38,9 +38,9 @@ export default function ContactForm() {
 
     return (
         <>
-            <Navbar/>
-            <div className="px-6 md:px-16 lg:px-32 py-16 flex flex-col md:flex-row justify-between">
-                <form  className="w-full max-w-xl">
+            <Navbar />
+            <div className="px-6 md:px-16 lg:px-32 py-24 flex flex-col md:flex-row justify-between">
+                <form className="w-full max-w-xl">
                     <p className="text-2xl md:text-3xl text-gray-500">
                         Contact <span className="font-semibold text-primary">Us</span>
                     </p>

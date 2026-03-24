@@ -23,7 +23,7 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { cartItems, cartAmount, isCartLoading, clearCart } = useCart();
   const { userData } = useAuth();
-  
+
   const currency = process.env.NEXT_PUBLIC_CURRENCY || "Rs";
   const stripeRef = useRef();
   const orderSuccessRef = useRef(false);
@@ -186,7 +186,7 @@ export default function CheckoutPage() {
       toast.error("Please enter a valid email address.");
       return { success: false, errors: { email: emailValidation.error } };
     }
-        if (!formData.address_id) {
+    if (!formData.address_id) {
       setErrors({ address_id: "Please select an address" });
       toast.error("Please select a shipping address.");
       return { success: false, errors: { address_id: "Please select an address" } };
@@ -196,95 +196,95 @@ export default function CheckoutPage() {
     return { success: true };
   };
 
-useEffect(() => {
-  const key = `order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-  setIdempotencyKey(key);
-}, []);
+  useEffect(() => {
+    const key = `order_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    setIdempotencyKey(key);
+  }, []);
 
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  
-  const validation = handleValidation();
-  if (!validation.success) {
-    return;
-  }  
-  if (formData.paymentMethod === "card") {
-    const paymentMethodId = await stripeRef.current?.getPaymentMethodId();
-    if (!paymentMethodId) {
-      toast.error("Please enter valid card details");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const validation = handleValidation();
+    if (!validation.success) {
       return;
     }
-  }
-
-  setIsLoading(true);
-
-  try {
-    const storedCart = localStorage.getItem("cart");
-    const orderItems = storedCart ? JSON.parse(storedCart) : {};
-
-    const orderItemsArray = Object.entries(orderItems).map(
-      ([itemId, cartItem]) => {
-        const fullItem = cartItems.find(
-          (item) => item.id === parseInt(itemId)
-        );
-        return {
-          product_item_id: parseInt(itemId),
-          product_id: cartItem.product_id || fullItem?.product?.id,
-          quantity: cartItem.quantity || 1,
-          price: fullItem?.price?.discounted_price || 0,
-          currency: fullItem?.price?.currency || currency || "PKR",
-        };
+    if (formData.paymentMethod === "card") {
+      const paymentMethodId = await stripeRef.current?.getPaymentMethodId();
+      if (!paymentMethodId) {
+        toast.error("Please enter valid card details");
+        return;
       }
-    );
-
-    const orderData = {
-      idempotency_key: idempotencyKey,
-      customer: {
-        email: formData.email,
-      },
-      address_id: formData.address_id,
-      items: orderItemsArray,
-      shipping_method: formData.shippingMethod,
-      payment_method: formData.paymentMethod,
-      discount_code: formData.discountCode,
-      subtotal: subtotal,
-      shipping_cost: shippingCost,
-      total: total,
-      currency: currency || "PKR",
-      ...(formData.paymentMethod === "card" && {
-        stripe_payment_method_id:
-          await stripeRef.current?.getPaymentMethodId(),
-      }),
-    };
-
-    const result = await orderService.createOrder(orderData);    
-    if (!result.success) {
-      console.log(result);
-      if (result.errors && Object.keys(result.errors).length > 0) {
-        const errorMessages = Object.values(result.errors)
-          .flat()
-          .join(", ");
-        console.log('errorMessages', errorMessages);
-        toast.error(errorMessages || "Please fix the errors in the form");
-      } else {
-        toast.error(result.message || "Failed to create order");
-      }
-      return;
     }
-    localStorage.removeItem("checkoutFormData");
-    orderSuccessRef.current = true; // Prevent cart-empty useEffect from redirecting to /cart
 
-    toast.success("Order Placed successfully");
-    clearCart();
-    window.dispatchEvent(new Event('cartUpdated'));
-    startTransition(() => {
-      router.replace(`/order-placed?order_id=${result.data}`);
-    });
-  } catch (error) {
-    console.error("Order submission error:", error);
-    toast.error( error.message ||  "There was an error processing your order. Please try again.");
-  }
-};
+    setIsLoading(true);
+
+    try {
+      const storedCart = localStorage.getItem("cart");
+      const orderItems = storedCart ? JSON.parse(storedCart) : {};
+
+      const orderItemsArray = Object.entries(orderItems).map(
+        ([itemId, cartItem]) => {
+          const fullItem = cartItems.find(
+            (item) => item.id === parseInt(itemId)
+          );
+          return {
+            product_item_id: parseInt(itemId),
+            product_id: cartItem.product_id || fullItem?.product?.id,
+            quantity: cartItem.quantity || 1,
+            price: fullItem?.price?.discounted_price || 0,
+            currency: fullItem?.price?.currency || currency || "PKR",
+          };
+        }
+      );
+
+      const orderData = {
+        idempotency_key: idempotencyKey,
+        customer: {
+          email: formData.email,
+        },
+        address_id: formData.address_id,
+        items: orderItemsArray,
+        shipping_method: formData.shippingMethod,
+        payment_method: formData.paymentMethod,
+        discount_code: formData.discountCode,
+        subtotal: subtotal,
+        shipping_cost: shippingCost,
+        total: total,
+        currency: currency || "PKR",
+        ...(formData.paymentMethod === "card" && {
+          stripe_payment_method_id:
+            await stripeRef.current?.getPaymentMethodId(),
+        }),
+      };
+
+      const result = await orderService.createOrder(orderData);
+      if (!result.success) {
+        console.log(result);
+        if (result.errors && Object.keys(result.errors).length > 0) {
+          const errorMessages = Object.values(result.errors)
+            .flat()
+            .join(", ");
+          console.log('errorMessages', errorMessages);
+          toast.error(errorMessages || "Please fix the errors in the form");
+        } else {
+          toast.error(result.message || "Failed to create order");
+        }
+        return;
+      }
+      localStorage.removeItem("checkoutFormData");
+      orderSuccessRef.current = true; // Prevent cart-empty useEffect from redirecting to /cart
+
+      toast.success("Order Placed successfully");
+      clearCart();
+      window.dispatchEvent(new Event('cartUpdated'));
+      startTransition(() => {
+        router.replace(`/order-placed?order_id=${result.data}`);
+      });
+    } catch (error) {
+      console.error("Order submission error:", error);
+      toast.error(error.message || "There was an error processing your order. Please try again.");
+    }
+  };
 
   if (isCartLoading) {
     return (
@@ -298,7 +298,7 @@ const handleSubmit = async (e) => {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
-      <div className="flex-1 container mx-auto px-4 py-8">
+      <div className="flex-1 container mx-auto px-4 py-24">
         <div className="flex flex-col-reverse lg:flex-row gap-8">
           <CheckoutForm
             formData={formData}

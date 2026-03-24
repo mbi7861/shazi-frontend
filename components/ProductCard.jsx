@@ -1,10 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
-import { assets } from '@/assets/assets';
+import { assets, HeartIcon, HeartFilledIcon } from '@/assets/assets';
 import { useRouter } from 'next/navigation';
 import { apiServiceConfig } from '@/app/config/apiService';
+import { useCart } from '@/context/CartContext';
 
 const stripHtmlTags = (html) => {
     if (!html) return '';
@@ -16,10 +17,23 @@ const ProductCard = ({ product }) => {
     const router = useRouter();
     const currency = process.env.NEXT_PUBLIC_CURRENCY || 'Rs';
     const [hovered, setHovered] = useState(false);
+    const { saveItemForLater, removeFromSaved, savedItems } = useCart();
 
     const defaultItem =
         product.product_items?.find(item => item.is_default) ||
         product.product_items?.[0];
+
+    const isSaved = savedItems.some((p) => p.id === defaultItem?.id);
+
+    const handleToggleSave = (e) => {
+        e.stopPropagation();
+        if (!defaultItem) return;
+        if (isSaved) {
+            removeFromSaved(defaultItem.id);
+        } else {
+            saveItemForLater({ ...defaultItem, product });
+        }
+    };
 
     const price = defaultItem?.price?.discounted_price || 0;
     const originalPrice = defaultItem?.price?.price;
@@ -56,14 +70,10 @@ const ProductCard = ({ product }) => {
 
                 {/* Wishlist Button */}
                 <button
-                    onClick={(e) => e.stopPropagation()}
+                    onClick={handleToggleSave}
                     className="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 >
-                    <Image
-                        className="h-3 w-3"
-                        src={assets.heart_icon}
-                        alt="Wishlist"
-                    />
+                    {isSaved ? <HeartFilledIcon /> : <HeartIcon />}
                 </button>
 
                 {/* Discount Badge */}
