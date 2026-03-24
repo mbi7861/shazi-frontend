@@ -28,23 +28,9 @@ const ProductView = ({ initialProduct, relatedProducts }) => {
     const defaultItem = getDefaultProductItem(productItems);
     const variations = initialProduct.variations;
 
-    const categoryObj =
-        productData?.category ||
-        productData?.product_category ||
-        productData?.category_detail ||
-        null;
-    const categoryTitle =
-        categoryObj?.title ||
-        categoryObj?.name ||
-        productData?.category_title ||
-        productData?.category_name ||
-        "";
-        console.log(categoryObj);
-        
-    const categorySlug =
-        categoryObj?.slug || productData?.category_slug || productData?.category || "";
-    const categoryHref = categorySlug
-        ? `/all-products?category=${encodeURIComponent(categorySlug)}`
+    const category = productData?.category
+    const categoryHref = category.slug
+        ? `/all-products?category=${encodeURIComponent(category.slug)}`
         : "/all-products";
     
     const getInitialSelectedOptions = () => {
@@ -112,10 +98,10 @@ const ProductView = ({ initialProduct, relatedProducts }) => {
                         Home
                     </Link>
                     &gt;
-                    {categoryTitle ? (
+                    {category.title ? (
                         <>
                             <Link className="hover:text-primary" href={categoryHref}>
-                                {categoryTitle}
+                                {category.title}
                             </Link>
                             &gt;
                         </>

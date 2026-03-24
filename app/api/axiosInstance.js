@@ -20,7 +20,7 @@ axiosInstance.interceptors.request.use(
         }
         return config;
     },
-    (error) => Promise.reject(error)
+    (error) => console.error(error)
 );
 
 export default axiosInstance;

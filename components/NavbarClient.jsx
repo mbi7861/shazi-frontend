@@ -1,13 +1,20 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { assets, BagIcon, BoxIcon, CartIcon, HomeIcon, ProfileIcon } from "@/assets/assets";
+import { useEffect, useState } from "react";
+import {
+  assets,
+  BagIcon,
+  BoxIcon,
+  CartIcon,
+  HomeIcon,
+  ProfileIcon,
+} from "@/assets/assets";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import Image from "next/image";
-import AuthModal from './AuthModal';
-import { useSearchParams, useRouter , usePathname } from "next/navigation";
+import AuthModal from "./AuthModal";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import CartModal from "./CartModal";
 
 const NAV_ITEMS = [
@@ -19,10 +26,10 @@ const NAV_ITEMS = [
 
 function Logo() {
   return (
-    <div
-      className="flex h-auto items-center justify-center rounded-r-full rounded-l-none bg-gradient-to-tl from-white/20 via-white/10 to-white/20 p-2 shadow-[0_18px_60px_rgba(10,23,42,0.15)] backdrop-blur-2xl md:flex bg-black/50"
-    >
-      <Image src={assets.logo} alt="logo" width={100} height={100} />
+    <div className="flex h-auto items-center justify-center rounded-r-full rounded-l-none bg-gradient-to-tl from-white/20 via-white/10 to-white/20 p-2 shadow-[0_18px_60px_rgba(10,23,42,0.15)] backdrop-blur-2xl md:flex bg-black/50">
+      <a href="/">
+        <Image src={assets.logo} alt="logo" width={100} height={100} />
+      </a>
     </div>
   );
 }
@@ -85,11 +92,11 @@ export default function NavbarClient() {
   const [authOpen, setAuthOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    const initialSearch = searchParams.get('search') || '';
+    const initialSearch = searchParams.get("search") || "";
     setSearch(initialSearch);
   }, [searchParams]);
 
@@ -98,7 +105,7 @@ export default function NavbarClient() {
   }, [pathname]);
 
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleSearch();
     }
   };
@@ -112,8 +119,8 @@ export default function NavbarClient() {
   const openCartModal = () => setCartOpen(true);
   const closeCartModal = () => setCartOpen(false);
   const handleClick = () => {
-    if (pathname === '/checkout') {
-      router.push('/cart');
+    if (pathname === "/checkout") {
+      router.push("/cart");
     } else {
       openCartModal();
     }
@@ -171,7 +178,7 @@ export default function NavbarClient() {
 
               {userData ? (
                 <button
-                  onClick={() => router.push('/my-orders')}
+                  onClick={() => router.push("/my-orders")}
                   className="flex items-center px-1"
                 >
                   <BagIcon />
@@ -197,7 +204,7 @@ export default function NavbarClient() {
               </div>
               {userData ? (
                 <button
-                  onClick={() => router.push('/my-orders')}
+                  onClick={() => router.push("/my-orders")}
                   className="flex items-center px-1 text-sm text-white hover:text-gray-200 transition"
                 >
                   <BagIcon />
@@ -207,7 +214,7 @@ export default function NavbarClient() {
                   onClick={openAuthModal}
                   className="flex items-center px-1 text-white hover:text-gray-200 transition"
                 >
-                  <ProfileIcon/>
+                  <ProfileIcon />
                 </button>
               )}
               <button
@@ -228,7 +235,10 @@ export default function NavbarClient() {
         </div>
       </header>
 
-      <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+      <MobileMenu
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+      />
 
       <AuthModal isOpen={authOpen} onClose={closeAuthModal} />
       <CartModal isOpen={cartOpen} onClose={closeCartModal} />
