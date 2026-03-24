@@ -22,7 +22,7 @@ const Banner = () => {
               <p className="max-w-[500px] font-medium text-gray-800/70 text-base md:text-lg">
                   Explore breakers, lights, and more—engineered for safety and performance.
               </p>
-              <button className="group flex items-center justify-center gap-1 px-12 py-3 bg-orange-600 rounded text-white text-sm md:text-base">
+              <button className="group flex items-center justify-center gap-1 px-12 py-3 bg-primary rounded text-white text-sm md:text-base">
                   Shop now
                   <Image className="group-hover:translate-x-1 transition" src={assets.arrow_icon_white} alt="arrow_icon_white" />
               </button>

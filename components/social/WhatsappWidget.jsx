@@ -6,7 +6,7 @@ import { assets } from "@/assets/assets";
 
 const WhatsappWidget = ({
   phoneNumber,
-  accountName = "Dilawar Traders",
+  accountName = "Shazi Jewels",
   statusMessage = "Active 24/7",
   chatMessage = "Hi! How can we help?",
   placeholder = "Type a message...",

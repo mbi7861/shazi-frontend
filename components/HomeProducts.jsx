@@ -12,28 +12,40 @@ const HomeProducts = ({ products: ssrProducts }) => {
     const products = ssrProducts;
     
     return (
-        <div className="flex flex-col items-center pt-14">
-            <div className="flex items-center justify-between mb-4 w-full">
-                <h2 className="text-2xl font-medium text-left">Popular products</h2>
-                <a
-                    onClick={() => { router.push('/all-products') }}
-                    className="text-sm border-b border-[#eb492f] text-gray-800 hover:text-[#eb492f] cursor-pointer"
-                >
-                    View all
-                </a>
+        
+
+            <section className="py-12 px-4 sm:px-8 lg:px-16 max-w-screen-2xl mx-auto">
+                <div className="text-center mb-16">
+                <h2 className="text-4xl md:text-5xl font-serif text-shazi-black mb-4">
+                    Our Best Products
+                </h2>
+                <div className="w-16 h-[1px] bg-shazi-gold mx-auto" />
             </div>
-            {products && products.length > 0 ? (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 flex-col items-center gap-6 mt-6 pb-14 w-full">
-                    {products.map((product, index) => (
-                        <ProductCard key={product.id || product.slug || index} product={product} />
-                    ))}
+                {products && products.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
+                        {products.map((product, index) => (
+                            <ProductCard
+                                key={product.id || product.slug || index}
+                                product={product}
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    <div className="w-full py-8 text-center text-gray-500">
+                        No products available at the moment.
+                    </div>
+                )}
+
+                {/* View All Link */}
+                <div className="mt-20 text-center">
+                    <a
+                        onClick={() => router.push('/all-products')}
+                        className="text-lg uppercase tracking-widest border-b border-shazi-gold pb-1 hover:text-shazi-gold transition-colors font-medium"
+                    >
+                        Explore All
+                    </a>
                 </div>
-            ) : (
-                <div className="w-full py-8 text-center text-gray-500">
-                    No products available at the moment.
-                </div>
-            )}
-        </div>
+            </section>
     );
 };
 

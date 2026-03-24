@@ -1,13 +1,11 @@
 "use client";
 import React from "react";
 import Slider from 'react-slick';
-import { useProducts } from "@/context/ProductContext";
 import { useRouter } from "next/navigation";
 import {getImageUrl} from "@/app/utils/utils";
 import Image from "next/image";
 
 const CategoryHome = ({ categories }) => {
-    const { categories: contextCategories } = useProducts();
     const router = useRouter();
 
     // Triple the slides so slick's wrap point is in the middle of identical content (reduces visible break)
@@ -67,7 +65,7 @@ const CategoryHome = ({ categories }) => {
                             </div>
                             <a
                                 onClick={() => router.push(`/all-products?category=${cat.slug}`)}
-                                className="block mt-2 text-sm font-medium text-black hover:text-orange-600 cursor-pointer transition-colors"
+                                className="block mt-2 text-sm font-medium text-black hover:text-primary cursor-pointer transition-colors"
                             >
                                 {cat.title}
                             </a>

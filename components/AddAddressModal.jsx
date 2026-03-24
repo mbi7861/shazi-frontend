@@ -302,7 +302,7 @@ export default function AddAddressModal({
                   {...register("firstName", {
                     required: "First name is required",
                   })}
-                  className={`mt-1 px-3 py-2.5 focus:border-orange-500 transition border rounded outline-none w-full text-gray-700 ${
+                  className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 ${
                     errors.firstName ? "border-red-500" : "border-gray-300"
                   }`}
                   type="text"
@@ -321,7 +321,7 @@ export default function AddAddressModal({
                   {...register("lastName", {
                     required: "Last name is required",
                   })}
-                  className={`mt-1 px-3 py-2.5 focus:border-orange-500 transition border rounded outline-none w-full text-gray-700 ${
+                  className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 ${
                     errors.lastName ? "border-red-500" : "border-gray-300"
                   }`}
                   type="text"
@@ -342,7 +342,7 @@ export default function AddAddressModal({
                 {...register("phoneNumber", {
                   required: "Phone number is required",
                 })}
-                className={`mt-1 px-3 py-2.5 focus:border-orange-500 transition border rounded outline-none w-full text-gray-700 ${
+                className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 ${
                   errors.phoneNumber ? "border-red-500" : "border-gray-300"
                 }`}
                 type="text"
@@ -360,7 +360,7 @@ export default function AddAddressModal({
               Zip Code
               <input
                 {...register("zip_code")}
-                className={`mt-1 px-3 py-2.5 focus:border-orange-500 transition border rounded outline-none w-full text-gray-700 ${
+                className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 ${
                   errors.zip_code ? "border-red-500" : "border-gray-300"
                 }`}
                 type="text"
@@ -380,7 +380,7 @@ export default function AddAddressModal({
                 {...register("address", {
                   required: "Address is required",
                 })}
-                className={`mt-1 px-3 py-2.5 focus:border-orange-500 transition border rounded outline-none w-full text-gray-700 resize-none ${
+                className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 resize-none ${
                   errors.address ? "border-red-500" : "border-gray-300"
                 }`}
                 rows={4}
@@ -407,7 +407,7 @@ export default function AddAddressModal({
               Apartment, Suite, or Unit
               <input
                 {...register("apartment")}
-                className={`mt-1 px-3 py-2.5 focus:border-orange-500 transition border rounded outline-none w-full text-gray-700 ${
+                className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 ${
                   errors.apartment ? "border-red-500" : "border-gray-300"
                 }`}
                 type="text"
@@ -428,7 +428,7 @@ export default function AddAddressModal({
                   {...register("city", {
                     required: "City is required",
                   })}
-                  className={`mt-1 px-3 py-2.5 focus:border-orange-500 transition border rounded outline-none w-full text-gray-700 ${
+                  className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 ${
                     errors.city ? "border-red-500" : "border-gray-300"
                   }`}
                   type="text"
@@ -447,7 +447,7 @@ export default function AddAddressModal({
                   {...register("state", {
                     required: "State is required",
                   })}
-                  className={`mt-1 px-3 py-2.5 focus:border-orange-500 transition border rounded outline-none w-full text-gray-700 bg-white ${
+                  className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 bg-white ${
                     errors.state ? "border-red-500" : "border-gray-300"
                   }`}
                 >
@@ -476,7 +476,7 @@ export default function AddAddressModal({
                     value === "Pakistan" ||
                     "Currently, only Pakistan is supported",
                 })}
-                className={`mt-1 px-3 py-2.5 focus:border-orange-500 transition border rounded outline-none w-full text-gray-700 bg-white ${
+                className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 bg-white ${
                   errors.country ? "border-red-500" : "border-gray-300"
                 }`}
                 onChange={(e) => {
@@ -516,7 +516,7 @@ export default function AddAddressModal({
               type="button"
               onClick={handleSubmit(onSubmit)}
               disabled={isSubmitting}
-              className="flex-1 bg-orange-600 text-white py-3 hover:bg-orange-700 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 bg-primary text-white py-3 hover:bg-orange-700 rounded disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
                 <span className="flex items-center justify-center gap-2">

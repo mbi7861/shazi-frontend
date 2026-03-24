@@ -155,7 +155,7 @@ const ProductListingExample = () => {
               <button
                 onClick={() => handleAddToCart(product)}
                 disabled={!isAuthenticated}
-                className="w-full mt-4 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition"
+                className="w-full mt-4 px-4 py-2 bg-primary-light0 text-white rounded-lg hover:bg-primary disabled:bg-gray-300 disabled:cursor-not-allowed transition"
               >
                 {isAuthenticated ? 'Add to Cart' : 'Login to Add to Cart'}
               </button>

@@ -33,7 +33,7 @@ export default function BankDeposit({ isSelected, onSelect }) {
               <strong>Bank:</strong> Meezan Bank
             </p>
             <p>
-              <strong>Account Title:</strong> Dilawar Traders
+              <strong>Account Title:</strong> Shazi Jewels
             </p>
             <p>
               <strong>Account Number:</strong> 10010103943364
@@ -68,7 +68,7 @@ export default function BankDeposit({ isSelected, onSelect }) {
           <div className="mt-3 text-xs">
             <p>For any help, contact us at:</p>
             <p>
-              📞 0492722500 📱 0331-6801200 📧 contact@dilawarTraders.pk
+              📞 0492722500 📱 0331-6801200 📧 contact@shazijewels.pk
             </p>
           </div>
         </div>

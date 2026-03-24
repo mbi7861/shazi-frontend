@@ -104,7 +104,7 @@ const OrderPlaced = () => {
           <div className="text-center text-xl font-semibold text-gray-700">Order information not found</div>
           <Link 
             href="/my-orders" 
-            className="px-6 py-2 bg-orange-600 text-white rounded-md hover:bg-orange-700 transition"
+            className="px-6 py-2 bg-primary text-white rounded-md hover:bg-orange-700 transition"
           >
             View My Orders
           </Link>
@@ -262,7 +262,7 @@ const OrderPlaced = () => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             href="/my-orders"
-            className="px-6 py-3 bg-orange-600 text-white rounded-md hover:bg-orange-700 transition text-center font-medium"
+            className="px-6 py-3 bg-primary text-white rounded-md hover:bg-orange-700 transition text-center font-medium"
           >
             View All Orders
           </Link>

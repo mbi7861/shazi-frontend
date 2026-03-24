@@ -22,7 +22,7 @@ export default function CheckoutForm({
       <div className="bg-white rounded shadow-md p-6">
         <p className="text-2xl md:text-3xl text-gray-500 mb-6">
           Shipping{" "}
-          <span className="font-semibold text-orange-600"> Address</span>
+          <span className="font-semibold text-primary"> Address</span>
         </p>
         <form onSubmit={onSubmit} className="space-y-3">
           {/* Email Input */}
@@ -64,7 +64,7 @@ export default function CheckoutForm({
           <div className="space-y-4">
             <p className="text-2xl md:text-3xl text-gray-500 my-6">
               Payment{" "}
-              <span className="font-semibold text-orange-600">
+              <span className="font-semibold text-primary">
                 {" "}
                 Method
               </span>
@@ -90,7 +90,7 @@ export default function CheckoutForm({
 
           <button
             type="submit"
-            className="w-full bg-orange-600 text-white py-5 mt-5 hover:bg-orange-700"
+            className="w-full bg-primary text-white py-5 mt-5 hover:bg-orange-700"
             disabled={isLoading || isShippingLoading}
           >
             {isLoading ? (

@@ -21,7 +21,7 @@ const Footer = () => {
             Your safety is our best priority
           </p>
           <p className="mt-6 text-sm text-gray-200">
-            Dilawar Traders is your trusted source for quality electrical and home supplies. We specialize in breakers, lights, heaters, and other essential electronics for your home. With a commitment to safety and reliability, we provide products that meet the highest standards to keep your home and family safe.
+            shazijewels is your trusted source for quality electrical and home supplies. We specialize in breakers, lights, heaters, and other essential electronics for your home. With a commitment to safety and reliability, we provide products that meet the highest standards to keep your home and family safe.
           </p>
         </div>
 
@@ -50,13 +50,13 @@ const Footer = () => {
             <h2 className="font-medium text-white mb-5">Get in touch</h2>
             <div className="text-sm space-y-2 text-gray-200">
               <p>Contact us for inquiries</p>
-              <p>info@dilawartraders.com</p>
+              <p>info@shazijewels.com</p>
             </div>
           </div>
         </div>
       </div>
       <p className="relative py-4 text-center text-xs md:text-sm text-gray-300">
-        Copyright 2025 © dilawarTraders.com All Right Reserved.
+        Copyright 2025 © shazijewels.com All Right Reserved.
       </p>
     </footer>
   );

@@ -90,7 +90,7 @@ const AddAddress = () => {
             <div className="px-6 md:px-16 lg:px-32 py-16 flex flex-col md:flex-row justify-between">
                 <form onSubmit={onSubmitHandler} className="w-full">
                     <p className="text-2xl md:text-3xl text-gray-500">
-                        Add Shipping <span className="font-semibold text-orange-600">Address</span>
+                        Add Shipping <span className="font-semibold text-primary">Address</span>
                     </p>
                     <div
                         className="bg-blue-100 border border-blue-300 rounded p-4 flex justify-between items-center max-w-sm mt-10">
@@ -112,7 +112,7 @@ const AddAddress = () => {
                         <label className="block text-sm font-medium text-gray-600">
                             Full Name
                             <input
-                                className="mt-1 px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-700"
+                                className="mt-1 px-2 py-2.5 focus:border-primary transition border border-gray-500/30 rounded outline-none w-full text-gray-700"
                                 type="text"
                                 placeholder="Full name"
                                 onChange={(e) => setAddress({ ...address, fullName: e.target.value })}
@@ -124,7 +124,7 @@ const AddAddress = () => {
                         <label className="block text-sm font-medium text-gray-600">
                             Phone Number
                             <input
-                                className="mt-1 px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-700"
+                                className="mt-1 px-2 py-2.5 focus:border-primary transition border border-gray-500/30 rounded outline-none w-full text-gray-700"
                                 type="text"
                                 placeholder="Phone number"
                                 onChange={(e) => setAddress({ ...address, phoneNumber: e.target.value })}
@@ -136,7 +136,7 @@ const AddAddress = () => {
                         <label className="block text-sm font-medium text-gray-600">
                             Pin Code
                             <input
-                                className="mt-1 px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-700"
+                                className="mt-1 px-2 py-2.5 focus:border-primary transition border border-gray-500/30 rounded outline-none w-full text-gray-700"
                                 type="text"
                                 placeholder="Zip code"
                                 onChange={(e) => setAddress({ ...address, zip_code: e.target.value })}
@@ -148,7 +148,7 @@ const AddAddress = () => {
                         <label className="block text-sm font-medium text-gray-600">
                             Address (Area and Street)
                             <textarea
-                                className="mt-1 px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-700 resize-none"
+                                className="mt-1 px-2 py-2.5 focus:border-primary transition border border-gray-500/30 rounded outline-none w-full text-gray-700 resize-none"
                                 rows={4}
                                 placeholder="Address (Area and Street)"
                                 onChange={(e) => setAddress({ ...address, address: e.target.value })}
@@ -161,7 +161,7 @@ const AddAddress = () => {
                             <label className="w-full text-sm font-medium text-gray-600">
                                 City/District/Town
                                 <input
-                                    className="mt-1 px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-700"
+                                    className="mt-1 px-2 py-2.5 focus:border-primary transition border border-gray-500/30 rounded outline-none w-full text-gray-700"
                                     type="text"
                                     placeholder="City"
                                     onChange={(e) => setAddress({ ...address, city: e.target.value })}
@@ -172,7 +172,7 @@ const AddAddress = () => {
                             <label className="w-full text-sm font-medium text-gray-600">
                                 State
                                 <input
-                                    className="mt-1 px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-700"
+                                    className="mt-1 px-2 py-2.5 focus:border-primary transition border border-gray-500/30 rounded outline-none w-full text-gray-700"
                                     type="text"
                                     placeholder="State"
                                     onChange={(e) => setAddress({ ...address, state: e.target.value })}
@@ -185,7 +185,7 @@ const AddAddress = () => {
                         <label className="block text-sm font-medium text-gray-600">
                             Country
                             <input
-                                className="mt-1 px-2 py-2.5 focus:border-orange-500 transition border border-gray-500/30 rounded outline-none w-full text-gray-700"
+                                className="mt-1 px-2 py-2.5 focus:border-primary transition border border-gray-500/30 rounded outline-none w-full text-gray-700"
                                 type="text"
                                 placeholder="Country"
                                 onChange={(e) => setAddress({ ...address, country: e.target.value })}
@@ -194,7 +194,7 @@ const AddAddress = () => {
                         </label>
                     </div>
                     <button type="submit"
-                            className="max-w-sm w-full mt-6 bg-orange-600 text-white py-3 hover:bg-orange-700 uppercase">
+                            className="max-w-sm w-full mt-6 bg-primary text-white py-3 hover:bg-orange-700 uppercase">
                         Save address
                     </button>
                 </form>

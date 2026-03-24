@@ -6,48 +6,25 @@ import { assets } from '@/assets/assets';
 import { useRouter } from 'next/navigation';
 import { apiServiceConfig } from '@/app/config/apiService';
 
-// Simple HTML tag stripper for server-side safety
 const stripHtmlTags = (html) => {
     if (!html) return '';
-    if (typeof window === 'undefined') {
-        // Server-side: simple tag removal
-        return html.replace(/<[^>]*>/g, '').trim();
-    }
+    if (typeof window === 'undefined') return html.replace(/<[^>]*>/g, '').trim();
     return html;
 };
 
 const ProductCard = ({ product }) => {
     const router = useRouter();
     const currency = process.env.NEXT_PUBLIC_CURRENCY || 'Rs';
-    const [sanitizedDescription, setSanitizedDescription] = useState('');
+    const [hovered, setHovered] = useState(false);
 
-    // Sanitize description on client side only
-    useEffect(() => {
-        if (typeof window !== 'undefined' && product.small_description) {
-            import('dompurify').then((DOMPurify) => {
-                const sanitized = DOMPurify.default.sanitize(product.small_description);
-                setSanitizedDescription(sanitized);
-            }).catch(() => {
-                // Fallback if DOMPurify fails
-                setSanitizedDescription(stripHtmlTags(product.small_description));
-            });
-        } else {
-            // Server-side fallback
-            setSanitizedDescription(stripHtmlTags(product.small_description));
-        }
-    }, [product.small_description]);
-
-    // ---- FIXED: Get default or first product item ----
     const defaultItem =
         product.product_items?.find(item => item.is_default) ||
         product.product_items?.[0];
 
-    // ---- FIXED: Ensure price exists ----
     const price = defaultItem?.price?.discounted_price || 0;
     const originalPrice = defaultItem?.price?.price;
     const hasDiscount = defaultItem?.price?.discount_value !== null;
 
-    // ---- FIXED: Handle images like payload ----
     const imageUUID =
         product.primary_image ||
         product.images?.find(img => img.is_preview)?.uuid ||
@@ -58,77 +35,83 @@ const ProductCard = ({ product }) => {
         : '';
 
     return (
-        <div
+        <article
             onClick={() => {
                 router.push('/product/' + product.slug);
                 scrollTo(0, 0);
             }}
-            className="flex flex-col items-start gap-0.5 w-full cursor-pointer"
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            className="group cursor-pointer"
         >
-            <div className="cursor-pointer group relative bg-gray-500/10 rounded-lg w-full h-52 flex items-center justify-center">
+            {/* Image Container */}
+            <div className="relative aspect-[4/5] bg-[#F9F9F9] overflow-hidden mb-6">
                 <Image
                     src={imageUrl}
                     alt={product.title}
-                    className="group-hover:scale-105 transition object-cover w-4/5 h-4/5 md:w-full md:h-full"
-                    width={800}
-                    height={800}
-                    loading={'eager'}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="eager"
                 />
-                <button className="absolute top-2 right-2 bg-white p-2 rounded-full shadow-md">
+
+                {/* Wishlist Button */}
+                <button
+                    onClick={(e) => e.stopPropagation()}
+                    className="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                >
                     <Image
                         className="h-3 w-3"
                         src={assets.heart_icon}
-                        alt="heart_icon"
+                        alt="Wishlist"
                     />
                 </button>
-            </div>
 
-            <p className="md:text-base font-medium pt-2 w-full truncate">
-                {product.title}
-            </p>
-{/* 
-            {sanitizedDescription && (
-                <div
-                    className="w-full text-xs text-gray-500/70 max-sm:hidden truncate"
-                    dangerouslySetInnerHTML={{
-                        __html: sanitizedDescription,
-                    }}
-                />
-            )} */}
+                {/* Discount Badge */}
+                {hasDiscount && (
+                    <div className="absolute top-3 left-3 bg-black text-white text-[10px] uppercase tracking-widest px-2 py-1">
+                        Sale
+                    </div>
+                )}
 
-            <div className="flex items-center gap-2">
-                <p className="text-xs">{4.5}</p>
-                <div className="flex items-center gap-0.5">
-                    {Array.from({ length: 5 }).map((_, index) => (
-                        <Image
-                            key={index}
-                            className="h-3 w-3"
-                            src={
-                                index < Math.floor(4.5)
-                                    ? assets.star_icon
-                                    : assets.star_dull_icon
-                            }
-                            alt="star_icon"
-                        />
-                    ))}
+                {/* View Details Overlay Button */}
+                <div className="absolute inset-x-0 bottom-6 flex justify-center px-4">
+                    <button className="bg-white text-black px-6 py-3 text-xs uppercase tracking-widest font-medium shadow-sm hover:bg-black hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0">
+                        View Details
+                    </button>
                 </div>
             </div>
 
-            <div className="flex items-end justify-between w-full mt-1">
-                <p className="text-base font-medium">
+            {/* Info */}
+            <div className="text-center">
+                {/* Rating */}
+                <div className="flex items-center justify-center gap-1 mb-2">
+                    {Array.from({ length: 5 }).map((_, index) => (
+                        <Image
+                            key={index}
+                            className="h-2.5 w-2.5"
+                            src={index < Math.floor(4.5) ? assets.star_icon : assets.star_dull_icon}
+                            alt="star"
+                        />
+                    ))}
+                    <span className="text-[10px] text-gray-400 ml-1">4.5</span>
+                </div>
+
+                {/* Title */}
+                <h3 className="font-serif text-xl mb-1 truncate px-2">
+                    {product.title}
+                </h3>
+
+                {/* Price */}
+                <p className="text-gray-500 text-sm tracking-wide">
                     {currency} {price}
                     {hasDiscount && (
-                        <span className="text-base font-normal text-gray-800/60 line-through ml-2">
+                        <span className="line-through text-gray-300 ml-2">
                             {currency} {originalPrice}
                         </span>
                     )}
                 </p>
-
-                <button className="max-sm:hidden px-4 py-1.5 text-gray-500 border border-gray-500/20 rounded-full text-xs hover:bg-slate-50 transition">
-                    Buy now
-                </button>
             </div>
-        </div>
+        </article>
     );
 };
 

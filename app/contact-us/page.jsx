@@ -42,7 +42,7 @@ export default function ContactForm() {
             <div className="px-6 md:px-16 lg:px-32 py-16 flex flex-col md:flex-row justify-between">
                 <form  className="w-full max-w-xl">
                     <p className="text-2xl md:text-3xl text-gray-500">
-                        Contact <span className="font-semibold text-orange-600">Us</span>
+                        Contact <span className="font-semibold text-primary">Us</span>
                     </p>
 
                     <div className="space-y-4 mt-10">
@@ -54,7 +54,7 @@ export default function ContactForm() {
                                 name="name"
                                 required
                                 placeholder="Enter your name"
-                                className="mt-1 px-3 py-2.5 border border-gray-400/40 rounded w-full text-gray-700 outline-none focus:border-orange-500 transition"
+                                className="mt-1 px-3 py-2.5 border border-gray-400/40 rounded w-full text-gray-700 outline-none focus:border-primary transition"
                             />
                         </label>
 
@@ -66,7 +66,7 @@ export default function ContactForm() {
                                 name="email"
                                 required
                                 placeholder="Enter your email"
-                                className="mt-1 px-3 py-2.5 border border-gray-400/40 rounded w-full text-gray-700 outline-none focus:border-orange-500 transition"
+                                className="mt-1 px-3 py-2.5 border border-gray-400/40 rounded w-full text-gray-700 outline-none focus:border-primary transition"
                             />
                         </label>
 
@@ -77,7 +77,7 @@ export default function ContactForm() {
                                 type="text"
                                 name="subject"
                                 placeholder="Enter subject"
-                                className="mt-1 px-3 py-2.5 border border-gray-400/40 rounded w-full text-gray-700 outline-none focus:border-orange-500 transition"
+                                className="mt-1 px-3 py-2.5 border border-gray-400/40 rounded w-full text-gray-700 outline-none focus:border-primary transition"
                             />
                         </label>
 
@@ -89,13 +89,13 @@ export default function ContactForm() {
                                 rows={5}
                                 required
                                 placeholder="Write your message here..."
-                                className="mt-1 px-3 py-2.5 border border-gray-400/40 rounded w-full text-gray-700 outline-none resize-none focus:border-orange-500 transition"
+                                className="mt-1 px-3 py-2.5 border border-gray-400/40 rounded w-full text-gray-700 outline-none resize-none focus:border-primary transition"
                             ></textarea>
                         </label>
 
                         <button
                             onSubmit={onSubmit}
-                            className="w-full bg-orange-600 text-white py-3 hover:bg-orange-700 transition uppercase"
+                            className="w-full bg-primary text-white py-3 hover:bg-orange-700 transition uppercase"
                         >
                             Send Message
                         </button>

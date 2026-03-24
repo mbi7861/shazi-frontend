@@ -22,7 +22,7 @@ const BuyNowButton = ({ currentItem, productData, className = "" }) => {
     return (
         <button
             onClick={handleBuyNow}
-            className={`w-full py-3.5 bg-orange-500 text-white hover:bg-orange-600 transition ${className}`}
+            className={`w-full py-3.5 bg-primary-light0 text-white hover:bg-primary transition ${className}`}
         >
             Buy now
         </button>

@@ -108,7 +108,7 @@ const CartModal = ({ isOpen, onClose }) => {
                             router.push('/checkout');
                             onClose();
                         }}
-                        className="w-full bg-[#ea580c] hover:bg-[#001A33] text-white font-semibold py-2 rounded"
+                        className="w-full bg-primary hover:bg-[#001A33] text-white font-semibold py-2 rounded"
                     >
                         Go to Checkout
                     </button>

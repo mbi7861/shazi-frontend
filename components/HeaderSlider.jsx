@@ -53,16 +53,16 @@ const HeaderSlider = () => {
                 className="flex flex-col-reverse md:flex-row items-center justify-between bg-[#E6E9F2] py-8 md:px-14 px-5 mt-6 rounded-xl min-w-full"
               >
                 <div className="md:pl-8 mt-10 md:mt-0">
-                  <p className="md:text-base text-orange-600 pb-1">Featured Category</p>
+                  <p className="md:text-base text-primary pb-1">Featured Category</p>
                   <h1 className="max-w-lg md:text-[40px] md:leading-[48px] text-2xl font-semibold">
                     {slide.title}
                   </h1>
                   <p className="text-sm text-gray-600 mt-1">{slide.offer}</p>
                   <div className="flex gap-3 mt-6">
-                    {/* <button className="bg-orange-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-700 transition-colors">
+                    {/* <button className="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-orange-700 transition-colors">
                       {slide.buttonText1}
                     </button> */}
-                    <Link href={slide.link} className="border border-orange-600 text-orange-600 px-6 py-3 rounded-lg font-medium hover:bg-orange-50 transition-colors">
+                    <Link href={slide.link} className="border border-orange-600 text-primary px-6 py-3 rounded-lg font-medium hover:bg-primary-light transition-colors">
                       Explore More
                     </Link>
                   </div>
@@ -89,7 +89,7 @@ const HeaderSlider = () => {
             key={index}
             onClick={() => handleSlideChange(index)}
             className={`w-3 h-3 rounded-full transition-colors ${
-              index === currentSlide ? 'bg-orange-600' : 'bg-gray-300'
+              index === currentSlide ? 'bg-primary' : 'bg-gray-300'
             }`}
           />
         ))}

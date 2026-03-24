@@ -60,7 +60,7 @@ export const ProductProvider = ({ children }) => {
   const fetchCategories = async () => {
     try {
       const categoriesData = await productService.fetchCategories();
-      setCategories(categoriesData);
+      setCategories(categoriesData.data);
       return categoriesData;
     } catch (error) {
       toast.error(error.message);

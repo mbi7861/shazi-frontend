@@ -21,7 +21,7 @@ export default function HeroSection() {
       <div className="relative z-10 px-6 text-center text-white sm:px-8 lg:px-12">
         <div className="mx-auto flex max-w-3xl flex-col items-center">
           <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.35em] text-white/65">
-            Luxe Darling • Fine Jewelry
+            Shazi Jewels • Fine Jewelry
           </p>
 
           <h1 className="mb-3 font-['Cormorant_Garamond',Georgia,serif] text-[40px] leading-tight sm:text-[52px] md:text-[60px] lg:text-[64px]">
@@ -29,7 +29,7 @@ export default function HeroSection() {
           </h1>
 
           <p className="mb-8 max-w-xl text-sm text-white/75 sm:text-[15px]">
-            Welcome to Luxe Darling, where brilliance meets artistry. Every
+            Welcome to Shazi Jewels, where brilliance meets artistry. Every
             piece is handcrafted with precision and love.
           </p>
 

@@ -131,7 +131,7 @@ export default function AddressList({ prevAddressId ,onSelect }) {
                         <button
                             type="button"
                             onClick={openAddModal}
-                            className="bg-orange-600 text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-orange-700"
+                            className="bg-primary text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-orange-700"
                         >
                             <Plus size={18} />
                             Add New
@@ -171,7 +171,7 @@ export default function AddressList({ prevAddressId ,onSelect }) {
                             className={`border-2 rounded-lg p-4 cursor-pointer transition
                             ${
                                 isSelected
-                                    ? "border-orange-500 bg-orange-50"
+                                    ? "border-primary bg-primary-light"
                                     : "border-gray-200 hover:border-orange-300 hover:bg-gray-50"
                             }`}
                         >
@@ -179,7 +179,7 @@ export default function AddressList({ prevAddressId ,onSelect }) {
                                 {/* Icon */}
                                 <MapPin
                                     size={20}
-                                    className={isSelected ? "text-orange-600" : "text-gray-400"}
+                                    className={isSelected ? "text-primary" : "text-gray-400"}
                                 />
 
                                 {/* Details */}
@@ -195,7 +195,7 @@ export default function AddressList({ prevAddressId ,onSelect }) {
                                             e.stopPropagation();
                                             openEditModal(address);
                                         }}
-                                        className="text-orange-600 underline text-sm"
+                                        className="text-primary underline text-sm"
                                     >
                                         Edit
                                     </button>
@@ -212,7 +212,7 @@ export default function AddressList({ prevAddressId ,onSelect }) {
                                 {/* Check mark */}
                                 {isSelected && (
                                     <div>
-                                        <div className="w-6 h-6 bg-orange-600 rounded-full flex items-center justify-center">
+                                        <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
                                             <svg
                                                 className="w-4 h-4 text-white"
                                                 fill="none"

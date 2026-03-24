@@ -4,28 +4,29 @@ import Banner from "@/components/Banner";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import WhyShopWithUs from "@/components/WhyShopWithUs";
-import HomeCategories from "@/components/HomeCategories";
 import HeroSection from "@/components/HeroSection";
 import { fetchProductsSSR, fetchCategoriesSSR, getFeaturedProducts } from "@/lib/serverApi";
 import { apiServiceConfig } from "@/app/config/apiService";
+import HomeCollections from "@/components/home/HomeCollection";
+import BrandStory from "@/components/home/HomeStory";
 
 // SEO Metadata
 export const metadata = {
-  title: "Dilawar Traders - Your Trusted Online Shopping Destination",
-  description: "Discover a wide range of quality products at Dilawar Traders. Shop breakers, lights, heaters, and other electrical home supplies with fast delivery and secure checkout. Your safety is our best priority.",
-  keywords: "online shopping, ecommerce, electronics, fashion, home essentials, Dilawar Traders, quality products, fast delivery",
-  authors: [{ name: "Dilawar Traders" }],
+  title: "Shazi Jewels - Your Trusted Online Shopping Destination",
+  description: "Discover a wide range of quality products at Shazi Jewels. Shop breakers, lights, heaters, and other electrical home supplies with fast delivery and secure checkout. Your safety is our best priority.",
+  keywords: "online shopping, ecommerce, electronics, fashion, home essentials, Shazi Jewels, quality products, fast delivery",
+  authors: [{ name: "Shazi Jewels" }],
   openGraph: {
-    title: "Dilawar Traders - Your Trusted Online Shopping Destination",
-    description: "Discover a wide range of quality products at Dilawar Traders. Shop electronics, fashion, home essentials, and more.",
+    title: "Shazi Jewels - Your Trusted Online Shopping Destination",
+    description: "Discover a wide range of quality products at Shazi Jewels. Shop electronics, fashion, home essentials, and more.",
     type: "website",
     locale: "en_US",
-    siteName: "Dilawar Traders",
+    siteName: "Shazi Jewels",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Dilawar Traders - Your Trusted Online Shopping Destination",
-    description: "Discover a wide range of quality products at Dilawar Traders.",
+    title: "Shazi Jewels - Your Trusted Online Shopping Destination",
+    description: "Discover a wide range of quality products at Shazi Jewels.",
   },
   robots: {
     index: true,
@@ -56,7 +57,7 @@ export default async function Home() {
     const structuredData = {
         "@context": "https://schema.org",
         "@type": "Store",
-        "name": "Dilawar Traders",
+        "name": "Shazi Jewels",
         "description": "Your Trusted Online Shopping Destination",
         "url": apiServiceConfig.siteUrl,
         "logo": `${apiServiceConfig.siteUrl}/logo.svg`,
@@ -87,12 +88,12 @@ export default async function Home() {
             />
             <Navbar />
             <HeroSection />
-            <div className="px-6 md:px-16 lg:px-32">
+            <div className="px-6 md:px-16 lg:px-16">
+                <HomeCollections categories={categories.data} />
                 <HomeProducts products={products} />
-                <HomeCategories categories={categories.data} />
-                {/* <FeaturedProduct /> */}
-                <Banner />
-                <WhyShopWithUs />
+                {/* <Banner /> */}
+                <BrandStory/>
+                {/* <WhyShopWithUs /> */}
             </div>
             <Footer />
         </>

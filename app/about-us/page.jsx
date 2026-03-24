@@ -3,8 +3,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "About Us - Dilawar Traders",
-  description: "Learn about Dilawar Traders - Your trusted source for quality electrical and home supplies. Your safety is our best priority.",
+  title: "About Us - Shazi Jewels",
+  description: "Learn about Shazi Jewels - Your trusted source for quality products. Your safety is our best priority.",
 };
 
 export default function AboutUs() {
@@ -14,7 +14,7 @@ export default function AboutUs() {
       <div className="px-6 md:px-16 lg:px-32 py-16">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold mb-4">
-            About <span className="text-orange-600">Us</span>
+            About <span className="text-primary">Us</span>
           </h1>
           <p className="text-2xl text-gray-600 mb-8 font-medium">
             Your safety is our best priority
@@ -24,7 +24,7 @@ export default function AboutUs() {
             <section>
               <h2 className="text-2xl font-semibold mb-4 text-gray-900">Who We Are</h2>
               <p className="mb-4">
-                Dilawar Traders is a trusted name in the electrical and home supplies industry. We specialize in providing high-quality breakers, lights, heaters, and other essential electronics for residential and commercial use. With years of experience in the market, we have built a reputation for reliability, safety, and customer satisfaction.
+                Shazi Jewels is a trusted name committed to quality, reliability, and customer satisfaction. With years of experience in the market, we have built a reputation for delivering dependable products and excellent service.
               </p>
               <p>
                 Our commitment to quality and safety sets us apart. Every product we offer is carefully selected to meet the highest standards, ensuring that your home and workplace are equipped with reliable and safe electrical components.
@@ -34,7 +34,7 @@ export default function AboutUs() {
             <section>
               <h2 className="text-2xl font-semibold mb-4 text-gray-900">Our Mission</h2>
               <p className="mb-4">
-                At Dilawar Traders, our mission is simple yet powerful: <strong>Your safety is our best priority.</strong> We believe that every home and business deserves access to quality electrical supplies that are not only reliable but also safe.
+                At Shazi Jewels, our mission is simple yet powerful: <strong>Your safety is our best priority.</strong> We believe that every customer deserves access to quality products that are not only reliable but also safe.
               </p>
               <p>
                 We are dedicated to providing our customers with products that meet stringent safety standards, backed by excellent customer service and support. We understand that electrical safety is paramount, and we take this responsibility seriously.
@@ -104,7 +104,7 @@ export default function AboutUs() {
             <section>
               <h2 className="text-2xl font-semibold mb-4 text-gray-900">Our Commitment</h2>
               <p className="mb-4">
-                At Dilawar Traders, we are committed to:
+                At Shazi Jewels, we are committed to:
               </p>
               <ul className="list-disc list-inside space-y-2 ml-4">
                 <li>Providing only high-quality, safety-certified products</li>
@@ -122,20 +122,20 @@ export default function AboutUs() {
               </p>
               <div className="bg-gray-50 p-4 rounded-lg">
                 <p className="font-medium mb-2">Get in Touch</p>
-                <p>Email: info@dilawartraders.com</p>
-                <p>Website: www.dilawartraders.com</p>
+                <p>Email: info@shazijewels.com</p>
+                <p>Website: www.shazijewels.com</p>
                 <p className="mt-4 text-sm text-gray-600">
-                  Visit our <a href="/contact-us" className="text-orange-600 hover:underline">Contact Us</a> page to send us a message.
+                  Visit our <a href="/contact-us" className="text-primary hover:underline">Contact Us</a> page to send us a message.
                 </p>
               </div>
             </section>
 
-            <section className="bg-orange-50 p-6 rounded-lg border-l-4 border-orange-600">
+            <section className="bg-primary-light p-6 rounded-lg border-l-4 border-orange-600">
               <p className="text-lg font-semibold text-gray-900 mb-2">
                 Remember: Your safety is our best priority.
               </p>
               <p className="text-gray-700">
-                Thank you for choosing Dilawar Traders. We look forward to serving you and helping you create a safer, more efficient electrical environment for your home or business.
+                Thank you for choosing Shazi Jewels. We look forward to serving you and helping you find quality products with confidence.
               </p>
             </section>
           </div>

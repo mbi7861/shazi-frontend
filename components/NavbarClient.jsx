@@ -31,7 +31,7 @@ function NavItem({ item }) {
   return (
     <Link
       href={item.href}
-      className="flex items-center gap-1 whitespace-nowrap rounded-lg px-[13px] py-[7px] font-['Cormorant_Garamond',Georgia,serif] text-[16px] font-semibold tracking-[0.04em] no-underline bg-transparent text-[rgba(255,255,255,0.82)] hover:bg-[rgba(255,255,255,0.07)] hover:text-white transition-all"
+      className="flex items-center gap-1 whitespace-nowrap rounded-lg px-[13px] py-[7px] font-['Cormorant_Garamond',Georgia,serif] text-[16px] font-semibold tracking-[0.04em] no-underline bg-transparent text-[rgba(255,255,255,1)] hover:bg-[rgba(255,255,255,0.07)] hover:text-white transition-all"
     >
       {item.label}
     </Link>

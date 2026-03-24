@@ -86,7 +86,7 @@ const ProductFilters = ({
                     <h3 className="text-lg font-semibold text-gray-900">Filters</h3>
                     <button
                         onClick={onClearFilters || clearAllFilters}
-                        className="text-sm text-orange-600 hover:text-orange-700"
+                        className="text-sm text-primary hover:text-orange-700"
                     >
                         Clear all
                     </button>
@@ -122,7 +122,7 @@ const ProductFilters = ({
                                                 handleFilterChange('category', '');
                                             }
                                         }}
-                                        className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
+                                        className="h-4 w-4 text-primary focus:ring-orange-500 border-gray-300 rounded"
                                     />
                                     <span className="ml-3 text-sm text-gray-700">
                                         {category.title} ({category.products_count || 0})
@@ -159,7 +159,7 @@ const ProductFilters = ({
                                         placeholder="0"
                                         value={priceRange.min}
                                         onChange={(e) => handlePriceChange('min', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-primary"
                                     />
                                 </div>
                                 <div className="flex-1">
@@ -169,7 +169,7 @@ const ProductFilters = ({
                                         placeholder="10000"
                                         value={priceRange.max}
                                         onChange={(e) => handlePriceChange('max', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-primary"
                                     />
                                 </div>
                             </div>
@@ -203,7 +203,7 @@ const ProductFilters = ({
                                         value={option.value}
                                         checked={filters.sortBy === option.value}
                                         onChange={(e) => handleFilterChange('sortBy', e.target.value)}
-                                        className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300"
+                                        className="h-4 w-4 text-primary focus:ring-orange-500 border-gray-300"
                                     />
                                     <span className="ml-3 text-sm text-gray-700">{option.label}</span>
                                 </label>
@@ -218,7 +218,7 @@ const ProductFilters = ({
                     <select
                         value={filters.per_page || 15}
                         onChange={(e) => handleFilterChange('per_page', parseInt(e.target.value))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-primary"
                     >
                         <option value={8}>8 per page</option>
                         <option value={15}>15 per page</option>
@@ -233,44 +233,44 @@ const ProductFilters = ({
                         <h4 className="font-medium text-gray-900 mb-3">Active Filters</h4>
                         <div className="space-y-2">
                             {filters.category && (
-                                <div className="flex items-center justify-between bg-orange-50 px-3 py-2 rounded-md">
+                                <div className="flex items-center justify-between bg-primary-light px-3 py-2 rounded-md">
                                     <span className="text-sm text-orange-800">Category: {filters.category}</span>
                                     <button
                                         onClick={() => handleFilterChange('category', '')}
-                                        className="text-orange-600 hover:text-orange-700"
+                                        className="text-primary hover:text-orange-700"
                                     >
                                         ×
                                     </button>
                                 </div>
                             )}
                             {filters.min_price && (
-                                <div className="flex items-center justify-between bg-orange-50 px-3 py-2 rounded-md">
+                                <div className="flex items-center justify-between bg-primary-light px-3 py-2 rounded-md">
                                     <span className="text-sm text-orange-800">Min Price: ${filters.min_price}</span>
                                     <button
                                         onClick={() => handlePriceChange('min', '')}
-                                        className="text-orange-600 hover:text-orange-700"
+                                        className="text-primary hover:text-orange-700"
                                     >
                                         ×
                                     </button>
                                 </div>
                             )}
                             {filters.max_price && (
-                                <div className="flex items-center justify-between bg-orange-50 px-3 py-2 rounded-md">
+                                <div className="flex items-center justify-between bg-primary-light px-3 py-2 rounded-md">
                                     <span className="text-sm text-orange-800">Max Price: ${filters.max_price}</span>
                                     <button
                                         onClick={() => handlePriceChange('max', '')}
-                                        className="text-orange-600 hover:text-orange-700"
+                                        className="text-primary hover:text-orange-700"
                                     >
                                         ×
                                     </button>
                                 </div>
                             )}
                             {filters.sortBy && (
-                                <div className="flex items-center justify-between bg-orange-50 px-3 py-2 rounded-md">
+                                <div className="flex items-center justify-between bg-primary-light px-3 py-2 rounded-md">
                                     <span className="text-sm text-orange-800">Sort: {sortOptions.find(opt => opt.value === filters.sortBy)?.label}</span>
                                     <button
                                         onClick={() => handleFilterChange('sortBy', '')}
-                                        className="text-orange-600 hover:text-orange-700"
+                                        className="text-primary hover:text-orange-700"
                                     >
                                         ×
                                     </button>

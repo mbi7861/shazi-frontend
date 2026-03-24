@@ -3,12 +3,12 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import CategoryGrid from "@/components/CategoryGrid";
 export const metadata = {
-  title: "Shop by Categories - Dilawar Traders",
-  description: "Browse all product categories at Dilawar Traders. Find electronics, fashion, home essentials, and more organized by category.",
-  keywords: "categories, product categories, shop by category, browse products, Dilawar Traders",
+  title: "Shop by Categories - Shazi Jewels",
+  description: "Browse all product categories at Shazi Jewels. Find products organized by category.",
+  keywords: "categories, product categories, shop by category, browse products, Shazi Jewels",
   openGraph: {
-    title: "Shop by Categories - Dilawar Traders",
-    description: "Browse all product categories at Dilawar Traders.",
+    title: "Shop by Categories - Shazi Jewels",
+    description: "Browse all product categories at Shazi Jewels.",
     type: "website",
   },
 };
@@ -24,7 +24,7 @@ export default async function CategoriesPage() {
                     <h1 className="text-3xl md:text-4xl font-medium text-gray-900 mb-2">
                         Shop by Categories
                     </h1>
-                    <div className="w-24 h-0.5 bg-orange-600 rounded-full"></div>
+                    <div className="w-24 h-0.5 bg-primary rounded-full"></div>
                     <p className="text-gray-600 mt-4 text-center max-w-2xl">
                         Browse our wide range of products organized by category. Find exactly what you're looking for.
                     </p>

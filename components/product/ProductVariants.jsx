@@ -18,7 +18,7 @@ const ProductVariants = ({ variations, selectedOptions, onOptionSelect }) => {
                                 onClick={() => onOptionSelect(variation.id, option)}
                                 className={`px-3 py-1.5 border rounded-full text-sm transition ${
                                     selectedOptions[variation.id] === option.id
-                                        ? "bg-orange-500 text-white border-orange-500"
+                                        ? "bg-primary-light0 text-white border-primary"
                                         : "bg-gray-100 text-gray-800 border-gray-300"
                                 }`}
                             >

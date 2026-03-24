@@ -3,8 +3,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-  title: "Privacy Policy - Dilawar Traders",
-  description: "Privacy Policy for Dilawar Traders - Your safety is our best priority",
+  title: "Privacy Policy - Shazi Jewels",
+  description: "Privacy Policy for Shazi Jewels - Your safety is our best priority",
 };
 
 export default function PrivacyPolicy() {
@@ -14,7 +14,7 @@ export default function PrivacyPolicy() {
       <div className="px-6 md:px-16 lg:px-32 py-16">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold mb-4">
-            Privacy <span className="text-orange-600">Policy</span>
+            Privacy <span className="text-primary">Policy</span>
           </h1>
           <p className="text-gray-600 mb-8">Last updated: {new Date().toLocaleDateString()}</p>
 
@@ -22,7 +22,7 @@ export default function PrivacyPolicy() {
             <section>
               <h2 className="text-2xl font-semibold mb-4 text-gray-900">1. Introduction</h2>
               <p className="mb-4">
-                Welcome to Dilawar Traders. We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and make purchases from us.
+                Welcome to Shazi Jewels. We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and make purchases from us.
               </p>
               <p>
                 Your safety is our best priority, and this extends to how we handle your personal data. By using our website, you agree to the collection and use of information in accordance with this policy.
@@ -136,9 +136,9 @@ export default function PrivacyPolicy() {
                 If you have any questions about this Privacy Policy or wish to exercise your rights, please contact us:
               </p>
               <div className="bg-gray-50 p-4 rounded-lg">
-                <p className="font-medium">Dilawar Traders</p>
-                <p>Email: info@dilawartraders.com</p>
-                <p>Website: www.dilawartraders.com</p>
+                <p className="font-medium">Shazi Jewels</p>
+                <p>Email: info@shazijewels.com</p>
+                <p>Website: www.shazijewels.com</p>
               </div>
             </section>
           </div>

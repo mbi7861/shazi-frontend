@@ -30,7 +30,7 @@ const CategoryGrid = ({ categories }) => {
                     <div
                         key={category.id || category.slug || index}
                         onClick={() => handleCategoryClick(category.slug)}
-                        className="group cursor-pointer bg-white border border-gray-200 rounded-lg p-4 hover:shadow-lg transition-all duration-300 hover:border-orange-500"
+                        className="group cursor-pointer bg-white border border-gray-200 rounded-lg p-4 hover:shadow-lg transition-all duration-300 hover:border-primary"
                     >
                         <div className="flex flex-col items-center text-center">
                             <div className="relative w-32 h-32 md:w-40 md:h-40 mb-4 overflow-hidden rounded-lg bg-gray-100">
@@ -41,7 +41,7 @@ const CategoryGrid = ({ categories }) => {
                                     className="object-cover group-hover:scale-110 transition-transform duration-300"
                                 />
                             </div>
-                            <h3 className="text-base font-medium text-gray-900 group-hover:text-orange-600 transition-colors mb-1">
+                            <h3 className="text-base font-medium text-gray-900 group-hover:text-primary transition-colors mb-1">
                                 {category.title}
                             </h3>
                             {category.products_count !== undefined && (

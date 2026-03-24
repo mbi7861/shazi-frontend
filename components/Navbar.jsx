@@ -10,8 +10,8 @@ export default function Navbar() {
         //         {/*    src={assets.logo}*/}
         //         {/*    alt="logo"*/}
         //         {/*/>*/}
-        //         <h3 className="text-2xl md:text-2xl text-gray-500 text-orange-600"> <span
-        //             className="font-semibold text-orange-600">Dilawar Traders</span></h3>
+        //         <h3 className="text-2xl md:text-2xl text-gray-500 text-primary"> <span
+        //             className="font-semibold text-primary">Shazi Jewels</span></h3>
         //     </Link>
             <NavbarClient />
         // {/* </nav> */}

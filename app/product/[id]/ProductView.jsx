@@ -2,8 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import DOMPurify from "dompurify";
+import Link from "next/link";
 import { assets } from "@/assets/assets";
+
+// Safe fallback when DOMPurify is not available (e.g. SSR)
+const stripHtmlTags = (html) => {
+    if (!html) return '';
+    return String(html).replace(/<[^>]*>/g, '').trim();
+};
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductGallery from "@/components/product/ProductGallery";
@@ -21,6 +27,25 @@ const ProductView = ({ initialProduct, relatedProducts }) => {
     const productItems = productData?.product_items || [];
     const defaultItem = getDefaultProductItem(productItems);
     const variations = initialProduct.variations;
+
+    const categoryObj =
+        productData?.category ||
+        productData?.product_category ||
+        productData?.category_detail ||
+        null;
+    const categoryTitle =
+        categoryObj?.title ||
+        categoryObj?.name ||
+        productData?.category_title ||
+        productData?.category_name ||
+        "";
+        console.log(categoryObj);
+        
+    const categorySlug =
+        categoryObj?.slug || productData?.category_slug || productData?.category || "";
+    const categoryHref = categorySlug
+        ? `/all-products?category=${encodeURIComponent(categorySlug)}`
+        : "/all-products";
     
     const getInitialSelectedOptions = () => {
         const options = {};
@@ -34,7 +59,21 @@ const ProductView = ({ initialProduct, relatedProducts }) => {
     
     const [selectedOptions, setSelectedOptions] = useState(() => getInitialSelectedOptions());
     const [currentItem, setCurrentItem] = useState(defaultItem);
-    
+    const [sanitizedDescription, setSanitizedDescription] = useState(() =>
+        stripHtmlTags(productData?.description)
+    );
+
+    useEffect(() => {
+        if (typeof window !== 'undefined' && productData?.description) {
+            import('dompurify').then((mod) => {
+                const sanitized = mod.default.sanitize(productData.description);
+                setSanitizedDescription(sanitized);
+            }).catch(() => {
+                setSanitizedDescription(stripHtmlTags(productData.description));
+            });
+        }
+    }, [productData?.description]);
+
     useEffect(() => {
         if (productItems.length === 0) return;
     
@@ -63,7 +102,28 @@ const ProductView = ({ initialProduct, relatedProducts }) => {
     return (
         <>
             <Navbar/>
-            <div className="px-6 md:px-16 lg:px-32 pt-14 space-y-10">
+            <div className="px-6 md:px-16 lg:px-32 pt-14 mt-14 space-y-10">
+                {/* Breadcrumbs */}
+                <nav
+                    aria-label="Breadcrumb"
+                    className="flex items-center gap-2 text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-8"
+                >
+                    <Link className="hover:text-primary" href="/">
+                        Home
+                    </Link>
+                    &gt;
+                    {categoryTitle ? (
+                        <>
+                            <Link className="hover:text-primary" href={categoryHref}>
+                                {categoryTitle}
+                            </Link>
+                            &gt;
+                        </>
+                    ) : null}
+                    <span className="text-slate-900 dark:text-slate-100 font-semibold">
+                        {productData?.title || "Product"}
+                    </span>
+                </nav>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
                     <ProductGallery
                         images={productData.images}
@@ -89,7 +149,7 @@ const ProductView = ({ initialProduct, relatedProducts }) => {
                         <div
                             className="text-gray-600 mt-3 overflow-auto"
                             dangerouslySetInnerHTML={{
-                                __html: DOMPurify.sanitize(productData.description),
+                                __html: sanitizedDescription,
                             }}
                         />
 

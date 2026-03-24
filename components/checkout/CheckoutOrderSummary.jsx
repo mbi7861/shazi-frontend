@@ -15,7 +15,7 @@ export default function CheckoutOrderSummary({
       <div className="bg-white rounded-lg shadow-md p-6 sticky top-8">
         <p className="text-2xl md:text-2xl text-gray-500 mb-6">
           Order{" "}
-          <span className="font-semibold text-orange-600"> Summary</span>
+          <span className="font-semibold text-primary"> Summary</span>
         </p>
         <div className="space-y-4">
           {cartItems.map((item) => {
