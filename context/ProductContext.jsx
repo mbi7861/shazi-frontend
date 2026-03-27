@@ -9,11 +9,10 @@ export const ProductContext = createContext({
   products: [],
   categories: [],
   isLoading: false,
-  filters: {},
+  filters: {},  
   pagination: null,
   fetchProducts: async () => {},
   fetchCategories: async () => {},
-  fetchProductById: async () => {},
   searchProducts: async () => {},
   setFilters: () => {},
   clearFilters: () => {},
@@ -68,16 +67,6 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
-  // Fetch single product by ID
-  const fetchProductById = async (productId) => {
-    try {
-      const product = await productService.fetchProductById(productId);
-      return product;
-    } catch (error) {
-      toast.error(error.message);
-      throw error;
-    }
-  };
 
   // Search products
   const searchProducts = async (query, searchFilters = {}) => {
@@ -137,7 +126,6 @@ export const ProductProvider = ({ children }) => {
     pagination,
     fetchProducts,
     fetchCategories,
-    fetchProductById,
     searchProducts,
     setFilters: updateFilters,
     clearFilters,

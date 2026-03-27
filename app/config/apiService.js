@@ -3,8 +3,8 @@ let DEFAULT_API_BASE_URL = '';
 let DEFAULT_SITE_URL = '';
 let DEFAULT_IMAGE_BASE_URL = '';
 if (process.env.NODE_ENV === 'production') {
-    DEFAULT_API_BASE_URL = 'https://infinite-cart-master-brgweq.laravel.cloud/api';
-    DEFAULT_SITE_URL = 'https://infinite-cart-frontend-3b7kjm3hm-labourer-web-apps-projects.vercel.app/';
+    DEFAULT_API_BASE_URL = 'https://shazi-master-ffgxis.laravel.cloud/api';
+    DEFAULT_SITE_URL = 'https://shazi-frontend.vercel.app/';
     DEFAULT_IMAGE_BASE_URL = 'https://mbi-s3.s3.eu-north-1.amazonaws.com';
 } else {
     DEFAULT_API_BASE_URL = 'http://localhost/shazi/public/api';

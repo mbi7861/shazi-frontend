@@ -23,12 +23,14 @@ import SaveForLaterButton from "@/components/product/SaveForLaterButton";
 import { getDefaultProductItem } from "@/lib/product/getDefaultProductItem";
 import { matchVariant } from "@/lib/product/matchVariant";
 
-const ProductView = ({ initialProduct, relatedProducts }) => {
+const ProductView = ({ initialProduct }) => {
     const productData = initialProduct;
+    console.log(productData.slug);
+    
     const productItems = productData?.product_items || [];
     const defaultItem = getDefaultProductItem(productItems);
     const variations = initialProduct.variations;
-
+    
     const category = productData?.category
     const categoryHref = category.slug
         ? `/all-products?category=${encodeURIComponent(category.slug)}`
@@ -176,7 +178,7 @@ const ProductView = ({ initialProduct, relatedProducts }) => {
                     </div>
                 </div>
 
-                <RelatedProductsGrid relatedProducts={relatedProducts} />
+                <RelatedProductsGrid slug={productData.slug} />
             </div>
             <Footer />
         </>

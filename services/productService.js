@@ -29,6 +29,23 @@ export const productService = {
       }
   },
 
+  async fetchRelatedProducts(slug){
+    try {
+      const { data } = await axiosInstance.get(`/related-products/${slug}`);
+      if (data.status) {
+        return {
+          success: false, data: data.data
+        };
+    }
+    return {
+        success: false, data: null, message: data.message, errors: data.errors || {}
+    };
+    } catch (error) {
+      console.error("Get Products Error:", error);
+      return { success: false, message: "Something Went Wrong", errors: {} };
+      }
+  },
+
   /**
    * Fetch categories
    * @returns {Promise<Array>} - Categories data or throws error
@@ -47,25 +64,6 @@ export const productService = {
       console.error("Get Categories Error:", error);
       return { success: false, message: "Something Went Wrong", errors: {} };
         }
-  },
-
-  /**
-   * Fetch single product by ID
-   * @param {string|number} productId - Product ID
-   * @returns {Promise<Object>} - Product data or throws error
-   */
-  async fetchProductById(productId) {
-    try {
-      const { data } = await axiosInstance.get(`/products/${productId}`);
-      
-      if (data.status) {
-        return data.data;
-      } else {
-        throw new Error(data.message || 'Failed to load product');
-      }
-    } catch (error) {
-      throw new Error(error?.response?.data?.message || error.message || 'Error fetching product');
-    }
   },
 
   /**

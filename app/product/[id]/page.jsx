@@ -3,7 +3,6 @@ import axios from "axios";
 import { apiServiceConfig, getApiServiceUrl } from "@/app/config/apiService";
 
 const ProductPage = async ({ params }) => {
-    console.log('params', params);
     const { id } = await params;
 
     try {
@@ -13,14 +12,13 @@ const ProductPage = async ({ params }) => {
             { next: { revalidate: 60 } }
         );
 
-        if (!data.status || !data.data?.product) {
+        if (!data.status) {
             return <div>Product not found</div>;
         }
 
         return (
             <ProductView
-                initialProduct={data.data.product}
-                relatedProducts={data.data.related_products}
+                initialProduct={data.data}
             />
         );
     } catch (err) {
