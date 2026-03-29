@@ -6,7 +6,7 @@ import OrderSummary from '@/components/OrderSummary';
 import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import { useCart } from '@/context/CartContext';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { getImageUrl } from '@/app/utils/utils';
 
 // ─── helpers ────────────────────────────────────────────────────────────────
@@ -174,8 +174,6 @@ const Cart = () => {
     moveToCart,
   } = useCart();
 
-  const router = useRouter();
-
   return (
     <>
       <Navbar />
@@ -221,9 +219,9 @@ const Cart = () => {
           </div>
 
           {/* ── Continue shopping ── */}
-          <button
-            onClick={() => router.push('/all-products')}
-            className="group flex items-center mt-6 gap-2 text-primary"
+          <Link
+            href={'/all-products'}
+            className="group flex items-center mt-6 gap-2 text-primary w-max cursor-pointer"
           >
             <Image
               className="group-hover:-translate-x-1 transition"
@@ -231,7 +229,7 @@ const Cart = () => {
               alt="arrow_right_icon_colored"
             />
             Continue Shopping
-          </button>
+          </Link>
 
           {/* ── Saved for later section ── */}
           {savedItems.length > 0 && (

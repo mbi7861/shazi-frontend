@@ -125,7 +125,7 @@ export default function AboutUs() {
                 <p>Email: info@shazijewels.com</p>
                 <p>Website: www.shazijewels.com</p>
                 <p className="mt-4 text-sm text-gray-600">
-                  Visit our <a href="/contact-us" className="text-primary hover:underline">Contact Us</a> page to send us a message.
+                  Visit our <Link href="/contact-us" className="text-primary hover:underline">Contact Us</Link> page to send us a message.
                 </p>
               </div>
             </section>

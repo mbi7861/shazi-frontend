@@ -1,13 +1,12 @@
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from 'next/link';
 import toast from "react-hot-toast";
 
 const OrderSummary = () => {
   const { cartCount, cartAmount, cartItems } = useCart();
   const { userData } = useAuth();
-  const router = useRouter();
   const currency = process.env.NEXT_PUBLIC_CURRENCY || 'Rs';
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -159,9 +158,9 @@ const OrderSummary = () => {
         </div>
       </div>
 
-      <button onClick={createOrder} className="w-full bg-primary text-white py-3 mt-5 hover:bg-orange-700">
+      <Link href="/checkout" className="w-full bg-primary text-white py-3 mt-5 hover:bg-orange-700 block text-center cursor-pointer">
         Proceed to Checkout
-      </button>
+      </Link>
     </div>
   );
 };

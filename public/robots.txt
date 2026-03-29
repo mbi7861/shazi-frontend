@@ -1,0 +1,82 @@
+# ┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+# ┃  Shazi Jewels — Robots & Crawler Policy                    ┃
+# ┣━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┫
+# ┃  Checkouts and account areas are for humans only.          ┃
+# ┃  Automated purchasing or scraping is not permitted.        ┃
+# ┃                                                            ┃
+# ┃  Contact: contact@shazijewels.com                         ┃
+# ┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
+
+User-agent: *
+Allow: /
+Disallow: /checkout
+Disallow: /cart
+Disallow: /my-orders
+Disallow: /account
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin
+Disallow: /*?*sort_by*
+Disallow: /*?*filter*&*filter*
+Disallow: /*preview_theme_id*
+Disallow: /*?*ref=*&ref=*
+
+Sitemap: https://shazijewels.com/sitemap.xml
+
+# Google Ads bot ignores * rules unless named explicitly
+User-agent: adsbot-google
+Disallow: /checkout
+Disallow: /cart
+Disallow: /my-orders
+Disallow: /account
+Disallow: /api/
+
+# Bing Ads bot — same treatment
+User-agent: adidxbot
+Disallow: /checkout
+Disallow: /cart
+Disallow: /my-orders
+Disallow: /account
+Disallow: /api/
+
+# Ahrefs — throttle to avoid hammering the server
+User-agent: AhrefsBot
+Crawl-delay: 10
+Disallow: /checkout
+Disallow: /cart
+Disallow: /my-orders
+Disallow: /account
+Disallow: /api/
+Disallow: /_next/
+Disallow: /*?*sort_by*
+Disallow: /*?*filter*&*filter*
+
+User-agent: AhrefsSiteAudit
+Crawl-delay: 10
+Disallow: /checkout
+Disallow: /cart
+Disallow: /my-orders
+Disallow: /account
+Disallow: /api/
+Disallow: /_next/
+
+# Semrush
+User-agent: SemrushBot
+Crawl-delay: 10
+Disallow: /checkout
+Disallow: /cart
+Disallow: /my-orders
+Disallow: /account
+Disallow: /api/
+
+# Majestic
+User-agent: MJ12bot
+Crawl-delay: 10
+
+# Nutch (aggressive open-source crawler) — block entirely
+User-agent: Nutch
+Disallow: /
+
+# Pinterest — light throttle
+User-agent: Pinterest
+Crawl-delay: 1

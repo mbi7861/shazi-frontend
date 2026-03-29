@@ -1,11 +1,8 @@
-import HeaderSlider from "@/components/HeaderSlider";
 import HomeProducts from "@/components/HomeProducts";
-import Banner from "@/components/Banner";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import WhyShopWithUs from "@/components/WhyShopWithUs";
 import HeroSection from "@/components/HeroSection";
-import { fetchProductsSSR, fetchCategoriesSSR, getFeaturedProducts } from "@/lib/serverApi";
+import { fetchProductsSSR, fetchCategoriesSSR } from "@/lib/serverApi";
 import { apiServiceConfig } from "@/app/config/apiService";
 import HomeCollections from "@/components/home/HomeCollection";
 import BrandStory from "@/components/home/HomeStory";
@@ -82,18 +79,13 @@ export default async function Home() {
 
     return (
         <>
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-            />
+            <script type="application/ld+json"  dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}  />
             <Navbar />
             <HeroSection />
             <div className="px-6 md:px-16 lg:px-16">
                 <HomeCollections categories={categories.data} />
                 <HomeProducts products={products} />
-                {/* <Banner /> */}
                 <BrandStory/>
-                {/* <WhyShopWithUs /> */}
             </div>
             <Footer />
         </>

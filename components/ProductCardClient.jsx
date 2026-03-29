@@ -1,16 +1,16 @@
 'use client';
 
 import { useCart } from "@/context/CartContext";
-import { useRouter } from "next/navigation";
+import Link from 'next/link';
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 
 export default function ProductCardClient({ product }) {
     const { addToCart, cartItems } = useCart();
-    const router = useRouter();
     const [isHovered, setIsHovered] = useState(false);
 
     const handleAddToCart = (e) => {
+        e.preventDefault();
         e.stopPropagation();
         const isInCart = cartItems.some((item) => item.id === product.id);
         if (isInCart) {
@@ -22,11 +22,11 @@ export default function ProductCardClient({ product }) {
     };
 
     return (
-        <div
-            onClick={() => router.push(`/product/${product.slug}`)}
+        <Link
+            href={`/product/${product.slug}`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            className="flex flex-col items-center gap-2 cursor-pointer group"
+            className="flex flex-col items-center gap-2 cursor-pointer group block"
         >
             <div className="relative w-full aspect-square overflow-hidden rounded-lg">
                 <img
@@ -47,6 +47,6 @@ export default function ProductCardClient({ product }) {
                 <p className="text-sm font-medium text-gray-800">{product.name}</p>
                 <p className="text-sm text-gray-500">${product.price}</p>
             </div>
-        </div>
+        </Link>
     );
 } 

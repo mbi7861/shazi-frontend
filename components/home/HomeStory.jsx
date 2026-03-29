@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 const BrandStory = () => {
     return (
         <section className="py-12 px-8 max-w-7xl mx-auto">
@@ -45,12 +47,12 @@ const BrandStory = () => {
 
                     {/* CTA Link */}
                     <div className="pt-4">
-                        <a
-                            href="#"
-                            className="text-xs uppercase tracking-widest border-b border-shazi-gold pb-1 hover:text-shazi-gold transition-colors"
+                        <Link
+                            href="/about-us"
+                            className="text-xs uppercase tracking-widest border-b border-shazi-gold pb-1 hover:text-shazi-gold transition-colors inline-block"
                         >
                             Explore The Process
-                        </a>
+                        </Link>
                     </div>
                 </div>
 

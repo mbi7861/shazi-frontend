@@ -3,10 +3,9 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { assets, HeartIcon, HeartFilledIcon } from '@/assets/assets';
-import { useRouter } from 'next/navigation';
 import { apiServiceConfig } from '@/app/config/apiService';
 import { useCart } from '@/context/CartContext';
-
+import Link from 'next/link';
 const stripHtmlTags = (html) => {
     if (!html) return '';
     if (typeof window === 'undefined') return html.replace(/<[^>]*>/g, '').trim();
@@ -14,7 +13,6 @@ const stripHtmlTags = (html) => {
 };
 
 const ProductCard = ({ product }) => {
-    const router = useRouter();
     const currency = process.env.NEXT_PUBLIC_CURRENCY || 'Rs';
     const [hovered, setHovered] = useState(false);
     const { saveItemForLater, removeFromSaved, savedItems } = useCart();
@@ -26,6 +24,7 @@ const ProductCard = ({ product }) => {
     const isSaved = savedItems.some((p) => p.id === defaultItem?.id);
 
     const handleToggleSave = (e) => {
+        e.preventDefault();
         e.stopPropagation();
         if (!defaultItem) return;
         if (isSaved) {
@@ -49,14 +48,11 @@ const ProductCard = ({ product }) => {
         : '';
 
     return (
-        <article
-            onClick={() => {
-                router.push('/product/' + product.slug);
-                scrollTo(0, 0);
-            }}
+        <Link
+            href={`/product/${product.slug}`}
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
-            className="group cursor-pointer"
+            className="group cursor-pointer block"
         >
             {/* Image Container */}
             <div className="relative aspect-[4/5] bg-[#F9F9F9] overflow-hidden mb-6">
@@ -70,6 +66,7 @@ const ProductCard = ({ product }) => {
 
                 {/* Wishlist Button */}
                 <button
+                    aria-label="Toggle Save for Later"
                     onClick={handleToggleSave}
                     className="absolute top-3 right-3 bg-white p-2 rounded-full shadow-md z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 >
@@ -121,7 +118,7 @@ const ProductCard = ({ product }) => {
                     )}
                 </p>
             </div>
-        </article>
+        </Link>
     );
 };
 

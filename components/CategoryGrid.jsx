@@ -1,17 +1,12 @@
 'use client';
 
 import React from "react";
+import Link from 'next/link';
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { assets } from "@/assets/assets";
 import { getImageUrl } from "@/app/utils/utils";
 
 const CategoryGrid = ({ categories }) => {
-    const router = useRouter();
-
-    const handleCategoryClick = (categorySlug) => {
-        router.push(`/all-products?category=${categorySlug}`);
-    };
 
     if (!categories || categories.length === 0) {
         return (
@@ -27,10 +22,10 @@ const CategoryGrid = ({ categories }) => {
                 const imageUrl = getImageUrl(category.image?.uuid, "categories") || assets.logo;
                 
                 return (
-                    <div
+                    <Link
                         key={category.id || category.slug || index}
-                        onClick={() => handleCategoryClick(category.slug)}
-                        className="group cursor-pointer bg-white border border-gray-200 rounded-lg p-4 hover:shadow-lg transition-all duration-300 hover:border-primary"
+                        href={`/all-products?category=${category.slug}`}
+                        className="group cursor-pointer block bg-white border border-gray-200 rounded-lg p-4 hover:shadow-lg transition-all duration-300 hover:border-primary"
                     >
                         <div className="flex flex-col items-center text-center">
                             <div className="relative w-32 h-32 md:w-40 md:h-40 mb-4 overflow-hidden rounded-lg bg-gray-100">
@@ -50,7 +45,7 @@ const CategoryGrid = ({ categories }) => {
                                 </p>
                             )}
                         </div>
-                    </div>
+                    </Link>
                 );
             })}
         </div>

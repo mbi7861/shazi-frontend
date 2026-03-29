@@ -4,11 +4,10 @@ import Image from 'next/image';
 import { getImageUrl } from "@/app/utils/utils";
 import { assets } from "@/assets/assets";
 import { useCart } from "@/context/CartContext";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const CartModal = ({ isOpen, onClose }) => {
     const { cartItems, updateCartQuantity, removeFromCart, cartAmount } = useCart();
-    const router = useRouter();
     const modalRef = useRef();
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -103,24 +102,20 @@ const CartModal = ({ isOpen, onClose }) => {
                         <span>Total</span>
                         <span>Rs {cartAmount.toLocaleString()}</span>
                     </div>
-                    <button
-                        onClick={() => {
-                            router.push('/checkout');
-                            onClose();
-                        }}
-                        className="w-full bg-primary hover:bg-[#001A33] text-white font-semibold py-2 rounded"
+                    <Link
+                        href="/checkout"
+                        onClick={onClose}
+                        className="w-full bg-primary hover:bg-[#001A33] text-white font-semibold py-2 rounded block text-center cursor-pointer"
                     >
                         Go to Checkout
-                    </button>
-                    <button
-                        onClick={() => {
-                            router.push('/cart');
-                            onClose();
-                        }}
-                        className="mt-2 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 rounded"
+                    </Link>
+                    <Link
+                        href="/cart"
+                        onClick={onClose}
+                        className="mt-2 w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 rounded block text-center cursor-pointer"
                     >
                         View Cart
-                    </button>
+                    </Link>
                     {/* <button
                         onClick={onClose}
                         className="mt-2 w-full text-sm text-gray-600 underline hover:text-gray-800"
