@@ -32,7 +32,7 @@ const HomeCollections = ({ categories }) => {
             <div className="text-center">
               <h3 className="text-2xl font-serif italic mb-3">{cat.title}</h3>
               <span
-                className="text-xs uppercase tracking-widest border-b border-shazi-gold pb-1 hover:text-shazi-gold transition-colors block"
+                className="text-xs uppercase tracking-widest border-b border-shazi-gold pb-1 hover:text-shazi-gold transition-colors"
               >
                 View Collection
               </span>
