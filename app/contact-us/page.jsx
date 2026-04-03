@@ -97,7 +97,7 @@ export default function ContactForm() {
 
                         <button
                             onSubmit={onSubmit}
-                            className="w-full bg-primary text-white py-3 hover:bg-orange-700 transition uppercase"
+                            className="w-full bg-primary text-white py-3 hover:bg-primary/80 transition uppercase"
                         >
                             Send Message
                         </button>

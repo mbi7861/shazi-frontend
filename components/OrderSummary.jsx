@@ -130,7 +130,7 @@ const OrderSummary = () => {
               placeholder="Enter promo code"
               className="flex-grow w-full outline-none p-2.5 text-gray-600 border"
             />
-            <button className="bg-primary text-white px-9 py-2 hover:bg-orange-700">
+            <button className="bg-primary text-white px-9 py-2 hover:bg-primary/80">
               Apply
             </button>
           </div>
@@ -158,7 +158,7 @@ const OrderSummary = () => {
         </div>
       </div>
 
-      <Link href="/checkout" className="w-full bg-primary text-white py-3 mt-5 hover:bg-orange-700 block text-center cursor-pointer">
+      <Link href="/checkout" className="w-full bg-primary text-white py-3 mt-5 hover:bg-primary/80 block text-center cursor-pointer">
         Proceed to Checkout
       </Link>
     </div>

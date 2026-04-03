@@ -22,15 +22,16 @@ import BuyNowButton from "@/components/product/BuyNowButton";
 import SaveForLaterButton from "@/components/product/SaveForLaterButton";
 import { getDefaultProductItem } from "@/lib/product/getDefaultProductItem";
 import { matchVariant } from "@/lib/product/matchVariant";
+import PageHero from "@/components/PageHero";
 
 const ProductView = ({ initialProduct }) => {
     const productData = initialProduct;
     console.log(productData.slug);
-    
+
     const productItems = productData?.product_items || [];
     const defaultItem = getDefaultProductItem(productItems);
     const variations = initialProduct.variations;
-    
+
     const category = productData?.category
     const categoryHref = category.slug
         ? `/all-products?category=${encodeURIComponent(category.slug)}`
@@ -91,28 +92,36 @@ const ProductView = ({ initialProduct }) => {
     return (
         <>
             <Navbar />
+            <div
+                className="flex items-end border-b-2 border-shazi-gold bg-cover bg-center bg-no-repeat h-[160px]"
+                style={{
+                    backgroundImage: `url(${assets.heroImage.src || assets.heroImage})`,
+                    backgroundPosition: '0% 30%',
+                }}>
+                <div className="mx-16">
+                    <nav
+                        aria-label="Breadcrumb"
+                        className="flex items-center gap-2 text-xs uppercase tracking-widest text-grey-300 mb-8 text-white"
+                    >
+                        <Link className="text-white" href="/">
+                            Home
+                        </Link>
+                        &gt;
+                        {category.title ? (
+                            <>
+                                <Link className="text-white" href={categoryHref}>
+                                    {category.title}
+                                </Link>
+                                &gt;
+                            </>
+                        ) : null}
+                        <span className="text-white font-semibold">
+                            {productData?.title || "Product"}
+                        </span>
+                    </nav>
+                </div>
+            </div>
             <div className="px-6 md:px-16 lg:px-32 pt-14 mt-14 space-y-10">
-                {/* Breadcrumbs */}
-                <nav
-                    aria-label="Breadcrumb"
-                    className="flex items-center gap-2 text-xs uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-8"
-                >
-                    <Link className="hover:text-primary" href="/">
-                        Home
-                    </Link>
-                    &gt;
-                    {category.title ? (
-                        <>
-                            <Link className="hover:text-primary" href={categoryHref}>
-                                {category.title}
-                            </Link>
-                            &gt;
-                        </>
-                    ) : null}
-                    <span className="text-slate-900 dark:text-slate-100 font-semibold">
-                        {productData?.title || "Product"}
-                    </span>
-                </nav>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
                     <ProductGallery
                         images={productData.images}
@@ -179,35 +188,7 @@ const ProductView = ({ initialProduct }) => {
                 </div>
 
                 <RelatedProductsGrid slug={productData.slug} />
-      <div
-        className="flex items-end border-b-2 border-shazi-gold bg-cover bg-center bg-no-repeat h-[160px]"
-        style={{
-          backgroundImage: `url(${assets.heroImage.src || assets.heroImage})`,
-          backgroundPosition: '0% 30%',
-        }}>
-        <div className="mx-16">
-          <nav
-            aria-label="Breadcrumb"
-            className="flex items-center gap-2 text-xs uppercase tracking-widest text-grey-300 mb-8"
-          >
-            <Link className="hover:text-primary" href="/">
-              Home
-            </Link>
-            &gt;
-            {category.title ? (
-              <>
-                <Link className="hover:text-primary" href={categoryHref}>
-                  {category.title}
-                </Link>
-                &gt;
-              </>
-            ) : null}
-            <span className="text-white font-semibold">
-              {productData?.title || "Product"}
-            </span>
-          </nav>
-        </div>
-      </div>
+
             </div>
             <Footer />
         </>

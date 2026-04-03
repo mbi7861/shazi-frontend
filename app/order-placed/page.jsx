@@ -102,9 +102,9 @@ const OrderPlaced = () => {
         <Navbar />
         <div className="flex-1 flex flex-col items-center justify-center gap-5 p-4">
           <div className="text-center text-xl font-semibold text-gray-700">Order information not found</div>
-          <Link 
-            href="/my-orders" 
-            className="px-6 py-2 bg-primary text-white rounded-md hover:bg-orange-700 transition"
+          <Link
+            href="/my-orders"
+            className="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary/80 transition"
           >
             View My Orders
           </Link>
@@ -135,7 +135,7 @@ const OrderPlaced = () => {
           <div className="border-b border-gray-200 pb-4 mb-6">
             <h2 className="text-xl font-semibold text-gray-800">Order Details</h2>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
               <p className="text-sm text-gray-500 mb-1">Order ID</p>
@@ -159,11 +159,10 @@ const OrderPlaced = () => {
             </div>
             <div>
               <p className="text-sm text-gray-500 mb-1">Payment Status</p>
-              <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
-                orderData.payment_status === 'completed' ? 'bg-green-100 text-green-800' :
-                orderData.payment_status === 'pending' || orderData.payment_status === 'pending_delivery' ? 'bg-yellow-100 text-yellow-800' :
-                'bg-red-100 text-red-800'
-              }`}>
+              <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${orderData.payment_status === 'completed' ? 'bg-green-100 text-green-800' :
+                  orderData.payment_status === 'pending' || orderData.payment_status === 'pending_delivery' ? 'bg-yellow-100 text-yellow-800' :
+                    'bg-red-100 text-red-800'
+                }`}>
                 {getPaymentStatusLabel(orderData.payment_status)}
               </span>
             </div>
@@ -173,13 +172,12 @@ const OrderPlaced = () => {
             </div>
             <div>
               <p className="text-sm text-gray-500 mb-1">Order Status</p>
-              <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
-                orderData.status === 'delivered' ? 'bg-green-100 text-green-800' :
-                orderData.status === 'shipped' ? 'bg-blue-100 text-blue-800' :
-                orderData.status === 'processing' ? 'bg-yellow-100 text-yellow-800' :
-                orderData.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                'bg-gray-100 text-gray-800'
-              }`}>
+              <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${orderData.status === 'delivered' ? 'bg-green-100 text-green-800' :
+                  orderData.status === 'shipped' ? 'bg-blue-100 text-blue-800' :
+                    orderData.status === 'processing' ? 'bg-yellow-100 text-yellow-800' :
+                      orderData.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                        'bg-gray-100 text-gray-800'
+                }`}>
                 {getOrderStatusLabel(orderData.status)}
               </span>
             </div>
@@ -192,7 +190,7 @@ const OrderPlaced = () => {
             <div className="border-b border-gray-200 pb-4 mb-6">
               <h2 className="text-xl font-semibold text-gray-800">Order Items</h2>
             </div>
-            
+
             <div className="space-y-4">
               {orderData.order_items.map((item, index) => (
                 <div key={item.id || index} className="flex justify-between items-start py-4 border-b border-gray-100 last:border-0">
@@ -227,7 +225,7 @@ const OrderPlaced = () => {
           <div className="border-b border-gray-200 pb-4 mb-6">
             <h2 className="text-xl font-semibold text-gray-800">Order Summary</h2>
           </div>
-          
+
           <div className="space-y-3">
             <div className="flex justify-between text-gray-600">
               <span>Subtotal</span>
@@ -262,7 +260,7 @@ const OrderPlaced = () => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             href="/my-orders"
-            className="px-6 py-3 bg-primary text-white rounded-md hover:bg-orange-700 transition text-center font-medium"
+            className="px-6 py-3 bg-primary text-white rounded-md hover:bg-primary/80 transition text-center font-medium"
           >
             View All Orders
           </Link>

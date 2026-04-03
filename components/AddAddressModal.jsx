@@ -9,7 +9,7 @@ import {
   matchStateName,
 } from "@/lib/countriesStates";
 import { useAuth } from "@/context/AuthContext";
-import { AddressLib } from "@/lib/address"; 
+import { AddressLib } from "@/lib/address";
 
 export default function AddAddressModal({
   isOpen,
@@ -54,7 +54,7 @@ export default function AddAddressModal({
     if (countryObj) {
       const states = getStatesByCountry(countryObj.code);
       setAvailableStates(states);
-      
+
       // Reset state if current state is not in the new country's states
       const currentState = watch("state");
       const currentStateExists = states.find((s) => s.name === currentState);
@@ -233,7 +233,7 @@ export default function AddAddressModal({
       // Handle API errors
       if (!res.success) {
         toast.error(res.message || "Error saving address");
-        
+
         // Map API field names to form field names
         const fieldMap = {
           first_name: "firstName",
@@ -249,9 +249,9 @@ export default function AddAddressModal({
         Object.entries(res.errors || {}).forEach(([key, messages]) => {
           const mappedKey = fieldMap[key] || key;
           const errorMessage = Array.isArray(messages) ? messages[0] : messages;
-          setError(mappedKey, { 
-            type: "server", 
-            message: errorMessage 
+          setError(mappedKey, {
+            type: "server",
+            message: errorMessage
           });
         });
       }
@@ -302,9 +302,8 @@ export default function AddAddressModal({
                   {...register("firstName", {
                     required: "First name is required",
                   })}
-                  className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 ${
-                    errors.firstName ? "border-red-500" : "border-gray-300"
-                  }`}
+                  className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 ${errors.firstName ? "border-red-500" : "border-gray-300"
+                    }`}
                   type="text"
                   placeholder="First name"
                 />
@@ -321,9 +320,8 @@ export default function AddAddressModal({
                   {...register("lastName", {
                     required: "Last name is required",
                   })}
-                  className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 ${
-                    errors.lastName ? "border-red-500" : "border-gray-300"
-                  }`}
+                  className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 ${errors.lastName ? "border-red-500" : "border-gray-300"
+                    }`}
                   type="text"
                   placeholder="Last name"
                 />
@@ -342,9 +340,8 @@ export default function AddAddressModal({
                 {...register("phoneNumber", {
                   required: "Phone number is required",
                 })}
-                className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 ${
-                  errors.phoneNumber ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 ${errors.phoneNumber ? "border-red-500" : "border-gray-300"
+                  }`}
                 type="text"
                 placeholder="Phone number"
               />
@@ -360,9 +357,8 @@ export default function AddAddressModal({
               Zip Code
               <input
                 {...register("zip_code")}
-                className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 ${
-                  errors.zip_code ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 ${errors.zip_code ? "border-red-500" : "border-gray-300"
+                  }`}
                 type="text"
                 placeholder="Zip code"
               />
@@ -380,9 +376,8 @@ export default function AddAddressModal({
                 {...register("address", {
                   required: "Address is required",
                 })}
-                className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 resize-none ${
-                  errors.address ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 resize-none ${errors.address ? "border-red-500" : "border-gray-300"
+                  }`}
                 rows={4}
                 placeholder="Address (Area and Street)"
               />
@@ -407,9 +402,8 @@ export default function AddAddressModal({
               Apartment, Suite, or Unit
               <input
                 {...register("apartment")}
-                className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 ${
-                  errors.apartment ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 ${errors.apartment ? "border-red-500" : "border-gray-300"
+                  }`}
                 type="text"
                 placeholder="Apartment, suite, or unit (optional)"
               />
@@ -428,9 +422,8 @@ export default function AddAddressModal({
                   {...register("city", {
                     required: "City is required",
                   })}
-                  className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 ${
-                    errors.city ? "border-red-500" : "border-gray-300"
-                  }`}
+                  className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 ${errors.city ? "border-red-500" : "border-gray-300"
+                    }`}
                   type="text"
                   placeholder="City"
                 />
@@ -447,9 +440,8 @@ export default function AddAddressModal({
                   {...register("state", {
                     required: "State is required",
                   })}
-                  className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 bg-white ${
-                    errors.state ? "border-red-500" : "border-gray-300"
-                  }`}
+                  className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 bg-white ${errors.state ? "border-red-500" : "border-gray-300"
+                    }`}
                 >
                   <option value="">Select State</option>
                   {availableStates.map((state) => (
@@ -476,9 +468,8 @@ export default function AddAddressModal({
                     value === "Pakistan" ||
                     "Currently, only Pakistan is supported",
                 })}
-                className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 bg-white ${
-                  errors.country ? "border-red-500" : "border-gray-300"
-                }`}
+                className={`mt-1 px-3 py-2.5 focus:border-primary transition border rounded outline-none w-full text-gray-700 bg-white ${errors.country ? "border-red-500" : "border-gray-300"
+                  }`}
                 onChange={(e) => {
                   const selectedCountry = e.target.value;
                   if (selectedCountry !== "Pakistan") {
@@ -516,7 +507,7 @@ export default function AddAddressModal({
               type="button"
               onClick={handleSubmit(onSubmit)}
               disabled={isSubmitting}
-              className="flex-1 bg-primary text-white py-3 hover:bg-orange-700 rounded disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex-1 bg-primary text-white py-3 hover:bg-primary/80 rounded disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
                 <span className="flex items-center justify-center gap-2">

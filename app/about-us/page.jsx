@@ -13,8 +13,8 @@ export default function AboutUs() {
   return (
     <>
       <Navbar />
-      <div className="px-6 md:px-16 lg:px-32 py-16">
       <PageHero title="About Us" />
+      <div className="px-6 md:px-16 lg:px-32 py-16">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold mb-4">
             About <span className="text-primary">Us</span>

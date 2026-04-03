@@ -1,9 +1,9 @@
 'use client'
-import {assets} from "@/assets/assets";
+import { assets } from "@/assets/assets";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Image from "next/image";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -36,7 +36,7 @@ const AddAddress = () => {
         const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
         const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
         console.log(apiKey)
-        const {data} = await axios.get(url);
+        const { data } = await axios.get(url);
 
         console.log(data)
         if (data.status === "OK") {
@@ -70,7 +70,7 @@ const AddAddress = () => {
 
             const token = await getToken()
 
-            const {data} = await axios.post('/api/user/add-address', {address}, {headers: {Authorization: `Bearer ${token}`}})
+            const { data } = await axios.post('/api/user/add-address', { address }, { headers: { Authorization: `Bearer ${token}` } })
 
             if (data.success) {
                 toast.success(data.message)
@@ -86,7 +86,7 @@ const AddAddress = () => {
 
     return (
         <>
-            <Navbar/>
+            <Navbar />
             <div className="px-6 md:px-16 lg:px-32 py-16 flex flex-col md:flex-row justify-between">
                 <form onSubmit={onSubmitHandler} className="w-full">
                     <p className="text-2xl md:text-3xl text-gray-500">
@@ -194,7 +194,7 @@ const AddAddress = () => {
                         </label>
                     </div>
                     <button type="submit"
-                            className="max-w-sm w-full mt-6 bg-primary text-white py-3 hover:bg-orange-700 uppercase">
+                        className="max-w-sm w-full mt-6 bg-primary text-white py-3 hover:bg-primary/80 uppercase">
                         Save address
                     </button>
                 </form>
@@ -209,7 +209,7 @@ const AddAddress = () => {
                 onClose={() => setLocationPickerOpen(false)}
                 onConfirm={handleLocationSelect}
             />
-            <Footer/>
+            <Footer />
         </>
     );
 };

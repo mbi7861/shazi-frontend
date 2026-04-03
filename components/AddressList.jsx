@@ -10,7 +10,7 @@ const MAX_ADDRESSES = 5;
 import { useAuth } from "@/context/AuthContext";
 import { countries, getStatesByCountry } from "@/lib/countriesStates";
 
-export default function AddressList({ prevAddressId ,onSelect }) {
+export default function AddressList({ prevAddressId, onSelect }) {
     const { userData } = useAuth();
     const isLoggedIn = !!userData;
 
@@ -32,8 +32,8 @@ export default function AddressList({ prevAddressId ,onSelect }) {
                 toast.error(res.message || "Could not load addresses");
                 setAddresses([]);
                 return;
-              }
-              setAddresses(res.data ?? []);
+            }
+            setAddresses(res.data ?? []);
         } catch (error) {
             console.error(error);
             toast.error("Could not load addresses");
@@ -48,19 +48,19 @@ export default function AddressList({ prevAddressId ,onSelect }) {
     }, [isLoggedIn]);
     useEffect(() => {
         if (!addresses.length) return;
-      
+
         let selected = null;
-      
+
         if (prevAddressId) {
-          selected = addresses.find(a => a.id === prevAddressId) || null;
+            selected = addresses.find(a => a.id === prevAddressId) || null;
         }
-              if (!selected) {
-          selected = addresses[0];
+        if (!selected) {
+            selected = addresses[0];
         }
         setSelectedAddressId(selected.id);
         onSelect?.(selected);
-      }, [addresses, prevAddressId]);
-      
+    }, [addresses, prevAddressId]);
+
     // -----------------------------
     // SELECT ADDRESS
     // -----------------------------
@@ -131,7 +131,7 @@ export default function AddressList({ prevAddressId ,onSelect }) {
                         <button
                             type="button"
                             onClick={openAddModal}
-                            className="bg-primary text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-orange-700"
+                            className="bg-primary text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-primary/80"
                         >
                             <Plus size={18} />
                             Add New
@@ -152,12 +152,12 @@ export default function AddressList({ prevAddressId ,onSelect }) {
                     const fullName =
                         address.fullName ||
                         `${address.first_name || ""} ${address.last_name || ""}`.trim();
-                    
+
                     // Convert country code to country name for display
                     const countryCode = address.country_code || address.country || 'PK';
                     const countryObj = countries.find(c => c.code === countryCode);
                     const countryDisplayName = countryObj ? countryObj.name : countryCode;
-                    
+
                     // Convert state code to state name for display
                     const stateCode = address.state_code || address.state || '';
                     const states = getStatesByCountry(countryCode);
@@ -169,11 +169,10 @@ export default function AddressList({ prevAddressId ,onSelect }) {
                             key={address.id}
                             onClick={() => selectAddress(address)}
                             className={`border-2 rounded-lg p-4 cursor-pointer transition
-                            ${
-                                isSelected
+                            ${isSelected
                                     ? "border-primary bg-primary-light"
                                     : "border-gray-200 hover:border-orange-300 hover:bg-gray-50"
-                            }`}
+                                }`}
                         >
                             <div className="flex gap-3 items-start">
                                 {/* Icon */}
@@ -227,15 +226,15 @@ export default function AddressList({ prevAddressId ,onSelect }) {
                                 )}
                             </div>
                             <div className="mx-5">
-                                    <p className="text-sm text-gray-600">{address.address}</p>
-                                    <p className="text-sm text-gray-600">
-                                        {address.city}, {stateDisplayName}, {countryDisplayName}
-                                    </p>
+                                <p className="text-sm text-gray-600">{address.address}</p>
+                                <p className="text-sm text-gray-600">
+                                    {address.city}, {stateDisplayName}, {countryDisplayName}
+                                </p>
 
-                                    {address.phone && (
-                                        <p className="text-sm text-gray-600">Phone: {address.phone}</p>
-                                    )}
-                                    </div>
+                                {address.phone && (
+                                    <p className="text-sm text-gray-600">Phone: {address.phone}</p>
+                                )}
+                            </div>
                         </div>
                     );
                 })}

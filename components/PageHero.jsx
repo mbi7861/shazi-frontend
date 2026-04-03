@@ -14,16 +14,16 @@ const PageHero = ({ title, parentLinks = [] }) => {
       <div className="mx-16">
         <nav
           aria-label="Breadcrumb"
-          className="flex items-center gap-2 text-xs uppercase tracking-widest text-grey-300 mb-8"
+          className="flex items-center gap-2 text-xs uppercase tracking-widest text-grey-300 mb-8 text-white"
         >
-          <Link className="hover:text-primary" href="/">
+          <Link className="text-white" href="/">
             Home
           </Link>
-          
+
           {parentLinks.map((link, index) => (
             <React.Fragment key={index}>
               &gt;
-              <Link className="hover:text-primary" href={link.href}>
+              <Link className="text-white" href={link.href}>
                 {link.label}
               </Link>
             </React.Fragment>

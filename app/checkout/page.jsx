@@ -14,6 +14,7 @@ import CheckoutSkeleton from "@/components/checkout/CheckoutSkeleton";
 import { shippingService } from "@/services/shippingService";
 import { countries, getStatesByCountry } from "@/lib/countriesStates";
 import { startTransition } from "react";
+import PageHero from "@/components/PageHero";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -298,6 +299,7 @@ export default function CheckoutPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
+      <PageHero title="Checkout" />
       <div className="flex-1 container mx-auto px-4 py-24">
         <div className="flex flex-col-reverse lg:flex-row gap-8">
           <CheckoutForm

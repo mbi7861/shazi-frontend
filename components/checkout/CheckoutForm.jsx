@@ -16,7 +16,7 @@ export default function CheckoutForm({
   userData,
 }) {
   const isLoggedIn = !!userData;
-  
+
   return (
     <div className="lg:w-3/5">
       <div className="bg-white rounded shadow-md p-6">
@@ -31,7 +31,7 @@ export default function CheckoutForm({
               htmlFor="email"
               className="block text-sm font-medium text-gray-700 mb-2"
             >
-            Email
+              Email
             </label>
             <input
               type="email"
@@ -40,9 +40,8 @@ export default function CheckoutForm({
               value={formData.email}
               onChange={(e) => onInputChange("email", e.target.value)}
               disabled={isLoggedIn}
-              className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 ${
-                errors.email ? "border-red-500" : "border-gray-300"
-              } ${isLoggedIn ? "bg-gray-100 cursor-not-allowed" : "bg-white"}`}
+              className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 ${errors.email ? "border-red-500" : "border-gray-300"
+                } ${isLoggedIn ? "bg-gray-100 cursor-not-allowed" : "bg-white"}`}
               placeholder="Enter your email"
             />
             {errors.email && (
@@ -51,7 +50,7 @@ export default function CheckoutForm({
           </div>
 
           <AddressList
-          prevAddressId={formData.address_id ?? null}
+            prevAddressId={formData.address_id ?? null}
             onSelect={(selectedAddress) => {
               onAddressSelect(selectedAddress);
             }}
@@ -90,7 +89,7 @@ export default function CheckoutForm({
 
           <button
             type="submit"
-            className="w-full bg-primary text-white py-5 mt-5 hover:bg-orange-700"
+            className="w-full bg-primary text-white py-5 mt-5 hover:bg-primary/80"
             disabled={isLoading || isShippingLoading}
           >
             {isLoading ? (

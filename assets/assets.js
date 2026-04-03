@@ -27,8 +27,10 @@ import category_breakers from "./categories/breakers.png";
 import category_sockets from "./categories/sockets.png";
 import banner1 from "./banner_img_1.png";
 import footerBg from "./footer-bg.jpg";
+import heroImage from "./hero-image.png";
 
 export const assets = {
+    heroImage,
     logo,
     search_icon,
     user_icon,
