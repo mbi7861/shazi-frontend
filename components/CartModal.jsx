@@ -1,5 +1,5 @@
 'use client';
-import React, {useEffect, useRef} from 'react';
+import React, { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { getImageUrl } from "@/app/utils/utils";
 import { assets } from "@/assets/assets";
@@ -50,50 +50,50 @@ const CartModal = ({ isOpen, onClose }) => {
                             const subtotal = quantity * price;
                             // Get image from product data
                             const product = item.product || {};
-                            const imageUrl = item.primary_image || 
-                                            product.images?.find(img => img.is_preview)?.uuid || 
-                                            product.images?.[0]?.uuid;
+                            const imageUrl = item.primary_image ||
+                                product.images?.find(img => img.is_preview)?.uuid ||
+                                product.images?.[0]?.uuid;
 
-                        return (
-                            <div key={item.id} className="border-b pb-4 mb-4">
-                                <div className="flex gap-4">
-                                    <Image
-                                        src={getImageUrl(imageUrl)}
-                                        alt={product.title || 'Product'}
-                                        className="w-20 h-20 object-cover rounded"
-                                        width={80}
-                                        height={80}
-                                    />
-                                    <div className="flex-1">
-                                        <h3 className="font-semibold text-base text-gray-800">{product.title || 'Product'}</h3>
-                                        {/* Display variant options if available */}
-                                        {item.variation_options && item.variation_options.length > 0 && (
-                                            <p className="text-xs text-gray-500 mt-1">
-                                                {item.variation_options.map(opt => opt.value).join(', ')}
-                                            </p>
-                                        )}
-                                        <p className=" flex justify-between text-sm text-gray-500 "><span>Rs {price} </span> <span className="ml-2">(Sub Total: Rs {subtotal})</span></p>
-                                        <div className="flex items-center gap-3 mt-2">
-                                            <button onClick={() => updateCartQuantity(item.id, quantity - 1)}>
-                                                <Image src={assets.decrease_arrow} alt="decrease" className="w-4 h-4" />
-                                            </button>
-                                            <span className="text-md">{quantity}</span>
-                                            <button onClick={() => updateCartQuantity(item.id, quantity + 1)}>
-                                                <Image src={assets.increase_arrow} alt="increase" className="w-4 h-4" />
-                                            </button>
-                                            <button
-                                                onClick={() => removeFromCart(item.id)}
-                                                className="ml-auto text-sm text-gray-600 hover:text-red-600"
-                                            >
-                                                Remove
-                                            </button>
+                            return (
+                                <div key={item.id} className="border-b pb-4 mb-4">
+                                    <div className="flex gap-4">
+                                        <Image
+                                            src={getImageUrl(imageUrl)}
+                                            alt={product.title || 'Product'}
+                                            className="w-20 h-20 object-cover rounded"
+                                            width={80}
+                                            height={80}
+                                        />
+                                        <div className="flex-1">
+                                            <h3 className="font-semibold text-base text-gray-800">{product.title || 'Product'}</h3>
+                                            {/* Display variant options if available */}
+                                            {item.variation_options && item.variation_options.length > 0 && (
+                                                <p className="text-xs text-gray-500 mt-1">
+                                                    {item.variation_options.map(opt => opt.value).join(', ')}
+                                                </p>
+                                            )}
+                                            <p className=" flex justify-between text-sm text-gray-500 "><span>Rs {price} </span> <span className="ml-2">(Sub Total: Rs {subtotal})</span></p>
+                                            <div className="flex items-center gap-3 mt-2">
+                                                <button onClick={() => updateCartQuantity(item.id, quantity - 1)}>
+                                                    <Image src={assets.decrease_arrow} alt="decrease" className="w-4 h-4" />
+                                                </button>
+                                                <span className="text-md">{quantity}</span>
+                                                <button onClick={() => updateCartQuantity(item.id, quantity + 1)}>
+                                                    <Image src={assets.increase_arrow} alt="increase" className="w-4 h-4" />
+                                                </button>
+                                                <button
+                                                    onClick={() => removeFromCart(item.id)}
+                                                    className="ml-auto text-sm text-gray-600 hover:text-red-600"
+                                                >
+                                                    Remove
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        );
-                    })
-                )}
+                            );
+                        })
+                    )}
                 </div>
 
                 {/* Footer */}
@@ -105,7 +105,7 @@ const CartModal = ({ isOpen, onClose }) => {
                     <Link
                         href="/checkout"
                         onClick={onClose}
-                        className="w-full bg-primary hover:bg-[#001A33] text-white font-semibold py-2 rounded block text-center cursor-pointer"
+                        className="w-full bg-shazi-gold hover:bg-shazi-gold/80 text-white font-semibold py-2 rounded block text-center cursor-pointer"
                     >
                         Go to Checkout
                     </Link>

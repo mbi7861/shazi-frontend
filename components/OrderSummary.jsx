@@ -72,8 +72,8 @@ const OrderSummary = () => {
 
   return (
     <div className="w-full md:w-96 bg-gray-500/5 p-5">
-      <h2 className="text-xl md:text-2xl font-medium text-gray-700">
-        Order Summary
+      <h2 className="text-xl md:text-2xl font-medium">
+        Order <span className="font-medium text-shazi-gold">Summary</span>
       </h2>
       <hr className="border-gray-500/30 my-5" />
       <div className="space-y-6">
@@ -140,11 +140,11 @@ const OrderSummary = () => {
 
         <div className="space-y-4">
           <div className="flex justify-between text-base font-medium">
-            <p className="uppercase text-gray-600">Items {cartCount}</p>
+            <p className="uppercase">Items {cartCount}</p>
             <p className="text-gray-800">{currency}{cartAmount}</p>
           </div>
           <div className="flex justify-between">
-            <p className="text-gray-600">Shipping Fee</p>
+            <p className="">Shipping Fee</p>
             <p className="font-medium text-gray-800">Free</p>
           </div>
           {/*<div className="flex justify-between">
@@ -158,7 +158,7 @@ const OrderSummary = () => {
         </div>
       </div>
 
-      <Link href="/checkout" className="w-full bg-primary text-white py-3 mt-5 hover:bg-orange-700 block text-center cursor-pointer">
+      <Link href="/checkout" className="w-full bg-shazi-gold py-3 mt-5 hover:bg-shazi-gold/80 block text-center cursor-pointer">
         Proceed to Checkout
       </Link>
     </div>

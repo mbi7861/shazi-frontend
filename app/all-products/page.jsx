@@ -111,9 +111,8 @@ const AllProducts = () => {
   return (
     <>
       <Navbar />
-
-      <div className="flex flex-col items-start px-6 md:px-16 lg:px-32 mt-24">
       <PageHero title="All Products" />
+      <div className="flex flex-col items-start px-6 md:px-16 lg:px-32 mt-14">
         {/* <div className="max-w-2xl">
           <h2 className="text-5xl md:text-7xl font-normal mb-6 serif leading-tight italic">
             Fine Jewelry
@@ -124,7 +123,7 @@ const AllProducts = () => {
             to be worn for a lifetime.
           </p>
         </div> */}
-        <div className="flex flex-col items-end w-full">
+        {/* <div className="flex flex-col items-end w-full">
           {hasActiveFilters && (
             <button
               onClick={clearFilters}
@@ -133,16 +132,16 @@ const AllProducts = () => {
               Clear filters
             </button>
           )}
-        </div>
+        </div> */}
 
         {/* Results Summary */}
         <div className="w-full mt-6 mb-4">
           <div className="flex items-center justify-between">
-            <p className="text-gray-600">
+            <p className="">
               {loading ? "Loading..." : `${totalProducts} products found`}
             </p>
             {!loading && products.length > 0 && (
-              <p className="text-sm text-gray-500">
+              <p className="text-sm">
                 Page {currentPage} of{" "}
                 {Math.ceil(totalProducts / (filters.per_page || 15))}
               </p>
@@ -221,7 +220,7 @@ const AllProducts = () => {
                           key={page}
                           onClick={() => handlePageChange(page)}
                           className={`px-3 py-2 border rounded-md ${currentPage === page
-                            ? "bg-primary text-white border-orange-600"
+                            ? "bg-primary text-white border-shazi-gold"
                             : "border-gray-300 hover:bg-gray-50"
                             }`}
                         >
@@ -250,7 +249,7 @@ const AllProducts = () => {
                 </p>
                 <button
                   onClick={clearFilters}
-                  className="mt-4 px-6 py-2 bg-primary text-white rounded-md hover:bg-orange-700"
+                  className="mt-4 px-6 py-2 bg-primary text-white rounded-md hover:bg-shazi-gold"
                 >
                   Clear Filters
                 </button>

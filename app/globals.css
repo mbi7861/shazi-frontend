@@ -5,6 +5,10 @@
 * {
   scroll-behavior: smooth;
 }
+html{
+  color:white;
+  background-color: #1a1d20;
+}
 
 @layer base {
 

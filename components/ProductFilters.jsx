@@ -1,17 +1,15 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { assets } from '@/assets/assets';
-import Image from 'next/image';
 
-const ProductFilters = ({ 
-    filters, 
-    setFilters, 
-    categories, 
+const ProductFilters = ({
+    filters,
+    setFilters,
+    categories,
     onFilterChange,
     onClearFilters,
     priceRange,
-    setPriceRange 
+    setPriceRange
 }) => {
     const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
     const [expandedSections, setExpandedSections] = useState({
@@ -36,12 +34,12 @@ const ProductFilters = ({
     const handlePriceChange = (type, value) => {
         const newPriceRange = { ...priceRange, [type]: value };
         setPriceRange(newPriceRange);
-        
+
         // Update filters with new price range
-        const newFilters = { 
-            ...filters, 
-            min_price: newPriceRange.min || '', 
-            max_price: newPriceRange.max || '' 
+        const newFilters = {
+            ...filters,
+            min_price: newPriceRange.min || '',
+            max_price: newPriceRange.max || ''
         };
         setFilters(newFilters);
         onFilterChange(newFilters);
@@ -67,10 +65,10 @@ const ProductFilters = ({
             <div className="lg:hidden mb-6">
                 <button
                     onClick={() => setIsMobileFiltersOpen(!isMobileFiltersOpen)}
-                    className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg bg-white"
+                    className="flex items-center gap-2 px-4 py-2 border border-zinc-800 rounded-lg bg-transparent text-white hover:bg-zinc-900"
                 >
                     Filters
-                    <span className="ml-auto text-sm text-gray-500">
+                    <span className="ml-auto text-sm text-zinc-400">
                         {Object.keys(filters).filter(key => key !== 'per_page' && filters[key]).length} active
                     </span>
                 </button>
@@ -80,25 +78,25 @@ const ProductFilters = ({
             <div className={`
                 ${isMobileFiltersOpen ? 'block' : 'hidden'} 
                 lg:block lg:w-64 lg:flex-shrink-0
-                bg-white border border-gray-200 rounded-lg p-6 mb-6 lg:mb-0
+                bg-transparent border border-zinc-800 rounded-xl p-6 mb-6 lg:mb-0
             `}>
                 <div className="flex items-center justify-between mb-6">
-                    <h3 className="text-lg font-semibold text-gray-900">Filters</h3>
+                    <h3 className="text-lg font-semibold text-white">Filters</h3>
                     <button
                         onClick={onClearFilters || clearAllFilters}
-                        className="text-sm text-primary hover:text-orange-700"
+                        className="text-sm text-shazi-gold hover:text-shazi-gold"
                     >
                         Clear all
                     </button>
                 </div>
 
                 {/* Categories Filter */}
-                <div className="border-b border-gray-200 pb-6 mb-6">
+                <div className="border-b border-zinc-800 pb-6 mb-6">
                     <button
                         onClick={() => toggleSection('categories')}
                         className="flex items-center justify-between w-full text-left mb-4"
                     >
-                        <h4 className="font-medium text-gray-900">Categories</h4>
+                        <h4 className="font-medium text-white">Categories</h4>
                         {/* <Image
                             src={assets.arrow_down_icon || "/arrow-down.svg"}
                             alt="Toggle"
@@ -107,7 +105,7 @@ const ProductFilters = ({
                             className={`transform transition-transform ${expandedSections.categories ? 'rotate-180' : ''}`}
                         /> */}
                     </button>
-                    
+
                     {expandedSections.categories && (
                         <div className="space-y-3">
                             {categories?.map((category) => (
@@ -122,9 +120,9 @@ const ProductFilters = ({
                                                 handleFilterChange('category', '');
                                             }
                                         }}
-                                        className="h-4 w-4 text-primary focus:ring-orange-500 border-gray-300 rounded"
+                                        className="h-4 w-4 text-primary focus:ring-orange-500 border-zinc-700 bg-zinc-900 rounded"
                                     />
-                                    <span className="ml-3 text-sm text-gray-700">
+                                    <span className="ml-3 text-sm text-zinc-300">
                                         {category.title} ({category.products_count || 0})
                                     </span>
                                 </label>
@@ -134,12 +132,12 @@ const ProductFilters = ({
                 </div>
 
                 {/* Price Range Filter */}
-                <div className="border-b border-gray-200 pb-6 mb-6">
+                <div className="border-b border-zinc-800 pb-6 mb-6">
                     <button
                         onClick={() => toggleSection('price')}
                         className="flex items-center justify-between w-full text-left mb-4"
                     >
-                        <h4 className="font-medium text-gray-900">Price Range</h4>
+                        <h4 className="font-medium text-white">Price Range</h4>
                         {/* <Image
                             src={assets.arrow_down_icon || "/arrow-down.svg"}
                             alt="Toggle"
@@ -148,28 +146,28 @@ const ProductFilters = ({
                             className={`transform transition-transform ${expandedSections.price ? 'rotate-180' : ''}`}
                         /> */}
                     </button>
-                    
+
                     {expandedSections.price && (
                         <div className="space-y-4">
                             <div className="flex gap-3">
                                 <div className="flex-1">
-                                    <label className="block text-sm text-gray-600 mb-1">Min Price</label>
+                                    <label className="block text-sm text-zinc-400 mb-1">Min Price</label>
                                     <input
                                         type="number"
                                         placeholder="0"
                                         value={priceRange.min}
                                         onChange={(e) => handlePriceChange('min', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-primary"
+                                        className="w-full px-3 py-2 bg-transparent border border-zinc-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-primary placeholder:text-zinc-600"
                                     />
                                 </div>
                                 <div className="flex-1">
-                                    <label className="block text-sm text-gray-600 mb-1">Max Price</label>
+                                    <label className="block text-sm text-zinc-400 mb-1">Max Price</label>
                                     <input
                                         type="number"
                                         placeholder="10000"
                                         value={priceRange.max}
                                         onChange={(e) => handlePriceChange('max', e.target.value)}
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-primary"
+                                        className="w-full px-3 py-2 bg-transparent border border-zinc-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-primary placeholder:text-zinc-600"
                                     />
                                 </div>
                             </div>
@@ -178,12 +176,12 @@ const ProductFilters = ({
                 </div>
 
                 {/* Sort By Filter */}
-                <div className="border-b border-gray-200 pb-6 mb-6">
+                <div className="border-b border-zinc-800 pb-6 mb-6">
                     <button
                         onClick={() => toggleSection('sort')}
                         className="flex items-center justify-between w-full text-left mb-4"
                     >
-                        <h4 className="font-medium text-gray-900">Sort By</h4>
+                        <h4 className="font-medium text-white">Sort By</h4>
                         {/* <Image
                             src={assets.arrow_down_icon || "/arrow-down.svg"}
                             alt="Toggle"
@@ -192,7 +190,7 @@ const ProductFilters = ({
                             className={`transform transition-transform ${expandedSections.sort ? 'rotate-180' : ''}`}
                         /> */}
                     </button>
-                    
+
                     {expandedSections.sort && (
                         <div className="space-y-3">
                             {sortOptions.map((option) => (
@@ -203,9 +201,9 @@ const ProductFilters = ({
                                         value={option.value}
                                         checked={filters.sortBy === option.value}
                                         onChange={(e) => handleFilterChange('sortBy', e.target.value)}
-                                        className="h-4 w-4 text-primary focus:ring-orange-500 border-gray-300"
+                                        className="h-4 w-4 text-primary focus:ring-orange-500 border-zinc-700 bg-zinc-900"
                                     />
-                                    <span className="ml-3 text-sm text-gray-700">{option.label}</span>
+                                    <span className="ml-3 text-sm text-zinc-300">{option.label}</span>
                                 </label>
                             ))}
                         </div>
@@ -214,63 +212,63 @@ const ProductFilters = ({
 
                 {/* Results Per Page */}
                 <div className="pb-6">
-                    <h4 className="font-medium text-gray-900 mb-4">Results Per Page</h4>
+                    <h4 className="font-medium text-white mb-4">Results Per Page</h4>
                     <select
                         value={filters.per_page || 15}
                         onChange={(e) => handleFilterChange('per_page', parseInt(e.target.value))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-primary"
+                        className="w-full px-3 py-2 bg-[#1a1d20] border border-zinc-800 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-shazi-gold"
                     >
-                        <option value={8}>8 per page</option>
-                        <option value={15}>15 per page</option>
-                        <option value={20}>20 per page</option>
-                        <option value={30}>30 per page</option>
+                        <option className="" value={8}>8 per page</option>
+                        <option className="" value={15}>15 per page</option>
+                        <option className="" value={20}>20 per page</option>
+                        <option className="" value={30}>30 per page</option>
                     </select>
                 </div>
 
                 {/* Active Filters Display */}
                 {Object.keys(filters).filter(key => key !== 'per_page' && filters[key]).length > 0 && (
-                    <div className="pt-4 border-t border-gray-200">
-                        <h4 className="font-medium text-gray-900 mb-3">Active Filters</h4>
+                    <div className="pt-4 border-t border-zinc-800">
+                        <h4 className="font-medium text-white mb-3">Active Filters</h4>
                         <div className="space-y-2">
                             {filters.category && (
-                                <div className="flex items-center justify-between bg-primary-light px-3 py-2 rounded-md">
-                                    <span className="text-sm text-orange-800">Category: {filters.category}</span>
+                                <div className="flex items-center justify-between bg-zinc-900 border border-zinc-800 px-3 py-2 rounded-md">
+                                    <span className="text-sm text-zinc-300">Category: {filters.category}</span>
                                     <button
                                         onClick={() => handleFilterChange('category', '')}
-                                        className="text-primary hover:text-orange-700"
+                                        className="text-primary hover:text-orange-400"
                                     >
                                         ×
                                     </button>
                                 </div>
                             )}
                             {filters.min_price && (
-                                <div className="flex items-center justify-between bg-primary-light px-3 py-2 rounded-md">
-                                    <span className="text-sm text-orange-800">Min Price: ${filters.min_price}</span>
+                                <div className="flex items-center justify-between bg-zinc-900 border border-zinc-800 px-3 py-2 rounded-md">
+                                    <span className="text-sm text-zinc-300">Min Price: ${filters.min_price}</span>
                                     <button
                                         onClick={() => handlePriceChange('min', '')}
-                                        className="text-primary hover:text-orange-700"
+                                        className="text-primary hover:text-orange-400"
                                     >
                                         ×
                                     </button>
                                 </div>
                             )}
                             {filters.max_price && (
-                                <div className="flex items-center justify-between bg-primary-light px-3 py-2 rounded-md">
-                                    <span className="text-sm text-orange-800">Max Price: ${filters.max_price}</span>
+                                <div className="flex items-center justify-between bg-zinc-900 border border-zinc-800 px-3 py-2 rounded-md">
+                                    <span className="text-sm text-zinc-300">Max Price: ${filters.max_price}</span>
                                     <button
                                         onClick={() => handlePriceChange('max', '')}
-                                        className="text-primary hover:text-orange-700"
+                                        className="text-primary hover:text-orange-400"
                                     >
                                         ×
                                     </button>
                                 </div>
                             )}
                             {filters.sortBy && (
-                                <div className="flex items-center justify-between bg-primary-light px-3 py-2 rounded-md">
-                                    <span className="text-sm text-orange-800">Sort: {sortOptions.find(opt => opt.value === filters.sortBy)?.label}</span>
+                                <div className="flex items-center justify-between bg-zinc-900 border border-zinc-800 px-3 py-2 rounded-md">
+                                    <span className="text-sm text-zinc-300">Sort: {sortOptions.find(opt => opt.value === filters.sortBy)?.label}</span>
                                     <button
                                         onClick={() => handleFilterChange('sortBy', '')}
-                                        className="text-primary hover:text-orange-700"
+                                        className="text-primary hover:text-orange-400"
                                     >
                                         ×
                                     </button>

@@ -16,22 +16,22 @@ export default function CheckoutForm({
   userData,
 }) {
   const isLoggedIn = !!userData;
-  
+
   return (
     <div className="lg:w-3/5">
-      <div className="bg-white rounded shadow-md p-6">
+      <div className=" rounded shadow-md p-6">
         <p className="text-2xl md:text-3xl text-gray-500 mb-6">
           Shipping{" "}
-          <span className="font-semibold text-primary"> Address</span>
+          <span className="font-semibold text-shazi-gold"> Address</span>
         </p>
         <form onSubmit={onSubmit} className="space-y-3">
           {/* Email Input */}
           <div className="mb-4">
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium mb-2"
             >
-            Email
+              Email
             </label>
             <input
               type="email"
@@ -40,9 +40,8 @@ export default function CheckoutForm({
               value={formData.email}
               onChange={(e) => onInputChange("email", e.target.value)}
               disabled={isLoggedIn}
-              className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 ${
-                errors.email ? "border-red-500" : "border-gray-300"
-              } ${isLoggedIn ? "bg-gray-100 cursor-not-allowed" : "bg-white"}`}
+              className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-shazi-gold ${errors.email ? "border-red-500" : "border-gray-300"
+                } ${isLoggedIn ? "bg-gray-100 cursor-not-allowed" : "bg-transparent"}`}
               placeholder="Enter your email"
             />
             {errors.email && (
@@ -51,7 +50,7 @@ export default function CheckoutForm({
           </div>
 
           <AddressList
-          prevAddressId={formData.address_id ?? null}
+            prevAddressId={formData.address_id ?? null}
             onSelect={(selectedAddress) => {
               onAddressSelect(selectedAddress);
             }}
@@ -64,12 +63,12 @@ export default function CheckoutForm({
           <div className="space-y-4">
             <p className="text-2xl md:text-3xl text-gray-500 my-6">
               Payment{" "}
-              <span className="font-semibold text-primary">
+              <span className="font-semibold text-shazi-gold">
                 {" "}
                 Method
               </span>
             </p>
-            <p className="text-sm text-gray-600">
+            <p className="text-sm">
               All transactions are secure and encrypted.
             </p>
             <div className="space-y-4">

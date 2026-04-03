@@ -9,7 +9,7 @@ export default function CardPayment({
   stripeRef,
 }) {
   return (
-    <div className="border rounded p-4 bg-green-50 border-green-200">
+    <div className="border rounded p-4 bg-transparent border-green-200">
       <div className="flex items-center space-x-2">
         <input
           type="radio"

@@ -75,14 +75,14 @@ const ProductCard = ({ product }) => {
 
                 {/* Discount Badge */}
                 {hasDiscount && (
-                    <div className="absolute top-3 left-3 bg-black text-white text-[10px] uppercase tracking-widest px-2 py-1">
+                    <div className="absolute top-3 left-3 bg-shazi-gold text-white text-[10px] uppercase tracking-widest px-2 py-1">
                         Sale
                     </div>
                 )}
 
                 {/* View Details Overlay Button */}
                 <div className="absolute inset-x-0 bottom-6 flex justify-center px-4">
-                    <button className="bg-white text-black px-6 py-3 text-xs uppercase tracking-widest font-medium shadow-sm hover:bg-black hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0">
+                    <button className="bg-white text-black px-6 py-3 text-xs uppercase tracking-widest font-medium shadow-sm hover:bg-shazi-gold hover:text-white transition-all duration-300 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0">
                         View Details
                     </button>
                 </div>

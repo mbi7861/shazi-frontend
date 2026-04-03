@@ -10,7 +10,7 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        'shazi-black': '#0a0a0a',
+        // 'shazi-black': '#0a0a0a',
         'shazi-gold': '#c5a059',
       },
       fontFamily: {

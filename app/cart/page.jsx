@@ -53,7 +53,7 @@ const CartRow = ({ item, onUpdateQty, onRemove, onSaveForLater }) => {
               Remove
             </button>
             <button
-              className="text-xs text-primary"
+              className="text-xs text-shazi-gold"
               onClick={() => onSaveForLater(item.id)}
             >
               Save for later
@@ -63,9 +63,9 @@ const CartRow = ({ item, onUpdateQty, onRemove, onSaveForLater }) => {
 
         {/* Desktop name + actions */}
         <div className="text-sm hidden md:block">
-          <p className="text-gray-800 font-medium">{product.title || 'Product'}</p>
+          <p className=" font-medium">{product.title || 'Product'}</p>
           {item.variation_options?.length > 0 && (
-            <p className="text-xs text-gray-500 mt-0.5">
+            <p className="text-xs mt-0.5">
               {item.variation_options.map((opt) => opt.value).join(', ')}
             </p>
           )}
@@ -77,7 +77,7 @@ const CartRow = ({ item, onUpdateQty, onRemove, onSaveForLater }) => {
               Remove
             </button>
             <button
-              className="text-xs text-primary hover:underline transition-colors"
+              className="text-xs text-shazi-gold hover:underline transition-colors"
               onClick={() => onSaveForLater(item.id)}
             >
               Save for later
@@ -87,7 +87,7 @@ const CartRow = ({ item, onUpdateQty, onRemove, onSaveForLater }) => {
       </td>
 
       {/* Price */}
-      <td className="py-4 md:px-4 px-1 text-gray-600">Rs {price}</td>
+      <td className="py-4 md:px-4 px-1 ">Rs {price}</td>
 
       {/* Quantity */}
       <td className="py-4 md:px-4 px-1">
@@ -99,7 +99,7 @@ const CartRow = ({ item, onUpdateQty, onRemove, onSaveForLater }) => {
             type="number"
             value={quantity}
             onChange={(e) => onUpdateQty(item.id, Number(e.target.value))}
-            className="w-8 border text-center appearance-none"
+            className="w-8 text-center bg-transparent"
           />
           <button onClick={() => onUpdateQty(item.id, quantity + 1)}>
             <Image src={assets.increase_arrow} alt="increase" className="w-4 h-4" />
@@ -108,7 +108,7 @@ const CartRow = ({ item, onUpdateQty, onRemove, onSaveForLater }) => {
       </td>
 
       {/* Subtotal */}
-      <td className="py-4 md:px-4 px-1 text-gray-600">Rs {total}</td>
+      <td className="py-4 md:px-4 px-1">Rs {total}</td>
     </tr>
   );
 };
@@ -144,7 +144,7 @@ const SavedRow = ({ item, onMoveToCart, onRemove }) => {
         <p className="text-sm text-gray-600 mt-0.5">Rs {price}</p>
         <div className="flex gap-4 mt-1">
           <button
-            className="text-xs text-primary hover:underline transition-colors"
+            className="text-xs text-shazi-gold hover:underline transition-colors"
             onClick={() => onMoveToCart(item.id)}
           >
             Move to cart
@@ -179,14 +179,15 @@ const Cart = () => {
     <>
       <Navbar />
       <PageHero title="Cart" />
+
       <div className="flex flex-col md:flex-row gap-10 px-6 md:px-16 lg:px-32 pt-24 mb-20">
         <div className="flex-1">
           {/* ── Cart header ── */}
           <div className="flex items-center justify-between mb-8 border-b border-gray-500/30 pb-6">
-            <p className="text-2xl md:text-3xl text-gray-500">
-              Your <span className="font-medium text-primary">Cart</span>
+            <p className="text-2xl md:text-3xl ">
+              Your <span className="font-medium text-shazi-gold">Cart</span>
             </p>
-            <p className="text-lg md:text-xl text-gray-500/80">{cartCount} Items</p>
+            <p className="text-lg md:text-xl">{cartCount} Items</p>
           </div>
 
           {/* ── Cart table ── */}
@@ -194,12 +195,12 @@ const Cart = () => {
             <table className="min-w-full table-auto">
               <thead className="text-left">
                 <tr>
-                  <th className="text-nowrap pb-6 md:px-4 px-1 text-gray-600 font-medium">
+                  <th className="text-nowrap pb-6 md:px-4 px-1 font-medium">
                     Product Details
                   </th>
-                  <th className="pb-6 md:px-4 px-1 text-gray-600 font-medium">Price</th>
-                  <th className="pb-6 md:px-4 px-1 text-gray-600 font-medium">Quantity</th>
-                  <th className="pb-6 md:px-4 px-1 text-gray-600 font-medium">Subtotal</th>
+                  <th className="pb-6 md:px-4 px-1 font-medium">Price</th>
+                  <th className="pb-6 md:px-4 px-1 font-medium">Quantity</th>
+                  <th className="pb-6 md:px-4 px-1 font-medium">Subtotal</th>
                 </tr>
               </thead>
               <tbody>
@@ -223,7 +224,7 @@ const Cart = () => {
           {/* ── Continue shopping ── */}
           <Link
             href={'/all-products'}
-            className="group flex items-center mt-6 gap-2 text-primary w-max cursor-pointer"
+            className="group flex items-center mt-6 gap-2 text-shazi-gold w-max cursor-pointer"
           >
             <Image
               className="group-hover:-translate-x-1 transition"
@@ -239,7 +240,7 @@ const Cart = () => {
               <div className="flex items-center justify-between mb-6 border-b border-gray-500/30 pb-4">
                 <p className="text-xl md:text-2xl text-gray-500">
                   Saved for{' '}
-                  <span className="font-medium text-primary">Later</span>
+                  <span className="font-medium text-shazi-gold">Later</span>
                 </p>
                 <p className="text-sm text-gray-500/80">{savedItems.length} Item{savedItems.length !== 1 ? 's' : ''}</p>
               </div>

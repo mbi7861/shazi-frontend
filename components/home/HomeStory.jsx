@@ -29,7 +29,7 @@ const BrandStory = () => {
                     </h2>
 
                     {/* Italic Quote */}
-                    <p className="text-lg font-serif italic text-shazi-black/80 leading-relaxed">
+                    <p className="text-lg font-serif italic leading-relaxed">
                         The Art of Shazi is a silent dialogue between the artisan and
                         the earth. It is where raw metal meets the patience of a steady
                         hand, and where light finds its perfect rhythm within the facets
@@ -37,7 +37,7 @@ const BrandStory = () => {
                     </p>
 
                     {/* Body Text */}
-                    <p className="text-sm text-gray-600 leading-relaxed">
+                    <p className="text-sm leading-relaxed">
                         Every curve is intentional, every setting a testament to a legacy
                         of refinement. We do not merely create jewelry; we capture fleeting
                         moments of beauty and cast them in eternal form. Each piece is a

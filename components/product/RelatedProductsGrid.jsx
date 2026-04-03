@@ -12,7 +12,7 @@ const RelatedProductsGrid = ({ slug }) => {
         productService.fetchRelatedProducts(slug)
             .then((products) => {
                 console.log(products);
-                
+
                 if (products) setRelatedProducts(products.data.slice(0, 5));
             })
             .finally(() => setLoading(false));
@@ -23,9 +23,9 @@ const RelatedProductsGrid = ({ slug }) => {
             <div className="flex flex-col items-center mt-16 pb-14">
                 <div className="flex flex-col items-center mb-4">
                     <p className="text-3xl font-medium">
-                        Related <span className="font-medium text-primary">Products</span>
+                        Related <span className="font-medium text-shazi-gold">Products</span>
                     </p>
-                    <div className="w-28 h-0.5 bg-primary mt-2"></div>
+                    <div className="w-28 h-0.5 bg-shazi-gold mt-2"></div>
                 </div>
                 {/* Skeleton placeholders */}
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-6 w-full">
@@ -43,9 +43,9 @@ const RelatedProductsGrid = ({ slug }) => {
         <div className="flex flex-col items-center">
             <div className="flex flex-col items-center mb-4 mt-16">
                 <p className="text-3xl font-medium">
-                    Related <span className="font-medium text-primary">Products</span>
+                    Related <span className="font-medium text-shazi-gold">Products</span>
                 </p>
-                <div className="w-28 h-0.5 bg-primary mt-2"></div>
+                <div className="w-28 h-0.5 bg-shazi-gold mt-2"></div>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-6 pb-14 w-full">
                 {relatedProducts.map((product, index) => (

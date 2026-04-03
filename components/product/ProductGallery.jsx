@@ -9,7 +9,6 @@ const ProductGallery = ({ images, productTitle, primaryImage }) => {
         primaryImage || images?.[0]?.uuid || null
     );
 
-    // Update main image when variant's primary_image changes
     useEffect(() => {
         setMainImage(primaryImage || images?.[0]?.uuid || null);
     }, [primaryImage, images]);
@@ -36,12 +35,12 @@ const ProductGallery = ({ images, productTitle, primaryImage }) => {
                     <div
                         key={index}
                         onClick={() => setMainImage(image.uuid)}
-                        className="cursor-pointer rounded-lg overflow-hidden bg-gray-500/10 aspect-square"
+                        className={`cursor-pointer rounded-lg overflow-hidden aspect-square ${mainImage === image.uuid ? 'border-2 border-shazi-gold' : ''}`}
                     >
                         <Image
                             src={getImageUrl(image.uuid)}
                             alt="alt"
-                            className="w-full h-auto object-cover mix-blend-multiply"
+                            className="w-full h-auto object-cover "
                             width={1280}
                             height={720}
                         />

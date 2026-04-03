@@ -22,8 +22,8 @@ const SaveForLaterButton = ({ currentItem, productData, className = "" }) => {
         <button
             onClick={handleToggle}
             aria-label={isSaved ? "Remove from saved items" : "Save for later"}
-            aria-pressed={isSaved} 
-            className={`w-auto px-3 py-3.5 border border-gray-300 text-sm text-gray-600 hover:border-primary hover:text-primary transition ${className}`}
+            aria-pressed={isSaved}
+            className={`w-auto px-3 py-3.5 border border-shazi-gold text-sm text-gray-600 hover:border-shazi-gold hover:text-shazi-gold transition ${className}`}
         >
             {isSaved
                 ? <HeartFilledIcon className="w-5 h-5" aria-hidden="true" />

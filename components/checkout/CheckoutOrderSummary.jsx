@@ -12,7 +12,7 @@ export default function CheckoutOrderSummary({
 }) {
   return (
     <div className="lg:w-2/5">
-      <div className="bg-white rounded-lg shadow-md p-6 sticky top-8">
+      <div className=" rounded-lg border border-white shadow-md p-6 sticky top-8">
         <p className="text-2xl md:text-2xl text-gray-500 mb-6">
           Order{" "}
           <span className="font-semibold text-primary"> Summary</span>

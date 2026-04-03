@@ -41,15 +41,16 @@ export default function ContactForm() {
         <>
             <Navbar />
             <PageHero title="Contact Us" />
+
             <div className="px-6 md:px-16 lg:px-32 py-24 flex flex-col md:flex-row justify-between">
                 <form className="w-full max-w-xl">
-                    <p className="text-2xl md:text-3xl text-gray-500">
-                        Contact <span className="font-semibold text-primary">Us</span>
+                    <p className="text-2xl md:text-3xl ">
+                        Contact <span className="font-semibold text-shazi-gold">Us</span>
                     </p>
 
                     <div className="space-y-4 mt-10">
                         {/* Full Name */}
-                        <label className="block text-sm font-medium text-gray-600">
+                        <label className="block text-sm font-medium ">
                             Full Name
                             <input
                                 type="text"
@@ -61,7 +62,7 @@ export default function ContactForm() {
                         </label>
 
                         {/* Email */}
-                        <label className="block text-sm font-medium text-gray-600">
+                        <label className="block text-sm font-medium ">
                             Email Address
                             <input
                                 type="email"
@@ -73,7 +74,7 @@ export default function ContactForm() {
                         </label>
 
                         {/* Subject */}
-                        <label className="block text-sm font-medium text-gray-600">
+                        <label className="block text-sm font-medium ">
                             Subject
                             <input
                                 type="text"
@@ -84,7 +85,7 @@ export default function ContactForm() {
                         </label>
 
                         {/* Message */}
-                        <label className="block text-sm font-medium text-gray-600">
+                        <label className="block text-sm font-medium ">
                             Message
                             <textarea
                                 name="message"
@@ -97,7 +98,7 @@ export default function ContactForm() {
 
                         <button
                             onSubmit={onSubmit}
-                            className="w-full bg-primary text-white py-3 hover:bg-orange-700 transition uppercase"
+                            className="w-full bg-shazi-gold text-white py-3 hover:bg-shazi-gold/80 transition uppercase"
                         >
                             Send Message
                         </button>
