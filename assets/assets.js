@@ -26,7 +26,7 @@ import checkmark from "./checkmark.png";
 import category_breakers from "./categories/breakers.png";
 import category_sockets from "./categories/sockets.png";
 import banner1 from "./banner_img_1.png";
-import footerBg from "./footer-bg.jpg";
+import footerBg from "./footer-bg-2.jpg";
 import heroImage from "./hero-image.png";
 
 export const assets = {
