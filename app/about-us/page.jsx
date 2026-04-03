@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import PageHero from "@/components/PageHero";
 
 export const metadata = {
   title: "About Us - Shazi Jewels",
@@ -13,6 +14,7 @@ export default function AboutUs() {
     <>
       <Navbar />
       <div className="px-6 md:px-16 lg:px-32 py-16">
+      <PageHero title="About Us" />
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold mb-4">
             About <span className="text-primary">Us</span>

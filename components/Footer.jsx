@@ -13,7 +13,7 @@ const Footer = () => {
       />
       {/* Overlay for readability */}
       <div className="absolute inset-0" />
-      <div className="relative flex flex-col md:flex-row items-start justify-center px-6 md:px-16 lg:px-32 gap-10 py-14 border-b border-white/20 text-gray-100">
+      <div className="relative flex flex-col md:flex-row items-start justify-center px-6 md:px-16 lg:px-32 gap-10 py-14 border-t-2 border-t-shazi-gold text-gray-100">
         <div className="w-4/5">
           {/*<Image className="w-28 md:w-32" src={assets.logo} alt="logo" />*/}
           <Image src={assets.logo} alt="logo" width={200} />

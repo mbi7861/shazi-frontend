@@ -21,7 +21,7 @@ const HomeProducts = ({ products: ssrProducts }) => {
                 <div className="w-16 h-[1px] bg-shazi-gold mx-auto" />
             </div>
             {products && products.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
                     {products.map((product, index) => (
                         <ProductCard
                             key={product.id || product.slug || index}
@@ -39,7 +39,7 @@ const HomeProducts = ({ products: ssrProducts }) => {
             <div className="mt-20 text-center">
                 <Link
                     href="/all-products"
-                    className="text-lg uppercase tracking-widest border-b border-shazi-gold pb-1 hover:text-shazi-gold transition-colors font-medium inline-block"
+                    className="text-sm uppercase tracking-widest border-b border-shazi-gold pb-1 hover:text-shazi-gold transition-colors font-medium inline-block"
                 >
                     Explore All
                 </Link>

@@ -8,6 +8,7 @@ import Navbar from '@/components/Navbar';
 import { useCart } from '@/context/CartContext';
 import Link from 'next/link';
 import { getImageUrl } from '@/app/utils/utils';
+import PageHero from '@/components/PageHero';
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 
@@ -177,6 +178,7 @@ const Cart = () => {
   return (
     <>
       <Navbar />
+      <PageHero title="Cart" />
       <div className="flex flex-col md:flex-row gap-10 px-6 md:px-16 lg:px-32 pt-24 mb-20">
         <div className="flex-1">
           {/* ── Cart header ── */}

@@ -7,6 +7,7 @@ import { useState } from "react"
 import Navbar from "@/components/Navbar";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
+import PageHero from "@/components/PageHero";
 
 const contactSchema = z.object({
     name: z.string().min(1, "Name is required"),
@@ -39,6 +40,7 @@ export default function ContactForm() {
     return (
         <>
             <Navbar />
+            <PageHero title="Contact Us" />
             <div className="px-6 md:px-16 lg:px-32 py-24 flex flex-col md:flex-row justify-between">
                 <form className="w-full max-w-xl">
                     <p className="text-2xl md:text-3xl text-gray-500">

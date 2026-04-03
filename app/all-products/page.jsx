@@ -1,4 +1,5 @@
 "use client";
+import PageHero from "@/components/PageHero";
 import ProductCard from "@/components/ProductCard";
 import ProductFilters from "@/components/ProductFilters";
 import Navbar from "@/components/Navbar";
@@ -112,6 +113,7 @@ const AllProducts = () => {
       <Navbar />
 
       <div className="flex flex-col items-start px-6 md:px-16 lg:px-32 mt-24">
+      <PageHero title="All Products" />
         {/* <div className="max-w-2xl">
           <h2 className="text-5xl md:text-7xl font-normal mb-6 serif leading-tight italic">
             Fine Jewelry
