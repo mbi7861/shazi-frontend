@@ -6,6 +6,7 @@ import { useOrders } from "@/context/OrderContext";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import Loading from "@/components/Loading";
+import PageHero from "@/components/PageHero";
 
 const getOrderStatusLabel = (status) => {
     const statuses = {
@@ -35,7 +36,8 @@ const MyOrders = () => {
     return (
         <>
             <Navbar />
-            <div className="flex flex-col justify-between px-6 md:px-16 lg:px-32 pt-24 min-h-screen">
+            <PageHero title="My Orders" />
+            <div className="flex flex-col justify-between px-6 md:px-16 lg:px-32 pt-10 min-h-screen">
                 <div className="space-y-5">
                     <h2 className="text-lg font-medium mt-6">My Orders</h2>
                     {isLoading ? (

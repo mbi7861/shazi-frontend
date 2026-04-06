@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Navbar from '@/components/Navbar'
 import Link from 'next/link'
 import { orderService } from "@/services/orderService";
+import PageHero from '@/components/PageHero';
 
 const OrderPlaced = () => {
   const router = useRouter();
@@ -116,6 +117,7 @@ const OrderPlaced = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       <Navbar />
+      <PageHero title="Order Placed" />
       <div className="flex-1 container mx-auto px-4 py-8 max-w-4xl">
         {/* Success Header */}
         <div className="text-center mb-8">
@@ -160,8 +162,8 @@ const OrderPlaced = () => {
             <div>
               <p className="text-sm text-gray-500 mb-1">Payment Status</p>
               <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${orderData.payment_status === 'completed' ? 'bg-green-100 text-green-800' :
-                  orderData.payment_status === 'pending' || orderData.payment_status === 'pending_delivery' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-red-100 text-red-800'
+                orderData.payment_status === 'pending' || orderData.payment_status === 'pending_delivery' ? 'bg-yellow-100 text-yellow-800' :
+                  'bg-red-100 text-red-800'
                 }`}>
                 {getPaymentStatusLabel(orderData.payment_status)}
               </span>
@@ -173,10 +175,10 @@ const OrderPlaced = () => {
             <div>
               <p className="text-sm text-gray-500 mb-1">Order Status</p>
               <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${orderData.status === 'delivered' ? 'bg-green-100 text-green-800' :
-                  orderData.status === 'shipped' ? 'bg-blue-100 text-blue-800' :
-                    orderData.status === 'processing' ? 'bg-yellow-100 text-yellow-800' :
-                      orderData.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                        'bg-gray-100 text-gray-800'
+                orderData.status === 'shipped' ? 'bg-blue-100 text-blue-800' :
+                  orderData.status === 'processing' ? 'bg-yellow-100 text-yellow-800' :
+                    orderData.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                      'bg-gray-100 text-gray-800'
                 }`}>
                 {getOrderStatusLabel(orderData.status)}
               </span>

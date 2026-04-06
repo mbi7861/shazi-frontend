@@ -42,7 +42,7 @@ export default function HeroSection() {
             </Link>
 
             <Link
-              href="/#collections"
+              href="/categories"
               className="inline-flex items-center justify-center rounded-full border border-white/80 bg-white/5 px-8 py-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-white backdrop-blur-md transition hover:bg-white/12"
             >
               Explore
