@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 const HomeCollections = ({ categories }) => {
   return (
-    <section className="py-12 px-8 max-w-7xl mx-auto">
+    <section className="py-12 px-4 max-w-7xl mx-auto">
       {/* Heading */}
       <div className="text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-serif text-shazi-black mb-4">
@@ -14,10 +14,10 @@ const HomeCollections = ({ categories }) => {
       </div>
 
       {/* Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
         {categories.map((cat, idx) => (
           // <CollectionCard key={`${item.slug}-${idx}`} item={item} />
-          <Link 
+          <Link
             className="group cursor-pointer block"
             key={cat.slug || idx}
             href={`/all-products?category=${cat.slug}`}

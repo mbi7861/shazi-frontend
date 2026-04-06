@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import { AppProvider } from "@/context/AppProvider";
 import { Toaster } from "react-hot-toast";
 import WhatsappWidget from "@/components/social/WhatsappWidget";
+import SearchContainer from "@/components/search/SearchContainer";
 import Script from "next/script";
 
 const outfit = Outfit({ subsets: ["latin"], weight: ["300", "400", "500"] });
@@ -87,6 +88,7 @@ export default function RootLayout({ children }) {
         <Script src="https://accounts.google.com/gsi/client" strategy="lazyOnload" />
         <AppProvider>
           {children}
+          <SearchContainer />
           <WhatsappWidget phoneNumber="+923105045353" />
           <Toaster />
         </AppProvider>
