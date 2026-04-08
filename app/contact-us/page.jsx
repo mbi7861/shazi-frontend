@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
 import PageHero from "@/components/PageHero";
+import Footer from "@/components/Footer"
 
 const contactSchema = z.object({
     name: z.string().min(1, "Name is required"),
@@ -110,6 +111,7 @@ export default function ContactForm() {
                     alt="contact_us_image"
                 />
             </div>
+            <Footer />
         </>
     )
 }

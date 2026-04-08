@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
 import { useOrders } from "@/context/OrderContext";
@@ -29,9 +29,13 @@ const getOrderStatusStyles = (status) => {
 };
 
 const MyOrders = () => {
-    const { orders, isLoading } = useOrders();
+    const { orders, isLoading, fetchOrders } = useOrders();
     const currency = process.env.NEXT_PUBLIC_CURRENCY || "Rs";
     const [expandedOrderId, setExpandedOrderId] = useState(null);
+
+    useEffect(() => {
+        fetchOrders();
+    }, []);
 
     return (
         <>

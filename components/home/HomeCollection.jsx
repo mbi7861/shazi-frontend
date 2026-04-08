@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 const HomeCollections = ({ categories }) => {
   return (
-    <section className="py-12 px-4 max-w-7xl mx-auto">
+    <section className="py-8 pt-12 px-4 max-w-7xl mx-auto">
       {/* Heading */}
       <div className="text-center mb-16">
         <h2 className="text-4xl md:text-5xl font-serif text-shazi-black mb-4">
@@ -39,6 +39,14 @@ const HomeCollections = ({ categories }) => {
             </div>
           </Link>
         ))}
+      </div>
+      <div className="mt-14 text-center">
+        <Link
+          href="/categories"
+          className="text-sm uppercase tracking-widest border-b border-shazi-gold pb-1 hover:text-shazi-gold transition-colors font-medium inline-block"
+        >
+          Explore All
+        </Link>
       </div>
     </section>
   );

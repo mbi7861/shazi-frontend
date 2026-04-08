@@ -41,7 +41,7 @@ const ProductGallery = ({ images, productTitle, primaryImage }) => {
                         <Image
                             src={getImageUrl(image.uuid)}
                             alt="alt"
-                            className="w-full h-auto object-cover mix-blend-multiply"
+                            className="w-full h-full object-cover mix-blend-multiply"
                             width={1280}
                             height={720}
                         />

@@ -112,7 +112,7 @@ const AllProducts = () => {
     <>
       <Navbar />
       <PageHero title="All Products" />
-      <div className="flex flex-col items-start px-6 md:px-16 lg:px-32 mt-24">
+      <div className="flex flex-col items-start px-6 md:px-16 lg:px-32">
         {/* <div className="max-w-2xl">
           <h2 className="text-5xl md:text-7xl font-normal mb-6 serif leading-tight italic">
             Fine Jewelry
@@ -123,7 +123,7 @@ const AllProducts = () => {
             to be worn for a lifetime.
           </p>
         </div> */}
-        <div className="flex flex-col items-end w-full">
+        {/* <div className="flex flex-col items-end w-full">
           {hasActiveFilters && (
             <button
               onClick={clearFilters}
@@ -132,7 +132,7 @@ const AllProducts = () => {
               Clear filters
             </button>
           )}
-        </div>
+        </div> */}
 
         {/* Results Summary */}
         <div className="w-full mt-6 mb-4">

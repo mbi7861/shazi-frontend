@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useMemo, useState, useCallback } from 'react';
+import { createContext, useContext, useMemo, useState, useCallback } from 'react';
 import { orderService } from '@/services';
 import { useAuth } from '@/context/AuthContext';
 import toast from 'react-hot-toast';
@@ -48,9 +48,6 @@ export const OrderProvider = ({ children }) => {
     await fetchOrders();
   };
 
-  useEffect(() => {
-    fetchOrders();
-  }, [fetchOrders]);
 
   const value = useMemo(
     () => ({

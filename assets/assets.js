@@ -5,9 +5,10 @@ import cart_icon from "./cart_icon.svg";
 import contact_us from "./contact-us.png";
 import add_icon from "./add_icon.svg";
 import order_icon from "./order_icon.svg";
-import instagram_icon from "./instagram_icon.svg";
-import facebook_icon from "./facebook_icon.svg";
-import twitter_icon from "./twitter_icon.svg";
+import instagram_icon from "./social-icons/instagram.svg";
+import facebook_icon from "./social-icons/facebook.svg";
+import pinterest_icon from "./social-icons/pinterest.svg";
+import tiktok_icon from "./social-icons/tiktok.svg";
 import box_icon from "./box_icon.svg";
 import product_list_icon from "./product_list_icon.svg";
 import menu_icon from "./menu_icon.svg";
@@ -23,10 +24,7 @@ import redirect_icon from "./redirect_icon.svg";
 import star_dull_icon from "./star_dull_icon.svg";
 import upload_area from "./upload_area.png";
 import checkmark from "./checkmark.png";
-import category_breakers from "./categories/breakers.png";
-import category_sockets from "./categories/sockets.png";
-import banner1 from "./banner_img_1.png";
-import footerBg from "./footer-bg-2.jpeg";
+import footerBg from "./footer-bg-2.jpg";
 import heroImage from "./hero-image.png";
 
 export const assets = {
@@ -40,7 +38,8 @@ export const assets = {
     contact_us,
     instagram_icon,
     facebook_icon,
-    twitter_icon,
+    pinterest_icon,
+    tiktok_icon,
     box_icon,
     product_list_icon,
     menu_icon,
@@ -55,13 +54,8 @@ export const assets = {
     redirect_icon,
     star_dull_icon,
     upload_area,
-    banner1,
     footerBg,
     checkmark,
-    categories: {
-        breakers: category_breakers,
-        sockets: category_sockets,
-    }
 };
 
 export const BagIcon = () => {

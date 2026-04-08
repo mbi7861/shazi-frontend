@@ -2,6 +2,7 @@ import React from "react";
 import { assets } from "@/assets/assets";
 import Image from "next/image";
 import Link from "next/link";
+import { socialLinks } from "@/app/config/socialLinks";
 
 const Footer = () => {
   return (
@@ -13,7 +14,7 @@ const Footer = () => {
       />
       {/* Overlay for readability */}
       <div className="absolute inset-0" />
-      <div className="relative flex flex-col md:flex-row items-start justify-center px-6 md:px-16 lg:px-32 gap-10 py-14 border-t-2 border-t-shazi-gold text-gray-100">
+      <div className="relative flex flex-col md:flex-row items-start justify-center px-6 md:px-16 lg:px-32 gap-10 py-8 border-t-2 border-t-shazi-gold text-gray-100">
         <div className="w-4/5">
           {/*<Image className="w-28 md:w-32" src={assets.logo} alt="logo" />*/}
           <Image src={assets.logo} alt="logo" width={200} />
@@ -51,6 +52,30 @@ const Footer = () => {
             <div className="text-sm space-y-2 text-gray-200">
               <p>Contact us for inquiries</p>
               <p>info@shazijewels.com</p>
+            </div>
+            <div className="flex gap-4 mt-6">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.id}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={social.label}
+                  className="w-9 h-9 rounded-full border-2 border-white flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+                >
+                  {social.id === "instagram" ? (
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                      <circle cx="12" cy="12" r="4" />
+                      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                    </svg>
+                  ) : (
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d={social.icon} />
+                    </svg>
+                  )}
+                </a>
+              ))}
             </div>
           </div>
         </div>

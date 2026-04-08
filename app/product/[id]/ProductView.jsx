@@ -121,7 +121,7 @@ const ProductView = ({ initialProduct }) => {
                     </nav>
                 </div>
             </div>
-            <div className="px-6 md:px-16 lg:px-32 pt-14 mt-14 space-y-10">
+            <div className="px-6 md:px-16 lg:px-32 pt-14 space-y-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
                     <ProductGallery
                         images={productData.images}

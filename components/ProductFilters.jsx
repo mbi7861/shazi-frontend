@@ -4,14 +4,14 @@ import React, { useState, useEffect } from 'react';
 import { assets } from '@/assets/assets';
 import Image from 'next/image';
 
-const ProductFilters = ({ 
-    filters, 
-    setFilters, 
-    categories, 
+const ProductFilters = ({
+    filters,
+    setFilters,
+    categories,
     onFilterChange,
     onClearFilters,
     priceRange,
-    setPriceRange 
+    setPriceRange
 }) => {
     const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
     const [expandedSections, setExpandedSections] = useState({
@@ -34,14 +34,22 @@ const ProductFilters = ({
     };
 
     const handlePriceChange = (type, value) => {
-        const newPriceRange = { ...priceRange, [type]: value };
+        // Validate price: clamp between 0 and 10000
+        let validatedValue = value;
+        if (value !== '') {
+            const numValue = Number(value);
+            if (numValue < 0) validatedValue = '0';
+            else if (numValue > 10000) validatedValue = '100000';
+        }
+
+        const newPriceRange = { ...priceRange, [type]: validatedValue };
         setPriceRange(newPriceRange);
-        
+
         // Update filters with new price range
-        const newFilters = { 
-            ...filters, 
-            min_price: newPriceRange.min || '', 
-            max_price: newPriceRange.max || '' 
+        const newFilters = {
+            ...filters,
+            min_price: newPriceRange.min || '',
+            max_price: newPriceRange.max || ''
         };
         setFilters(newFilters);
         onFilterChange(newFilters);
@@ -107,7 +115,7 @@ const ProductFilters = ({
                             className={`transform transition-transform ${expandedSections.categories ? 'rotate-180' : ''}`}
                         /> */}
                     </button>
-                    
+
                     {expandedSections.categories && (
                         <div className="space-y-3">
                             {categories?.map((category) => (
@@ -148,7 +156,7 @@ const ProductFilters = ({
                             className={`transform transition-transform ${expandedSections.price ? 'rotate-180' : ''}`}
                         /> */}
                     </button>
-                    
+
                     {expandedSections.price && (
                         <div className="space-y-4">
                             <div className="flex gap-3">
@@ -157,6 +165,8 @@ const ProductFilters = ({
                                     <input
                                         type="number"
                                         placeholder="0"
+                                        min={0}
+                                        max={10000}
                                         value={priceRange.min}
                                         onChange={(e) => handlePriceChange('min', e.target.value)}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-primary"
@@ -167,6 +177,8 @@ const ProductFilters = ({
                                     <input
                                         type="number"
                                         placeholder="10000"
+                                        min={0}
+                                        max={10000}
                                         value={priceRange.max}
                                         onChange={(e) => handlePriceChange('max', e.target.value)}
                                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-primary"
@@ -192,7 +204,7 @@ const ProductFilters = ({
                             className={`transform transition-transform ${expandedSections.sort ? 'rotate-180' : ''}`}
                         /> */}
                     </button>
-                    
+
                     {expandedSections.sort && (
                         <div className="space-y-3">
                             {sortOptions.map((option) => (

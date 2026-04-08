@@ -10,7 +10,7 @@ const BrandStory = () => {
                     <img
                         src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800"
                         alt="Artisan crafting jewelry with precision"
-                        className="w-full object-cover aspect-[4/5]"
+                        className="w-full object-cover aspect-square"
                     />
                     {/* Small accent box bottom-left */}
                     <div className="absolute -bottom-4 -left-4 w-24 h-24 border border-shazi-gold opacity-40" />

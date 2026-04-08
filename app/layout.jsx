@@ -1,4 +1,3 @@
-// app/layout.jsx
 import { Outfit, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import "slick-carousel/slick/slick.css";
@@ -17,8 +16,6 @@ const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
   display: "swap",
 });
-
-// ✅ Meaningful, keyword-rich description (150–160 chars ideal)
 export const metadata = {
   title: {
     default: "Shazi Jewels — Handcrafted Gold & Silver Jewellery",
@@ -35,7 +32,7 @@ export const metadata = {
     "necklaces",
     "earrings",
   ],
-  metadataBase: new URL("https://shazijewels.com"), // ✅ required for absolute OG URLs
+  metadataBase: new URL("https://shazi.com"),
   alternates: {
     canonical: "/",
   },
@@ -47,7 +44,7 @@ export const metadata = {
       "Shop handcrafted gold and silver jewellery at Shazi Jewels. Rings, necklaces, earrings and bracelets crafted with care.",
     images: [
       {
-        url: "/og-image.jpg", // add a 1200x630 image to /public
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
         alt: "Shazi Jewels collection",

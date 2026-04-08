@@ -7,3 +7,4 @@ export { cartService } from './cartService';
 export { authService } from './authService';
 export { orderService } from './orderService';
 export { shippingService } from './shippingService';
+export { contactService } from './contactService';
