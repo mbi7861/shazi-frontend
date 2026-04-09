@@ -1,6 +1,7 @@
 import React from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PageHero from "@/components/PageHero";
 
 export const metadata = {
   title: "Privacy Policy - Shazi Jewels",
@@ -11,6 +12,7 @@ export default function PrivacyPolicy() {
   return (
     <>
       <Navbar />
+      <PageHero title="Privacy Policy" />
       <div className="px-6 md:px-16 lg:px-32 py-16">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-3xl md:text-4xl font-bold mb-4">
@@ -22,7 +24,7 @@ export default function PrivacyPolicy() {
             <section>
               <h2 className="text-2xl font-semibold mb-4 text-gray-900">1. Introduction</h2>
               <p className="mb-4">
-                Welcome to Shazi Jewels. We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and make purchases from us.
+                Welcome to Shazi Jewels. We are privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website and make purchases from us.
               </p>
               <p>
                 Your safety is our best priority, and this extends to how we handle your personal data. By using our website, you agree to the collection and use of information in accordance with this policy.

@@ -22,7 +22,7 @@ const Footer = () => {
             Your safety is our best priority
           </p>
           <p className="mt-6 text-sm text-gray-200">
-            shazijewels is your trusted source for quality electrical and home supplies. We specialize in breakers, lights, heaters, and other essential electronics for your home. With a commitment to safety and reliability, we provide products that meet the highest standards to keep your home and family safe.
+            shazijewels is a family owned business based in Lahore, Pakistan. We specialize in artificial jewellery and have been in business for over 20 years. We are committed to providing our customers with the best possible products and services.
           </p>
         </div>
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useCallback } from "react";
-import Script from "next/script";
 
 const LocationPickerModal = ({ isOpen, onClose, onConfirm }) => {
     const mapRef = useRef(null);
@@ -11,20 +10,22 @@ const LocationPickerModal = ({ isOpen, onClose, onConfirm }) => {
     const addressRef = useRef("");
 
     const loadMap = useCallback(() => {
-        if (typeof window === "undefined" || !window.google || mapRef.current?.__mapInitialized) return;
+        if (typeof window === "undefined") return;
+        if (!window.google?.maps) return;
+        if (mapRef.current?.__mapInitialized) return;
 
         const map = new window.google.maps.Map(mapRef.current, {
             zoom: 12,
             center: { lat: 31.5204, lng: 74.3587 }, // Lahore default
             streetViewControl: false,
             mapTypeControl: false,
-          });
-    
-          const marker = new window.google.maps.Marker({
+        });
+
+        const marker = new window.google.maps.Marker({
             position: { lat: 31.5204, lng: 74.3587 },
             map,
             draggable: true,
-          });
+        });
 
         mapRef.current.__mapInitialized = true;
         markerRef.current = marker;
@@ -106,11 +107,7 @@ const LocationPickerModal = ({ isOpen, onClose, onConfirm }) => {
 
     return (
         <>
-            <Script
-                src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places&loading=async`}
-                strategy="afterInteractive"
-                onLoad={loadMap}
-            />
+
             <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
                 <div className="bg-white w-full max-w-xl rounded-lg overflow-hidden shadow-xl">
                     <div className="p-4 border-b">

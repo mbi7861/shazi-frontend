@@ -149,7 +149,7 @@ const OrderPlaced = () => {
             </div>
             <div>
               <p className="text-sm text-gray-500 mb-1">Email</p>
-              <p className="text-lg text-gray-800">{orderData.email || orderData.customer?.email || 'N/A'}</p>
+              <p className="text-lg text-gray-800">{orderData.email}</p>
             </div>
             <div>
               <p className="text-sm text-gray-500 mb-1">Order Date</p>

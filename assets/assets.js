@@ -3,6 +3,8 @@ import search_icon from "./search_icon.svg";
 import user_icon from "./user_icon.svg";
 import cart_icon from "./cart_icon.svg";
 import contact_us from "./contact-us.png";
+import about_us_tools from "./tools.png";
+import about_us from "./about-us.png";
 import add_icon from "./add_icon.svg";
 import order_icon from "./order_icon.svg";
 import instagram_icon from "./social-icons/instagram.svg";
@@ -25,7 +27,7 @@ import star_dull_icon from "./star_dull_icon.svg";
 import upload_area from "./upload_area.png";
 import checkmark from "./checkmark.png";
 import footerBg from "./footer-bg-2.jpg";
-import heroImage from "./hero-image.png";
+import heroImage from "./hero-vid.gif";
 
 export const assets = {
     heroImage,
@@ -36,6 +38,8 @@ export const assets = {
     add_icon,
     order_icon,
     contact_us,
+    about_us,
+    about_us_tools,
     instagram_icon,
     facebook_icon,
     pinterest_icon,
