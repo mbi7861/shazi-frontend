@@ -265,21 +265,23 @@ export default function AddAddressModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
-          <h2 className="text-xl font-semibold">
-            {editData ? "Edit Address" : "Add New Address"}
-          </h2>
-          <button
+    <>
+      <div className="w-full">
+        <div className="flex justify-between items-center mb-6">
+          <p className="text-xl md:text-2xl text-gray-500">
+            {editData ? "Edit" : "Add New"}{" "}
+            <span className="font-semibold text-primary"> Address</span>
+          </p>
+          {/* <button
+            type="button"
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700"
           >
             <X size={24} />
-          </button>
+          </button> */}
         </div>
 
-        <div className="p-6">
+        <div className="">
           {/* Autofill Button */}
           <div className="bg-blue-100 border border-blue-300 rounded p-4 flex justify-between items-center mb-6">
             <p className="text-sm font-semibold text-gray-700">
@@ -531,6 +533,6 @@ export default function AddAddressModal({
         onClose={() => setLocationPickerOpen(false)}
         onConfirm={handleLocationSelect}
       />
-    </div>
+    </>
   );
 }

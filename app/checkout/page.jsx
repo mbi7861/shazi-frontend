@@ -105,13 +105,19 @@ export default function CheckoutPage() {
   };
 
   const handleAddressSelect = (selectedAddress) => {
-    if (selectedAddress.id) {
+    if (selectedAddress?.id) {
       setSelectedAddressId(selectedAddress.id);
       setSelectedAddress(selectedAddress);
       setFormData((prev) => ({
         ...prev,
         address_id: selectedAddress.id,
       }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        address_id: null,
+      }));
+      setSelectedAddress(null);
     }
   };
 
@@ -217,8 +223,6 @@ export default function CheckoutPage() {
       }
     }
 
-    setIsLoading(true);
-
     try {
       const storedCart = localStorage.getItem("cart");
       const orderItems = storedCart ? JSON.parse(storedCart) : {};
@@ -257,7 +261,7 @@ export default function CheckoutPage() {
             await stripeRef.current?.getPaymentMethodId(),
         }),
       };
-
+      setIsLoading(true);
       const result = await orderService.createOrder(orderData);
       if (!result.success) {
         console.log(result);
@@ -285,12 +289,12 @@ export default function CheckoutPage() {
       console.error("Order submission error:", error);
       toast.error(error.message || "There was an error processing your order. Please try again.");
     }
+    setIsLoading(false);
   };
 
   if (isCartLoading) {
     return (
       <div className="flex flex-col min-h-screen">
-        <Navbar />
         <CheckoutSkeleton />
       </div>
     );
@@ -300,7 +304,7 @@ export default function CheckoutPage() {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <PageHero title="Checkout" />
-      <div className="flex-1 container mx-auto px-4 py-24">
+      <div className="flex-1 container mx-auto px-4 py-12">
         <div className="flex flex-col-reverse lg:flex-row gap-8">
           <CheckoutForm
             formData={formData}
