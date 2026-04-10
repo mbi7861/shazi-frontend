@@ -9,7 +9,6 @@ import PageHero from '@/components/PageHero';
 
 
 export default function AboutUs() {
-  const [active, setActive] = useState('story');
 
   return (
     <>

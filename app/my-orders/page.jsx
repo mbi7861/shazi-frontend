@@ -45,7 +45,18 @@ const MyOrders = () => {
                 <div className="space-y-5">
                     <h2 className="text-lg font-medium mt-6">My Orders</h2>
                     {isLoading ? (
-                        <Loading />
+                        // use skeleton loader
+                        <div className="flex flex-col gap-5">
+                            {[1, 2, 3].map((item) => (
+                                <div key={item} className="flex gap-5">
+                                    <div className="w-20 h-20 bg-gray-200 animate-pulse"></div>
+                                    <div className="flex-1">
+                                        <div className="h-5 bg-gray-200 animate-pulse w-1/2 mb-2"></div>
+                                        <div className="h-5 bg-gray-200 animate-pulse w-1/3"></div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     ) : orders.length === 0 ? (
                         <p className="text-sm text-gray-500">You have no orders yet.</p>
                     ) : (
@@ -152,6 +163,8 @@ const MyOrders = () => {
                                                             </p>
                                                             <p><span className="text-gray-500">Date:</span> {new Date(order.date || order.created_at).toLocaleString()}</p>
                                                             <p><span className="text-gray-500">Payment:</span> {order.payment_method || "COD"} · {order.payment_status || "Pending"}</p>
+                                                            <p className="text-gray-500">Email:<span className="text-gray-800">{order.email}</span></p>
+
                                                         </div>
                                                     </div>
 

@@ -26,7 +26,7 @@ export default function CheckoutForm({
         </p>
         <form onSubmit={onSubmit} className="space-y-3">
           {/* Email Input */}
-          <div className="mb-4">
+          <div className="mb-2">
             <label
               htmlFor="email"
               className="block text-sm font-medium text-gray-700 mb-2"

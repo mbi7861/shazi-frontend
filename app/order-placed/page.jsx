@@ -90,8 +90,9 @@ const OrderPlaced = () => {
     return (
       <div className="flex flex-col min-h-screen">
         <Navbar />
-        <div className="flex-1 flex items-center justify-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-t-orange-600 border-gray-200"></div>
+        <PageHero title="Order Placed" />
+        <div className="flex justify-center items-center h-[90vh]">
+          <div className="animate-spin rounded-full h-20 w-20 border-4 border-t-black border-gray-200"></div>
         </div>
       </div>
     );
@@ -101,6 +102,7 @@ const OrderPlaced = () => {
     return (
       <div className="flex flex-col min-h-screen">
         <Navbar />
+        <PageHero title="Order Placed" />
         <div className="flex-1 flex flex-col items-center justify-center gap-5 p-4">
           <div className="text-center text-xl font-semibold text-gray-700">Order information not found</div>
           <Link
