@@ -14,7 +14,6 @@ axiosInstance.interceptors.request.use(
         if (authToken) {
             config.headers['AUTH-TOKEN'] = authToken;
         } else {
-            // Add session ID for guest users
             const sessionId = getOrCreateSessionId();
             config.headers['X-Session-ID'] = sessionId;
         }

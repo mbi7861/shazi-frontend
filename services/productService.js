@@ -1,4 +1,5 @@
 import axiosInstance from '@/app/api/axiosInstance';
+import axios from 'axios';
 
 /**
  * Product Service
@@ -11,7 +12,7 @@ export const productService = {
    * @returns {Promise<Object>} - Products data or throws error
    */
   async fetchProducts(filters = {}) {
-        try {
+    try {
       const params = new URLSearchParams(filters).toString();
       const { data } = await axiosInstance.get(`/products?${params}`);
       if (data.status) {
@@ -19,31 +20,48 @@ export const productService = {
           products: data.data.products,
           pagination: data.data.pagination || null
         };
-    }
-    return {
+      }
+      return {
         success: false, data: null, message: data.message, errors: data.errors || {}
-    };
+      };
     } catch (error) {
       console.error("Get Products Error:", error);
       return { success: false, message: "Something Went Wrong", errors: {} };
-      }
+    }
   },
 
-  async fetchRelatedProducts(slug){
+  async fetchRelatedProducts(slug) {
     try {
-      const { data } = await axiosInstance.get(`/related-products/${slug}`);
+      const { data } = await axios.get(`${apiServiceConfig.baseURL}/related-products/${slug}`);
       if (data.status) {
         return {
-          success: false, data: data.data
+          success: true, data: data.data
         };
-    }
-    return {
+      }
+      return {
         success: false, data: null, message: data.message, errors: data.errors || {}
-    };
+      };
     } catch (error) {
       console.error("Get Products Error:", error);
       return { success: false, message: "Something Went Wrong", errors: {} };
+    }
+  },
+
+  async fetchProductsForSitemap() {
+    try {
+      const { data } = await axiosInstance.get(`/sitemap-products`);
+      if (data.status) {
+        return {
+          success: true, data: data.data
+        };
       }
+      return {
+        success: false, data: null, message: data.message, errors: data.errors || {}
+      };
+    } catch (error) {
+      console.error("Get Products Error:", error);
+      return { success: false, message: "Something Went Wrong", errors: {} };
+    }
   },
 
   /**
@@ -53,17 +71,17 @@ export const productService = {
   async fetchCategories() {
     try {
       const { data } = await axiosInstance.get('/categories');
-      
+
       if (data.status) {
         return { success: true, data: data.data };
-    }
-    return {
+      }
+      return {
         success: false, data: null, message: data.message, errors: data.errors || {}
-    };
+      };
     } catch (error) {
       console.error("Get Categories Error:", error);
       return { success: false, message: "Something Went Wrong", errors: {} };
-        }
+    }
   },
 
   /**
