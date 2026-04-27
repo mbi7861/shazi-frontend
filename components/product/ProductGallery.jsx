@@ -24,7 +24,7 @@ const ProductGallery = ({ images, productTitle, primaryImage }) => {
                 <Image
                     src={getImageUrl(mainImage)}
                     alt={productTitle}
-                    className="group-hover:scale-105 transition object-cover md:w-full md:h-full"
+                    className="group-hover:scale-105 transition object-cover w-full h-full"
                     width={800}
                     height={800}
                     loading={'eager'}

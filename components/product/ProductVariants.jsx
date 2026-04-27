@@ -16,11 +16,10 @@ const ProductVariants = ({ variations, selectedOptions, onOptionSelect }) => {
                             <button
                                 key={option.id}
                                 onClick={() => onOptionSelect(variation.id, option)}
-                                className={`px-3 py-1.5 border rounded-full text-sm transition ${
-                                    selectedOptions[variation.id] === option.id
-                                        ? "bg-primary-light0 text-white border-primary"
+                                className={`px-3 py-1.5 border rounded-full text-sm transition ${selectedOptions[variation.id] === option.id
+                                        ? "bg-primary-light0 border-shazi-gold border-2"
                                         : "bg-gray-100 text-gray-800 border-gray-300"
-                                }`}
+                                    }`}
                             >
                                 {option.value}
                             </button>

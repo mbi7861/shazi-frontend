@@ -9,6 +9,8 @@ import { assets } from "@/assets/assets";
 import Image from "next/image";
 import PageHero from "@/components/PageHero";
 import Footer from "@/components/Footer"
+import { contactService } from "@/services";
+import toast from "react-hot-toast";
 
 const contactSchema = z.object({
     name: z.string().min(1, "Name is required"),
@@ -32,10 +34,13 @@ export default function ContactForm() {
 
     const onSubmit = async (data) => {
         console.log("Submitted", data)
-        // Simulate an API call
-        await new Promise(res => setTimeout(res, 1000))
-        setSubmitted(true)
-        reset()
+        try {
+            const response = await contactService.submitContactForm(data);
+            toast.success(response.message);
+            reset();
+        } catch (error) {
+            toast.error(error.message);
+        }
     }
 
     return (
