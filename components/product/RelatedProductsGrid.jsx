@@ -11,8 +11,6 @@ const RelatedProductsGrid = ({ slug }) => {
     useEffect(() => {
         productService.fetchRelatedProducts(slug)
             .then((products) => {
-                console.log(products);
-                
                 if (products) setRelatedProducts(products.data.slice(0, 5));
             })
             .finally(() => setLoading(false));

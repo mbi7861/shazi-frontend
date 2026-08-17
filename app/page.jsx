@@ -42,52 +42,52 @@ export const metadata = {
 };
 
 export default async function Home() {
-    // Fetch data server-side for SSR
-    const [productsData, categories] = await Promise.all([
-        fetchProductsSSR({ per_page: 5 }),
-        fetchCategoriesSSR(),
-    ]);
+  // Fetch data server-side for SSR
+  const [productsData, categories] = await Promise.all([
+    fetchProductsSSR({ per_page: 4 }),
+    fetchCategoriesSSR(),
+  ]);
 
-    const products = productsData.products || [];
+  const products = productsData.products || [];
 
-    // Generate structured data for SEO
-    const structuredData = {
-        "@context": "https://schema.org",
-        "@type": "Store",
-        "name": "Shazi Jewels",
-        "description": "Your Trusted Online Shopping Destination",
-        "url": apiServiceConfig.siteUrl,
-        "logo": `${apiServiceConfig.siteUrl}/logo.svg`,
-        "priceRange": "$$",
-        "address": {
-            "@type": "PostalAddress",
-            "addressCountry": "PK"
-        },
-        "sameAs": [
-            // Add your social media links here
-        ],
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": {
-                "@type": "EntryPoint",
-                "urlTemplate": `${apiServiceConfig.siteUrl}/all-products?search={search_term_string}`
-            },
-            "query-input": "required name=search_term_string"
-        }
-    };
+  // Generate structured data for SEO
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Store",
+    "name": "Shazi Jewels",
+    "description": "Your Trusted Online Shopping Destination",
+    "url": apiServiceConfig.siteUrl,
+    "logo": `${apiServiceConfig.siteUrl}/logo.svg`,
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "PK"
+    },
+    "sameAs": [
+      // Add your social media links here
+    ],
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": `${apiServiceConfig.siteUrl}/all-products?search={search_term_string}`
+      },
+      "query-input": "required name=search_term_string"
+    }
+  };
 
 
-    return (
-        <>
-            <script type="application/ld+json"  dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}  />
-            <Navbar />
-            <HeroSection />
-            <div className="px-6 md:px-16 lg:px-16">
-                <HomeCollections categories={categories.data} />
-                <HomeProducts products={products} />
-                <BrandStory/>
-            </div>
-            <Footer />
-        </>
-    );
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+      <Navbar />
+      <HeroSection />
+      <div className="px-6 md:px-16 lg:px-16">
+        <HomeCollections categories={categories.data} />
+        <HomeProducts products={products} />
+        <BrandStory />
+      </div>
+      <Footer />
+    </>
+  );
 }

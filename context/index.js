@@ -11,6 +11,3 @@ export { OrderContext, useOrders, OrderProvider } from './OrderContext';
 
 // Composed provider
 export { AppProvider } from './AppProvider';
-
-// Legacy exports for backward compatibility during migration
-export { AppContext, useAppContext, AppContextProvider } from './AppContext';

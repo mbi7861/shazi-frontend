@@ -1,5 +1,6 @@
 import axiosInstance from '@/app/api/axiosInstance';
 import axios from 'axios';
+import { apiServiceConfig } from '@/app/config/apiService';
 
 /**
  * Product Service
@@ -33,23 +34,6 @@ export const productService = {
   async fetchRelatedProducts(slug) {
     try {
       const { data } = await axios.get(`${apiServiceConfig.baseURL}/related-products/${slug}`);
-      if (data.status) {
-        return {
-          success: true, data: data.data
-        };
-      }
-      return {
-        success: false, data: null, message: data.message, errors: data.errors || {}
-      };
-    } catch (error) {
-      console.error("Get Products Error:", error);
-      return { success: false, message: "Something Went Wrong", errors: {} };
-    }
-  },
-
-  async fetchProductsForSitemap() {
-    try {
-      const { data } = await axiosInstance.get(`/sitemap-products`);
       if (data.status) {
         return {
           success: true, data: data.data

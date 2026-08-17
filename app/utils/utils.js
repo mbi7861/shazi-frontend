@@ -7,13 +7,6 @@ export const getImageUrl = (imageUUID, folder = 'products') => {
     return `${BASE_URL}/${folder}/${imageUUID}`;
 };
 
-Array.prototype.toDict = function (key) {
-    let dict = {}
-    for (let i = 0; i < this.length; i++) {
-        dict[this[i][key]] = this[i]
-    }
-    return dict
-}
 export function getOrCreateSessionId() {
     let sessionId = localStorage.getItem('GUEST_SESSION_ID');
     if (!sessionId) {

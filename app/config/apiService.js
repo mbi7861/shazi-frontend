@@ -35,7 +35,6 @@ export const apiServiceConfig = {
         notifications: '/notifications',
         settings: '/settings',
         profile: '/profile',
-        orders: '/orders',
         orderDetails: '/orders/{id}',
         orderStatus: '/orders/{id}/status',
         orderCancel: '/orders/{id}/cancel',
