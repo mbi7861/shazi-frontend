@@ -16,7 +16,10 @@ export const shippingService = {
       );
 
       if (data?.status) {
-        return { success: true, data };
+        // Backend now returns the standard { status, data, msg } envelope
+        // instead of a flat top-level body — unwrap it so callers keep
+        // reading result.data.shipping_cost etc. as before.
+        return { success: true, data: data.data };
       }
 
       return {
