@@ -4,11 +4,12 @@ import ProductCard from "@/components/ProductCard";
 import ProductFilters from "@/components/ProductFilters";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Loading from "@/components/Loading";
 import { useProducts } from "@/context/ProductContext";
-import { useEffect, useState, useCallback } from "react";
+import { Suspense, useEffect, useState, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
-const AllProducts = () => {
+const AllProductsContent = () => {
   const { fetchProducts, pagination, categories } = useProducts();
 
   const router = useRouter();
@@ -257,5 +258,11 @@ const AllProducts = () => {
     </>
   );
 };
+
+const AllProducts = () => (
+  <Suspense fallback={<Loading />}>
+    <AllProductsContent />
+  </Suspense>
+);
 
 export default AllProducts;

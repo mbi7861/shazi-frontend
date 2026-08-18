@@ -21,6 +21,7 @@ import AddToCartButton from "@/components/product/AddToCartButton";
 import BuyNowButton from "@/components/product/BuyNowButton";
 import SaveForLaterButton from "@/components/product/SaveForLaterButton";
 import { getDefaultProductItem } from "@/lib/product/getDefaultProductItem";
+import { getProductPricing } from "@/lib/product/getProductPricing";
 import { matchVariant } from "@/lib/product/matchVariant";
 import PageHero from "@/components/PageHero";
 
@@ -76,9 +77,7 @@ const ProductView = ({ initialProduct }) => {
         }
     }, [selectedOptions, productItems, defaultItem]);
 
-    const price = currentItem?.price?.discounted_price || 0;
-    const originalPrice = currentItem?.price?.price;
-    const hasDiscount = currentItem?.price?.discount_value != null;
+    const { price, originalPrice, hasDiscount } = getProductPricing(currentItem);
 
     const handleOptionSelect = (variation_id, option) => {
         setSelectedOptions(prev => ({

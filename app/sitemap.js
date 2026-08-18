@@ -1,6 +1,7 @@
 export const revalidate = 86400;
-import axios from 'axios';
 import { apiServiceConfig } from './config/apiService';
+import { fetchSitemapProductsSSR } from '@/lib/serverApi';
+
 export default async function sitemap() {
 
     const baseUrl = apiServiceConfig.siteUrl;
@@ -41,22 +42,24 @@ export default async function sitemap() {
             changeFrequency: 'monthly',
             priority: 0.5,
         },
+        {
+            url: `${baseUrl}terms-of-service`,
+            lastModified: new Date(),
+            changeFrequency: 'monthly',
+            priority: 0.5,
+        },
     ];
-    let productPages = [];
 
-    try {
-        const { data } = await axios.get(`${apiServiceConfig.baseURL}/sitemap-products`);
-        if (data.status) {
-            productPages = data.data.map((product) => ({
-                url: `${baseUrl}product/${product.slug ?? product.id}`,
-                lastModified: product.updated_at ? new Date(product.updated_at) : new Date(),
-                changeFrequency: 'daily',
-                priority: 0.7,
-            }));
-        }
-    } catch (error) {
-        console.error("Get Products Error:", error);
-    }
+    const result = await fetchSitemapProductsSSR();
+    const productPages = result.success
+        ? result.data.map((product) => ({
+            url: `${baseUrl}product/${product.slug ?? product.id}`,
+            lastModified: product.updated_at ? new Date(product.updated_at) : new Date(),
+            changeFrequency: 'daily',
+            priority: 0.7,
+        }))
+        : [];
+
     return [
         ...staticPages,
         ...productPages

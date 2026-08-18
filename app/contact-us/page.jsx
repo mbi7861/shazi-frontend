@@ -33,13 +33,13 @@ export default function ContactForm() {
     })
 
     const onSubmit = async (data) => {
-        try {
-            const response = await contactService.submitContact(data);
-            toast.success(response.message);
-            reset();
-        } catch (error) {
-            toast.error(error.message);
+        const result = await contactService.submitContact(data);
+        if (!result.success) {
+            toast.error(result.message || "Failed to send message");
+            return;
         }
+        toast.success(result.message || "Message sent successfully");
+        reset();
     }
 
     return (

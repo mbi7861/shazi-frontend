@@ -8,18 +8,14 @@ import Navbar from '@/components/Navbar';
 import { useCart } from '@/context/CartContext';
 import { cartService } from '@/services';
 import Link from 'next/link';
-import { getImageUrl } from '@/app/utils/utils';
+import { getImageUrl, resolveImageUUID, formatMoney } from '@/app/utils/utils';
 import PageHero from '@/components/PageHero';
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 
 const getItemImage = (item) => {
   const product = item.product || {};
-  return (
-    product.primary_image ||
-    product.images?.find((img) => img.is_preview)?.uuid ||
-    product.images?.[0]?.uuid
-  );
+  return resolveImageUUID(product.primary_image, product.images);
 };
 
 // ─── Cart row ────────────────────────────────────────────────────────────────
@@ -89,7 +85,7 @@ const CartRow = ({ item, onUpdateQty, onRemove, onSaveForLater }) => {
       </td>
 
       {/* Price */}
-      <td className="py-4 md:px-4 px-1 text-gray-600">Rs {price}</td>
+      <td className="py-4 md:px-4 px-1 text-gray-600">{formatMoney(price)}</td>
 
       {/* Quantity */}
       <td className="py-4 md:px-4 px-1">
@@ -110,7 +106,7 @@ const CartRow = ({ item, onUpdateQty, onRemove, onSaveForLater }) => {
       </td>
 
       {/* Subtotal */}
-      <td className="py-4 md:px-4 px-1 text-gray-600">Rs {total}</td>
+      <td className="py-4 md:px-4 px-1 text-gray-600">{formatMoney(total)}</td>
     </tr>
   );
 };
@@ -144,7 +140,7 @@ const SavedRow = ({ item, onMoveToCart, onRemove }) => {
             {item.variation_options.map((opt) => opt.value).join(', ')}
           </p>
         )}
-        <p className="text-sm text-gray-600 mt-0.5">Rs {price}</p>
+        <p className="text-sm text-gray-600 mt-0.5">{formatMoney(price)}</p>
         <div className="flex gap-4 mt-1">
           <button
             className="text-xs text-primary hover:underline transition-colors"

@@ -42,11 +42,12 @@ export const AuthProvider = ({ children }) => {
   const fetchUserData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const user = await authService.fetchUserData();
-      setUserData(user);
-    } catch (error) {
-      console.error('Error fetching user data:', error);
+      const result = await authService.fetchUserData();
+      if (result.success) {
+        setUserData(result.data);
+      }
       // Don't show toast for auth errors as they might be expected
+      // (e.g. no session yet for a first-time guest visitor)
     } finally {
       setIsLoading(false);
     }
@@ -56,13 +57,14 @@ export const AuthProvider = ({ children }) => {
   const login = useCallback(async (credentials) => {
     setIsLoading(true);
     try {
-      const response = await authService.login(credentials);
-      setUserData(response.user);
+      const result = await authService.login(credentials);
+      if (!result.success) {
+        toast.error(result.message || 'Login failed');
+        throw new Error(result.message || 'Login failed');
+      }
+      setUserData(result.data.user);
       toast.success('Login successful');
-      return response;
-    } catch (error) {
-      toast.error(error.message);
-      throw error;
+      return result.data;
     } finally {
       setIsLoading(false);
     }
@@ -72,13 +74,14 @@ export const AuthProvider = ({ children }) => {
   const register = useCallback(async (userData) => {
     setIsLoading(true);
     try {
-      const response = await authService.register(userData);
-      setUserData(response.user);
+      const result = await authService.register(userData);
+      if (!result.success) {
+        toast.error(result.message || 'Registration failed');
+        throw new Error(result.message || 'Registration failed');
+      }
+      setUserData(result.data.user);
       toast.success('Registration successful');
-      return response;
-    } catch (error) {
-      toast.error(error.message);
-      throw error;
+      return result.data;
     } finally {
       setIsLoading(false);
     }
@@ -88,12 +91,14 @@ export const AuthProvider = ({ children }) => {
   const logout = useCallback(async () => {
     setIsLoading(true);
     try {
-      await authService.logout();
-      toast.success('Logged out successfully');
-    } catch (error) {
-      toast.error(error.message);
-      // Still clear the session even if the server call fails
+      const result = await authService.logout();
+      if (result.success) {
+        toast.success('Logged out successfully');
+      } else {
+        toast.error(result.message || 'Logout failed');
+      }
     } finally {
+      // Still clear the session even if the server call fails
       Cookies.remove(AUTH_COOKIE_NAME);
       setUserData(null);
       setIsLoading(false);
@@ -104,13 +109,14 @@ export const AuthProvider = ({ children }) => {
   const updateProfile = useCallback(async (profileData) => {
     setIsLoading(true);
     try {
-      const response = await authService.updateProfile(profileData);
-      setUserData(response.user);
+      const result = await authService.updateProfile(profileData);
+      if (!result.success) {
+        toast.error(result.message || 'Profile update failed');
+        throw new Error(result.message || 'Profile update failed');
+      }
+      setUserData(result.data.user);
       toast.success('Profile updated successfully');
-      return response;
-    } catch (error) {
-      toast.error(error.message);
-      throw error;
+      return result.data;
     } finally {
       setIsLoading(false);
     }
@@ -120,12 +126,13 @@ export const AuthProvider = ({ children }) => {
   const changePassword = useCallback(async (passwordData) => {
     setIsLoading(true);
     try {
-      const response = await authService.changePassword(passwordData);
+      const result = await authService.changePassword(passwordData);
+      if (!result.success) {
+        toast.error(result.message || 'Password change failed');
+        throw new Error(result.message || 'Password change failed');
+      }
       toast.success('Password changed successfully');
-      return response;
-    } catch (error) {
-      toast.error(error.message);
-      throw error;
+      return result.data;
     } finally {
       setIsLoading(false);
     }
@@ -135,12 +142,13 @@ export const AuthProvider = ({ children }) => {
   const requestPasswordReset = useCallback(async (email) => {
     setIsLoading(true);
     try {
-      const response = await authService.requestPasswordReset(email);
+      const result = await authService.requestPasswordReset(email);
+      if (!result.success) {
+        toast.error(result.message || 'Password reset request failed');
+        throw new Error(result.message || 'Password reset request failed');
+      }
       toast.success('Password reset email sent');
-      return response;
-    } catch (error) {
-      toast.error(error.message);
-      throw error;
+      return result.data;
     } finally {
       setIsLoading(false);
     }
@@ -150,12 +158,13 @@ export const AuthProvider = ({ children }) => {
   const resetPassword = useCallback(async (resetData) => {
     setIsLoading(true);
     try {
-      const response = await authService.resetPassword(resetData);
+      const result = await authService.resetPassword(resetData);
+      if (!result.success) {
+        toast.error(result.message || 'Password reset failed');
+        throw new Error(result.message || 'Password reset failed');
+      }
       toast.success('Password reset successfully');
-      return response;
-    } catch (error) {
-      toast.error(error.message);
-      throw error;
+      return result.data;
     } finally {
       setIsLoading(false);
     }

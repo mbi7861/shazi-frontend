@@ -8,21 +8,23 @@ export const contactService = {
   /**
    * Submit contact form
    * @param {Object} formData - { name, email, subject, message }
-   * @returns {Promise<Object>} - Response data or throws error
+   * @returns {Promise<Object>} - { success, data, message, errors }
    */
   async submitContact(formData) {
     try {
       const { data } = await axiosInstance.post('/contact-us', formData);
 
       if (data.status) {
-        return data.data;
-      } else {
-        throw new Error(data.message || 'Failed to send message');
+        return { success: true, data: data.data, message: data.message };
       }
+      return { success: false, data: null, message: data.message, errors: data.errors || {} };
     } catch (error) {
-      throw new Error(
-        error?.response?.data?.message || error.message || 'Contact submission error'
-      );
+      return {
+        success: false,
+        data: null,
+        message: error?.response?.data?.message || error.message || 'Contact submission error',
+        errors: error?.response?.data?.errors || {},
+      };
     }
   },
 };

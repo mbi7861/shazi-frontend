@@ -3,8 +3,10 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { assets, HeartIcon, HeartFilledIcon } from '@/assets/assets';
-import { apiServiceConfig } from '@/app/config/apiService';
-import { useCart } from '@/context/CartContext';
+import { getImageUrl, resolveImageUUID, formatMoney } from '@/app/utils/utils';
+import { getDefaultProductItem } from '@/lib/product/getDefaultProductItem';
+import { getProductPricing } from '@/lib/product/getProductPricing';
+import { useSavedItem } from '@/hooks/useSavedItem';
 import Link from 'next/link';
 const stripHtmlTags = (html) => {
     if (!html) return '';
@@ -13,39 +15,22 @@ const stripHtmlTags = (html) => {
 };
 
 const ProductCard = ({ product }) => {
-    const currency = process.env.NEXT_PUBLIC_CURRENCY || 'Rs';
     const [hovered, setHovered] = useState(false);
-    const { saveItemForLater, removeFromSaved, savedItems } = useCart();
 
-    const defaultItem =
-        product.product_items?.find(item => item.is_default) ||
-        product.product_items?.[0];
+    const defaultItem = getDefaultProductItem(product.product_items);
 
-    const isSaved = savedItems.some((p) => p.id === defaultItem?.id);
+    const { isSaved, toggle } = useSavedItem(defaultItem, product);
 
     const handleToggleSave = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        if (!defaultItem) return;
-        if (isSaved) {
-            removeFromSaved(defaultItem.id);
-        } else {
-            saveItemForLater({ ...defaultItem, product });
-        }
+        toggle();
     };
 
-    const price = defaultItem?.price?.discounted_price || 0;
-    const originalPrice = defaultItem?.price?.price;
-    const hasDiscount = defaultItem?.price?.discount_value != null;
+    const { price, originalPrice, hasDiscount } = getProductPricing(defaultItem);
 
-    const imageUUID =
-        product.primary_image ||
-        product.images?.find(img => img.is_preview)?.uuid ||
-        product.images?.[0]?.uuid;
-
-    const imageUrl = imageUUID
-        ? `${apiServiceConfig.imageBaseUrl}/products/${imageUUID}`
-        : '';
+    const imageUUID = resolveImageUUID(product.primary_image, product.images);
+    const imageUrl = getImageUrl(imageUUID);
 
     return (
         <Link
@@ -110,10 +95,10 @@ const ProductCard = ({ product }) => {
 
                 {/* Price */}
                 <p className="text-gray-500 text-sm tracking-wide">
-                    {currency} {price}
+                    {formatMoney(price)}
                     {hasDiscount && (
                         <span className="line-through text-gray-300 ml-2">
-                            {currency} {originalPrice}
+                            {formatMoney(originalPrice)}
                         </span>
                     )}
                 </p>

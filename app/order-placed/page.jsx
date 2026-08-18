@@ -1,12 +1,14 @@
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import Navbar from '@/components/Navbar'
 import Link from 'next/link'
 import { orderService } from "@/services/orderService";
 import PageHero from '@/components/PageHero';
+import Loading from '@/components/Loading';
+import { getOrderStatusLabel, getOrderStatusStyles } from "@/lib/order/orderStatus";
 
-const OrderPlaced = () => {
+const OrderPlacedContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [orderData, setOrderData] = useState(null);
@@ -71,17 +73,6 @@ const OrderPlaced = () => {
       'completed': 'Completed',
       'failed': 'Failed',
       'pending_delivery': 'Pending Delivery'
-    };
-    return statuses[status] || status || 'N/A';
-  };
-
-  const getOrderStatusLabel = (status) => {
-    const statuses = {
-      'pending': 'Pending',
-      'processing': 'Processing',
-      'shipped': 'Shipped',
-      'delivered': 'Delivered',
-      'cancelled': 'Cancelled'
     };
     return statuses[status] || status || 'N/A';
   };
@@ -176,12 +167,7 @@ const OrderPlaced = () => {
             </div>
             <div>
               <p className="text-sm text-gray-500 mb-1">Order Status</p>
-              <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${orderData.status === 'delivered' ? 'bg-green-100 text-green-800' :
-                orderData.status === 'shipped' ? 'bg-blue-100 text-blue-800' :
-                  orderData.status === 'processing' ? 'bg-yellow-100 text-yellow-800' :
-                    orderData.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                      'bg-gray-100 text-gray-800'
-                }`}>
+              <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${getOrderStatusStyles(orderData.status)}`}>
                 {getOrderStatusLabel(orderData.status)}
               </span>
             </div>
@@ -279,5 +265,11 @@ const OrderPlaced = () => {
     </div>
   )
 }
+
+const OrderPlaced = () => (
+  <Suspense fallback={<Loading />}>
+    <OrderPlacedContent />
+  </Suspense>
+);
 
 export default OrderPlaced

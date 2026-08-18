@@ -1,10 +1,9 @@
 'use client';
 import React, {useEffect, useRef} from 'react';
-import Image from 'next/image';
-import { getImageUrl } from "@/app/utils/utils";
-import { assets } from "@/assets/assets";
+import { formatMoney } from "@/app/utils/utils";
 import { useCart } from "@/context/CartContext";
 import { cartService } from "@/services";
+import CartLineItem from "@/components/cart/CartLineItem";
 import Link from "next/link";
 
 const CartModal = ({ isOpen, onClose }) => {
@@ -46,63 +45,24 @@ const CartModal = ({ isOpen, onClose }) => {
                     ) : (
                         cartItems.map((item) => {
                             const itemKey = cartService.getItemKey(item);
-                            const quantity = item.quantity || 0;
-                            // Use price from product_item, not from nested prices array
-                            const price = item.price?.discounted_price || 0;
-                            const subtotal = quantity * price;
-                            // Get image from product data
-                            const product = item.product || {};
-                            const imageUrl = item.primary_image || 
-                                            product.images?.find(img => img.is_preview)?.uuid || 
-                                            product.images?.[0]?.uuid;
-
-                        return (
-                            <div key={itemKey} className="border-b pb-4 mb-4">
-                                <div className="flex gap-4">
-                                    <Image
-                                        src={getImageUrl(imageUrl)}
-                                        alt={product.title || 'Product'}
-                                        className="w-20 h-20 object-cover rounded"
-                                        width={80}
-                                        height={80}
-                                    />
-                                    <div className="flex-1">
-                                        <h3 className="font-semibold text-base text-gray-800">{product.title || 'Product'}</h3>
-                                        {/* Display variant options if available */}
-                                        {item.variation_options && item.variation_options.length > 0 && (
-                                            <p className="text-xs text-gray-500 mt-1">
-                                                {item.variation_options.map(opt => opt.value).join(', ')}
-                                            </p>
-                                        )}
-                                        <p className=" flex justify-between text-sm text-gray-500 "><span>Rs {price} </span> <span className="ml-2">(Sub Total: Rs {subtotal})</span></p>
-                                        <div className="flex items-center gap-3 mt-2">
-                                            <button onClick={() => updateCartQuantity(itemKey, quantity - 1)}>
-                                                <Image src={assets.decrease_arrow} alt="decrease" className="w-4 h-4" />
-                                            </button>
-                                            <span className="text-md">{quantity}</span>
-                                            <button onClick={() => updateCartQuantity(itemKey, quantity + 1)}>
-                                                <Image src={assets.increase_arrow} alt="increase" className="w-4 h-4" />
-                                            </button>
-                                            <button
-                                                onClick={() => removeFromCart(itemKey)}
-                                                className="ml-auto text-sm text-gray-600 hover:text-red-600"
-                                            >
-                                                Remove
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        );
-                    })
-                )}
+                            return (
+                                <CartLineItem
+                                    key={itemKey}
+                                    item={item}
+                                    editable
+                                    onUpdateQuantity={(qty) => updateCartQuantity(itemKey, qty)}
+                                    onRemove={() => removeFromCart(itemKey)}
+                                />
+                            );
+                        })
+                    )}
                 </div>
 
                 {/* Footer */}
                 <div className="border-t px-4 py-3">
                     <div className="flex justify-between text-lg font-semibold mb-3">
                         <span>Total</span>
-                        <span>Rs {cartAmount.toLocaleString()}</span>
+                        <span>{formatMoney(cartAmount)}</span>
                     </div>
                     <Link
                         href="/checkout"
@@ -118,12 +78,6 @@ const CartModal = ({ isOpen, onClose }) => {
                     >
                         View Cart
                     </Link>
-                    {/* <button
-                        onClick={onClose}
-                        className="mt-2 w-full text-sm text-gray-600 underline hover:text-gray-800"
-                    >
-                        Continue shopping
-                    </button> */}
                 </div>
             </div>
         </div>

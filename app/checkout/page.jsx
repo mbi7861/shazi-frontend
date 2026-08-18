@@ -324,7 +324,6 @@ export default function CheckoutPage() {
             subtotal={subtotal}
             shippingCost={shippingCost}
             total={total}
-            currency={currency}
             isShippingLoading={isShippingLoading}
           />
         </div>

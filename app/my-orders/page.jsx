@@ -7,26 +7,7 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import Loading from "@/components/Loading";
 import PageHero from "@/components/PageHero";
-
-const getOrderStatusLabel = (status) => {
-    const statuses = {
-        pending: "Pending",
-        processing: "Processing",
-        shipped: "Shipped",
-        delivered: "Delivered",
-        cancelled: "Cancelled",
-    };
-    return statuses[status?.toLowerCase()] || status || "N/A";
-};
-
-const getOrderStatusStyles = (status) => {
-    const s = status?.toLowerCase();
-    if (s === "delivered") return "bg-green-100 text-green-800";
-    if (s === "shipped") return "bg-blue-100 text-blue-800";
-    if (s === "processing") return "bg-yellow-100 text-yellow-800";
-    if (s === "cancelled") return "bg-red-100 text-red-800";
-    return "bg-gray-100 text-gray-800";
-};
+import { getOrderStatusLabel, getOrderStatusStyles } from "@/lib/order/orderStatus";
 
 const MyOrders = () => {
     const { orders, isLoading, fetchOrders } = useOrders();
