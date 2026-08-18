@@ -17,7 +17,7 @@ const SearchResultCard = ({ product, onClose }) => {
 
   const price = defaultItem?.price?.discounted_price || 0;
   const originalPrice = defaultItem?.price?.price;
-  const hasDiscount = defaultItem?.price?.discount_value !== null;
+  const hasDiscount = defaultItem?.price?.discount_value != null;
 
   const imageUUID =
     product.primary_image ||

@@ -11,6 +11,7 @@ import toast from "react-hot-toast";
 import { useAuth } from "@/context/AuthContext";
 import GoogleAuth from "@/components/GoogleAuth";
 import Cookies from "js-cookie";
+import { AUTH_COOKIE_OPTIONS } from "@/app/utils/authCookie";
 
 const loginSchema = z.object({
     email: z.string().email({ message: 'Invalid email address' }),
@@ -45,7 +46,7 @@ export default function AuthModal({ isOpen, onClose }) {
             const response = await axiosInstance.post(url, data);
             if (response?.data?.status) {
                 const token = response.data.data.session.session_token;
-                Cookies.set('AUTH-TOKEN', token);
+                Cookies.set('AUTH-TOKEN', token, AUTH_COOKIE_OPTIONS);
                 await fetchUserData(); // Refresh user data from context
                 toast.success(response.data.msg || (isLogin ? 'Login successful!' : 'Registration successful!'));
                 onClose();
@@ -79,8 +80,8 @@ export default function AuthModal({ isOpen, onClose }) {
 
             if (response?.data?.status) {
                 const token = response.data.data.session.session_token;
-                Cookies.set("AUTH-TOKEN", token);
-                await fetchUserData(); 
+                Cookies.set("AUTH-TOKEN", token, AUTH_COOKIE_OPTIONS);
+                await fetchUserData();
                 toast.success('Logged in with Google!');
                 onClose();
             } else {

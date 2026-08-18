@@ -1,8 +1,10 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState, useMemo } from 'react';
+import { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
 import { authService } from '@/services';
 import toast from 'react-hot-toast';
+import Cookies from 'js-cookie';
+import { AUTH_COOKIE_NAME } from '@/app/utils/authCookie';
 
 // Create Auth Context with default values
 export const AuthContext = createContext({
@@ -37,7 +39,7 @@ export const AuthProvider = ({ children }) => {
   const isAuthenticated = useMemo(() => !!userData, [userData]);
 
   // Fetch user data
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
     setIsLoading(true);
     try {
       const user = await authService.fetchUserData();
@@ -48,10 +50,10 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   // Login function
-  const login = async (credentials) => {
+  const login = useCallback(async (credentials) => {
     setIsLoading(true);
     try {
       const response = await authService.login(credentials);
@@ -64,10 +66,10 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   // Register function
-  const register = async (userData) => {
+  const register = useCallback(async (userData) => {
     setIsLoading(true);
     try {
       const response = await authService.register(userData);
@@ -80,26 +82,26 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   // Logout function
-  const logout = async () => {
+  const logout = useCallback(async () => {
     setIsLoading(true);
     try {
       await authService.logout();
-      setUserData(null);
       toast.success('Logged out successfully');
     } catch (error) {
       toast.error(error.message);
-      // Still clear user data even if logout fails
-      setUserData(null);
+      // Still clear the session even if the server call fails
     } finally {
+      Cookies.remove(AUTH_COOKIE_NAME);
+      setUserData(null);
       setIsLoading(false);
     }
-  };
+  }, []);
 
   // Update profile function
-  const updateProfile = async (profileData) => {
+  const updateProfile = useCallback(async (profileData) => {
     setIsLoading(true);
     try {
       const response = await authService.updateProfile(profileData);
@@ -112,10 +114,10 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   // Change password function
-  const changePassword = async (passwordData) => {
+  const changePassword = useCallback(async (passwordData) => {
     setIsLoading(true);
     try {
       const response = await authService.changePassword(passwordData);
@@ -127,10 +129,10 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   // Request password reset function
-  const requestPasswordReset = async (email) => {
+  const requestPasswordReset = useCallback(async (email) => {
     setIsLoading(true);
     try {
       const response = await authService.requestPasswordReset(email);
@@ -142,10 +144,10 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   // Reset password function
-  const resetPassword = async (resetData) => {
+  const resetPassword = useCallback(async (resetData) => {
     setIsLoading(true);
     try {
       const response = await authService.resetPassword(resetData);
@@ -157,12 +159,12 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   // Load user data on mount
   useEffect(() => {
     fetchUserData();
-  }, []);
+  }, [fetchUserData]);
 
   // Memoized context value to prevent unnecessary re-renders
   const value = useMemo(() => ({
@@ -177,7 +179,19 @@ export const AuthProvider = ({ children }) => {
     changePassword,
     requestPasswordReset,
     resetPassword,
-  }), [userData, isLoading, isAuthenticated]);
+  }), [
+    userData,
+    isLoading,
+    isAuthenticated,
+    login,
+    logout,
+    register,
+    fetchUserData,
+    updateProfile,
+    changePassword,
+    requestPasswordReset,
+    resetPassword,
+  ]);
 
   return (
     <AuthContext.Provider value={value}>

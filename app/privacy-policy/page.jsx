@@ -61,7 +61,7 @@ export default function PrivacyPolicy() {
               <h2 className="text-2xl font-semibold mb-4 text-gray-900">3. How We Use Your Information</h2>
               <p className="mb-4">We use the collected information for various purposes:</p>
               <ul className="list-disc list-inside space-y-2 ml-4">
-                <li>To process and fulfill your orders for breakers, lights, heaters, and other electrical supplies</li>
+                <li>To process and fulfill your orders for jewellery and other products</li>
                 <li>To communicate with you about your orders, products, and services</li>
                 <li>To improve our website and customer experience</li>
                 <li>To send you promotional materials and updates (with your consent)</li>

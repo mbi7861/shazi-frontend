@@ -6,6 +6,7 @@ import OrderSummary from '@/components/OrderSummary';
 import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 import { useCart } from '@/context/CartContext';
+import { cartService } from '@/services';
 import Link from 'next/link';
 import { getImageUrl } from '@/app/utils/utils';
 import PageHero from '@/components/PageHero';
@@ -24,6 +25,7 @@ const getItemImage = (item) => {
 // ─── Cart row ────────────────────────────────────────────────────────────────
 
 const CartRow = ({ item, onUpdateQty, onRemove, onSaveForLater }) => {
+  const itemKey = cartService.getItemKey(item);
   const quantity = item.quantity || 0;
   const price = item.price?.discounted_price || 0;
   const total = price * quantity;
@@ -31,7 +33,7 @@ const CartRow = ({ item, onUpdateQty, onRemove, onSaveForLater }) => {
   const imageUrl = getImageUrl(getItemImage(item));
 
   return (
-    <tr key={item.id} className="border-b border-gray-100 last:border-0">
+    <tr key={itemKey} className="border-b border-gray-100 last:border-0">
       {/* Product details */}
       <td className="flex items-center gap-4 py-4 md:px-4 px-1">
         <div>
@@ -48,13 +50,13 @@ const CartRow = ({ item, onUpdateQty, onRemove, onSaveForLater }) => {
           <div className="md:hidden flex gap-3 mt-1">
             <button
               className="text-xs text-red-400"
-              onClick={() => onRemove(item.id)}
+              onClick={() => onRemove(itemKey)}
             >
               Remove
             </button>
             <button
               className="text-xs text-primary"
-              onClick={() => onSaveForLater(item.id)}
+              onClick={() => onSaveForLater(itemKey)}
             >
               Save for later
             </button>
@@ -72,13 +74,13 @@ const CartRow = ({ item, onUpdateQty, onRemove, onSaveForLater }) => {
           <div className="flex gap-4 mt-1">
             <button
               className="text-xs text-red-400 hover:text-red-600 transition-colors"
-              onClick={() => onRemove(item.id)}
+              onClick={() => onRemove(itemKey)}
             >
               Remove
             </button>
             <button
               className="text-xs text-primary hover:underline transition-colors"
-              onClick={() => onSaveForLater(item.id)}
+              onClick={() => onSaveForLater(itemKey)}
             >
               Save for later
             </button>
@@ -92,16 +94,16 @@ const CartRow = ({ item, onUpdateQty, onRemove, onSaveForLater }) => {
       {/* Quantity */}
       <td className="py-4 md:px-4 px-1">
         <div className="flex items-center md:gap-2 gap-1">
-          <button onClick={() => onUpdateQty(item.id, quantity - 1)}>
+          <button onClick={() => onUpdateQty(itemKey, quantity - 1)}>
             <Image src={assets.decrease_arrow} alt="decrease" className="w-4 h-4" />
           </button>
           <input
             type="number"
             value={quantity}
-            onChange={(e) => onUpdateQty(item.id, Number(e.target.value))}
+            onChange={(e) => onUpdateQty(itemKey, Number(e.target.value))}
             className="w-8 border text-center appearance-none"
           />
-          <button onClick={() => onUpdateQty(item.id, quantity + 1)}>
+          <button onClick={() => onUpdateQty(itemKey, quantity + 1)}>
             <Image src={assets.increase_arrow} alt="increase" className="w-4 h-4" />
           </button>
         </div>
@@ -116,6 +118,7 @@ const CartRow = ({ item, onUpdateQty, onRemove, onSaveForLater }) => {
 // ─── Saved-for-later row ─────────────────────────────────────────────────────
 
 const SavedRow = ({ item, onMoveToCart, onRemove }) => {
+  const itemKey = cartService.getItemKey(item);
   const price = item.price?.discounted_price || 0;
   const product = item.product || {};
   const imageUrl = getImageUrl(getItemImage(item));
@@ -145,13 +148,13 @@ const SavedRow = ({ item, onMoveToCart, onRemove }) => {
         <div className="flex gap-4 mt-1">
           <button
             className="text-xs text-primary hover:underline transition-colors"
-            onClick={() => onMoveToCart(item.id)}
+            onClick={() => onMoveToCart(itemKey)}
           >
             Move to cart
           </button>
           <button
             className="text-xs text-red-400 hover:text-red-600 transition-colors"
-            onClick={() => onRemove(item.id)}
+            onClick={() => onRemove(itemKey)}
           >
             Remove
           </button>
@@ -205,7 +208,7 @@ const Cart = () => {
               <tbody>
                 {cartItems.map((item) => (
                   <CartRow
-                    key={item.id}
+                    key={cartService.getItemKey(item)}
                     item={item}
                     onUpdateQty={updateCartQuantity}
                     onRemove={removeFromCart}
@@ -247,7 +250,7 @@ const Cart = () => {
               <div>
                 {savedItems.map((item) => (
                   <SavedRow
-                    key={item.id}
+                    key={cartService.getItemKey(item)}
                     item={item}
                     onMoveToCart={moveToCart}
                     onRemove={removeFromSaved}

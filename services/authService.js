@@ -30,7 +30,7 @@ export const authService = {
    */
   async login(credentials) {
     try {
-      const { data } = await axiosInstance.post('/login', credentials);
+      const { data } = await axiosInstance.post('auth/login', credentials);
       
       if (data.status) {
         return data.data;
@@ -49,7 +49,7 @@ export const authService = {
    */
   async register(userData) {
     try {
-      const { data } = await axiosInstance.post('/register', userData);
+      const { data } = await axiosInstance.post('auth/register', userData);
       
       if (data.status) {
         return data.data;
@@ -67,7 +67,7 @@ export const authService = {
    */
   async logout() {
     try {
-      const { data } = await axiosInstance.post('/logout');
+      const { data } = await axiosInstance.post('auth/logout');
       
       if (data.status) {
         return data.data;

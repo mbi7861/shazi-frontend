@@ -6,6 +6,17 @@ import axiosInstance from '@/app/api/axiosInstance';
  */
 export const cartService = {
   /**
+   * Canonical cart-item key. Mirrors the key addToCart stores in
+   * localStorage under, so any code identifying a cart item (in-memory
+   * state or localStorage) uses the same id and can't drift apart.
+   * @param {Object} item - Product item (or cart line) to key
+   * @returns {string|number|undefined} - The canonical item id
+   */
+  getItemKey(item) {
+    return item?.product_item_id ?? item?.id;
+  },
+
+  /**
    * Fetch cart products from API
    * @param {Object} cart - Cart object from localStorage
    * @returns {Promise<Array>} - Cart products or throws error
@@ -59,7 +70,7 @@ export const cartService = {
   addToCart(productItem, quantity = 1) {
     try {
       // Use product_item.id as the key for variant-based pricing
-      const itemId = productItem.product_item_id ?? productItem.id;
+      const itemId = this.getItemKey(productItem);
       const stock = productItem.stock ?? 0;
       const cart = this.getCartFromStorage();
       const currentQty = cart[itemId]?.quantity || 0;

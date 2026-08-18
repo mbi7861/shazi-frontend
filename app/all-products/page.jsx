@@ -23,7 +23,7 @@ const AllProducts = () => {
 
   // Filter state
   const [filters, setFilters] = useState({
-    per_page: 15,
+    per_page: 16,
     search: search,
     category: category,
   });
@@ -53,8 +53,10 @@ const AllProducts = () => {
       const result = await fetchProducts(filters);
       if (result) {
         setProducts(result.products || []);
-        setTotalProducts(result.products.length || 0);
-        setCurrentPage(pagination?.current_page || 1);
+        setTotalProducts(
+          result.pagination?.total ?? result.products?.length ?? 0,
+        );
+        setCurrentPage(result.pagination?.current_page || 1);
       }
     } catch (error) {
       console.error("Error loading products:", error);
@@ -70,7 +72,8 @@ const AllProducts = () => {
     loadProducts(filtersWithPage);
   };
 
-  // Handle search and category parameter changes
+  // Handle search and category parameter changes (also covers the initial
+  // load on mount, so there's no separate mount-only effect duplicating it)
   useEffect(() => {
     const newFilters = {
       per_page: filters.per_page || 16,
@@ -79,16 +82,8 @@ const AllProducts = () => {
     };
     setFilters(newFilters);
     loadProducts(newFilters);
-  }, [search, category]);
-
-  // Initial load - only run once on mount
-  useEffect(() => {
-    const initialFilters = { per_page: 15 };
-    if (search) initialFilters.search = search;
-    if (category) initialFilters.category = category;
-    loadProducts(initialFilters);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [search, category]);
 
   // Handle pagination
   const handlePageChange = (page) => {
@@ -99,10 +94,10 @@ const AllProducts = () => {
 
   const clearFilters = useCallback(() => {
     router.push("/all-products", { scroll: false });
-    setFilters({ per_page: 15 });
+    setFilters({ per_page: 16 });
     setPriceRange({ min: "", max: "" });
     setCurrentPage(1);
-    loadProducts({ per_page: 15 });
+    loadProducts({ per_page: 16 });
   }, [router]);
 
   const hasActiveFilters =
@@ -143,7 +138,7 @@ const AllProducts = () => {
             {!loading && products.length > 0 && (
               <p className="text-sm text-gray-500">
                 Page {currentPage} of{" "}
-                {Math.ceil(totalProducts / (filters.per_page || 15))}
+                {Math.ceil(totalProducts / (filters.per_page || 16))}
               </p>
             )}
           </div>
@@ -178,7 +173,7 @@ const AllProducts = () => {
           <div className="flex-1">
             {loading ? (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
-                {Array.from({ length: filters.per_page || 15 }).map(
+                {Array.from({ length: filters.per_page || 16 }).map(
                   (_, index) => (
                     <div key={index} className="animate-pulse">
                       <div className="bg-gray-200 rounded-lg w-full h-52 mb-2"></div>
@@ -198,7 +193,7 @@ const AllProducts = () => {
                 </div>
 
                 {/* Pagination */}
-                {totalProducts > (filters.per_page || 15) && (
+                {totalProducts > (filters.per_page || 16) && (
                   <div className="flex items-center justify-center gap-2 mt-12 mb-8">
                     <button
                       onClick={() => handlePageChange(currentPage - 1)}
@@ -211,7 +206,7 @@ const AllProducts = () => {
                     {Array.from({
                       length: Math.min(
                         5,
-                        Math.ceil(totalProducts / (filters.per_page || 15)),
+                        Math.ceil(totalProducts / (filters.per_page || 16)),
                       ),
                     }).map((_, index) => {
                       const page = index + 1;
@@ -233,7 +228,7 @@ const AllProducts = () => {
                       onClick={() => handlePageChange(currentPage + 1)}
                       disabled={
                         currentPage >=
-                        Math.ceil(totalProducts / (filters.per_page || 15))
+                        Math.ceil(totalProducts / (filters.per_page || 16))
                       }
                       className="px-3 py-2 border border-gray-300 rounded-md disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50"
                     >

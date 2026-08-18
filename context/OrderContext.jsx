@@ -44,9 +44,9 @@ export const OrderProvider = ({ children }) => {
       setIsLoading(false);
     }
   }, [isAuthenticated]);
-  const refreshOrders = async () => {
+  const refreshOrders = useCallback(async () => {
     await fetchOrders();
-  };
+  }, [fetchOrders]);
 
 
   const value = useMemo(
@@ -56,7 +56,7 @@ export const OrderProvider = ({ children }) => {
       fetchOrders,
       refreshOrders,
     }),
-    [orders, isLoading, fetchOrders]
+    [orders, isLoading, fetchOrders, refreshOrders]
   );
 
   return <OrderContext.Provider value={value}>{children}</OrderContext.Provider>;

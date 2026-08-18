@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState, useMemo } from 'react';
+import { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
 import { productService } from '@/services';
 import toast from 'react-hot-toast';
 
@@ -36,16 +36,16 @@ export const ProductProvider = ({ children }) => {
   const [pagination, setPagination] = useState(null);
 
   // Fetch products with filters
-  const fetchProducts = async (newFilters = {}) => {
+  const fetchProducts = useCallback(async (newFilters = {}) => {
     setIsLoading(true);
     try {
       const mergedFilters = { ...filters, ...newFilters };
       const response = await productService.fetchProducts(mergedFilters);
-      
+
       setProducts(response.products);
       setPagination(response.pagination);
       setFilters(mergedFilters);
-      
+
       return response;
     } catch (error) {
       toast.error(error.message);
@@ -53,10 +53,10 @@ export const ProductProvider = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [filters]);
 
   // Fetch categories
-  const fetchCategories = async () => {
+  const fetchCategories = useCallback(async () => {
     try {
       const categoriesData = await productService.fetchCategories();
       setCategories(categoriesData.data);
@@ -65,18 +65,18 @@ export const ProductProvider = ({ children }) => {
       toast.error(error.message);
       throw error;
     }
-  };
+  }, []);
 
 
   // Search products
-  const searchProducts = async (query, searchFilters = {}) => {
+  const searchProducts = useCallback(async (query, searchFilters = {}) => {
     setIsLoading(true);
     try {
       const response = await productService.searchProducts(query, searchFilters);
-      
+
       setProducts(response.products);
       setPagination(response.pagination);
-      
+
       return response;
     } catch (error) {
       toast.error(error.message);
@@ -84,22 +84,22 @@ export const ProductProvider = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, []);
 
   // Update filters
-  const updateFilters = (newFilters) => {
+  const updateFilters = useCallback((newFilters) => {
     setFilters(prev => ({ ...prev, ...newFilters }));
-  };
+  }, []);
 
   // Clear all filters
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     setFilters({});
-  };
+  }, []);
 
   // Get featured products
-  const getFeaturedProducts = () => {
+  const getFeaturedProducts = useCallback(() => {
     return products.filter(product => product.is_feature === 1);
-  };
+  }, [products]);
 
   // Load initial data
   useEffect(() => {
@@ -115,6 +115,10 @@ export const ProductProvider = ({ children }) => {
     };
 
     loadInitialData();
+    // Intentionally run once on mount only — fetchProducts/fetchCategories
+    // are stable enough here and re-running on every filters change would
+    // refetch the initial page unexpectedly.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Memoized context value to prevent unnecessary re-renders
@@ -130,7 +134,19 @@ export const ProductProvider = ({ children }) => {
     setFilters: updateFilters,
     clearFilters,
     getFeaturedProducts,
-  }), [products, categories, isLoading, filters, pagination]);
+  }), [
+    products,
+    categories,
+    isLoading,
+    filters,
+    pagination,
+    fetchProducts,
+    fetchCategories,
+    searchProducts,
+    updateFilters,
+    clearFilters,
+    getFeaturedProducts,
+  ]);
 
   return (
     <ProductContext.Provider value={value}>

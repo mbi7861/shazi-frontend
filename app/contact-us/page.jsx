@@ -33,9 +33,8 @@ export default function ContactForm() {
     })
 
     const onSubmit = async (data) => {
-        console.log("Submitted", data)
         try {
-            const response = await contactService.submitContactForm(data);
+            const response = await contactService.submitContact(data);
             toast.success(response.message);
             reset();
         } catch (error) {
@@ -48,7 +47,7 @@ export default function ContactForm() {
             <Navbar />
             <PageHero title="Contact Us" />
             <div className="px-6 md:px-16 lg:px-32 py-24 flex flex-col md:flex-row justify-between">
-                <form className="w-full max-w-xl">
+                <form className="w-full max-w-xl" onSubmit={handleSubmit(onSubmit)}>
                     <p className="text-2xl md:text-3xl text-gray-500">
                         Contact <span className="font-semibold text-primary">Us</span>
                     </p>
@@ -59,11 +58,11 @@ export default function ContactForm() {
                             Full Name
                             <input
                                 type="text"
-                                name="name"
-                                required
+                                {...register("name")}
                                 placeholder="Enter your name"
                                 className="mt-1 px-3 py-2.5 border border-gray-400/40 rounded w-full text-gray-700 outline-none focus:border-primary transition"
                             />
+                            {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
                         </label>
 
                         {/* Email */}
@@ -71,11 +70,11 @@ export default function ContactForm() {
                             Email Address
                             <input
                                 type="email"
-                                name="email"
-                                required
+                                {...register("email")}
                                 placeholder="Enter your email"
                                 className="mt-1 px-3 py-2.5 border border-gray-400/40 rounded w-full text-gray-700 outline-none focus:border-primary transition"
                             />
+                            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
                         </label>
 
                         {/* Subject */}
@@ -83,29 +82,31 @@ export default function ContactForm() {
                             Subject
                             <input
                                 type="text"
-                                name="subject"
+                                {...register("subject")}
                                 placeholder="Enter subject"
                                 className="mt-1 px-3 py-2.5 border border-gray-400/40 rounded w-full text-gray-700 outline-none focus:border-primary transition"
                             />
+                            {errors.subject && <p className="text-red-500 text-xs mt-1">{errors.subject.message}</p>}
                         </label>
 
                         {/* Message */}
                         <label className="block text-sm font-medium text-gray-600">
                             Message
                             <textarea
-                                name="message"
+                                {...register("message")}
                                 rows={5}
-                                required
                                 placeholder="Write your message here..."
                                 className="mt-1 px-3 py-2.5 border border-gray-400/40 rounded w-full text-gray-700 outline-none resize-none focus:border-primary transition"
                             ></textarea>
+                            {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message.message}</p>}
                         </label>
 
                         <button
-                            onSubmit={onSubmit}
-                            className="w-full bg-primary text-white py-3 hover:bg-primary/80 transition uppercase"
+                            type="submit"
+                            disabled={isSubmitting}
+                            className="w-full bg-primary text-white py-3 hover:bg-primary/80 transition uppercase disabled:opacity-60"
                         >
-                            Send Message
+                            {isSubmitting ? "Sending..." : "Send Message"}
                         </button>
                     </div>
                 </form>

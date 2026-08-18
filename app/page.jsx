@@ -10,12 +10,12 @@ import BrandStory from "@/components/home/HomeStory";
 // SEO Metadata
 export const metadata = {
   title: "Shazi Jewels - Your Trusted Online Shopping Destination",
-  description: "Discover a wide range of quality products at Shazi Jewels. Shop breakers, lights, heaters, and other electrical home supplies with fast delivery and secure checkout. Your safety is our best priority.",
-  keywords: "online shopping, ecommerce, electronics, fashion, home essentials, Shazi Jewels, quality products, fast delivery",
+  description: "Discover a wide range of handcrafted gold and silver jewellery at Shazi Jewels. Shop rings, necklaces, earrings and bracelets with fast delivery and secure checkout. Your safety is our best priority.",
+  keywords: "online shopping, jewellery, gold jewellery, silver jewellery, handcrafted jewellery Pakistan, Shazi Jewels, quality products, fast delivery",
   authors: [{ name: "Shazi Jewels" }],
   openGraph: {
     title: "Shazi Jewels - Your Trusted Online Shopping Destination",
-    description: "Discover a wide range of quality products at Shazi Jewels. Shop electronics, fashion, home essentials, and more.",
+    description: "Discover a wide range of handcrafted gold and silver jewellery at Shazi Jewels. Rings, necklaces, earrings, bracelets and more.",
     type: "website",
     locale: "en_US",
     siteName: "Shazi Jewels",
@@ -23,7 +23,7 @@ export const metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Shazi Jewels - Your Trusted Online Shopping Destination",
-    description: "Discover a wide range of quality products at Shazi Jewels.",
+    description: "Discover a wide range of handcrafted gold and silver jewellery at Shazi Jewels.",
   },
   robots: {
     index: true,

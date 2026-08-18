@@ -30,9 +30,9 @@ const ProductView = ({ initialProduct }) => {
 
     const productItems = productData?.product_items || [];
     const defaultItem = getDefaultProductItem(productItems);
-    const variations = initialProduct.variations;
+    const variations = initialProduct?.variations || [];
 
-    const category = productData?.category
+    const category = productData?.category || {};
     const categoryHref = category.slug
         ? `/all-products?category=${encodeURIComponent(category.slug)}`
         : "/all-products";
@@ -40,7 +40,7 @@ const ProductView = ({ initialProduct }) => {
     const getInitialSelectedOptions = () => {
         const options = {};
         variations.forEach(variation => {
-            if (variation.options.length > 0) {
+            if (variation.options?.length > 0) {
                 options[variation.id] = variation.options[0].id;
             }
         });
@@ -78,7 +78,7 @@ const ProductView = ({ initialProduct }) => {
 
     const price = currentItem?.price?.discounted_price || 0;
     const originalPrice = currentItem?.price?.price;
-    const hasDiscount = currentItem?.price?.discount_value !== null;
+    const hasDiscount = currentItem?.price?.discount_value != null;
 
     const handleOptionSelect = (variation_id, option) => {
         setSelectedOptions(prev => ({

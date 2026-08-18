@@ -12,19 +12,19 @@ export default async function sitemap() {
             priority: 1,
         },
         {
-            url: `${baseUrl}about`,
+            url: `${baseUrl}about-us`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.8,
         },
         {
-            url: `${baseUrl}shop`,
+            url: `${baseUrl}all-products`,
             lastModified: new Date(),
             changeFrequency: 'daily',
             priority: 0.9,
         },
         {
-            url: `${baseUrl}contact`,
+            url: `${baseUrl}contact-us`,
             lastModified: new Date(),
             changeFrequency: 'monthly',
             priority: 0.5,

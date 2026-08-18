@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import WhatsappWidget from "@/components/social/WhatsappWidget";
 import SearchContainer from "@/components/search/SearchContainer";
 import Script from "next/script";
+import { apiServiceConfig } from "@/app/config/apiService";
 
 const outfit = Outfit({ subsets: ["latin"], weight: ["300", "400", "500"] });
 
@@ -32,13 +33,13 @@ export const metadata = {
     "necklaces",
     "earrings",
   ],
-  metadataBase: new URL("https://shazi.com"),
+  metadataBase: new URL(apiServiceConfig.siteUrl),
   alternates: {
     canonical: "/",
   },
   openGraph: {
     type: "website",
-    url: "https://shazijewels.com",
+    url: apiServiceConfig.siteUrl,
     title: "Shazi Jewels — Handcrafted Gold & Silver Jewellery",
     description:
       "Shop handcrafted gold and silver jewellery at Shazi Jewels. Rings, necklaces, earrings and bracelets crafted with care.",

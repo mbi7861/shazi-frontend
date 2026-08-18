@@ -5,7 +5,7 @@ import { apiServiceConfig } from '@/app/config/apiService';
 
 const axiosInstance = axios.create({
     baseURL: apiServiceConfig.baseURL,
-    credentials: 'include'
+    withCredentials: true
 });
 
 axiosInstance.interceptors.request.use(
@@ -19,7 +19,12 @@ axiosInstance.interceptors.request.use(
         }
         return config;
     },
-    (error) => console.error(error)
+    (error) => Promise.reject(error)
+);
+
+axiosInstance.interceptors.response.use(
+    (response) => response,
+    (error) => Promise.reject(error)
 );
 
 export default axiosInstance;

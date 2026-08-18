@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { getImageUrl } from "@/app/utils/utils";
 import { assets } from "@/assets/assets";
 import { useCart } from "@/context/CartContext";
+import { cartService } from "@/services";
 import Link from "next/link";
 
 const CartModal = ({ isOpen, onClose }) => {
@@ -28,8 +29,8 @@ const CartModal = ({ isOpen, onClose }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 z-50 bg-black/50 flex justify-end" ref={modalRef}>
-            <div className="bg-white w-full sm:w-[90vw] md:w-[440px] h-full shadow-xl flex flex-col">
+        <div className="fixed inset-0 z-50 bg-black/50 flex justify-end">
+            <div ref={modalRef} className="bg-white w-full sm:w-[90vw] md:w-[440px] h-full shadow-xl flex flex-col">
                 {/* Header */}
                 <div className="flex justify-between items-center px-4 py-3 border-b">
                     <h2 className="text-xl font-bold">Cart</h2>
@@ -44,6 +45,7 @@ const CartModal = ({ isOpen, onClose }) => {
                         </div>
                     ) : (
                         cartItems.map((item) => {
+                            const itemKey = cartService.getItemKey(item);
                             const quantity = item.quantity || 0;
                             // Use price from product_item, not from nested prices array
                             const price = item.price?.discounted_price || 0;
@@ -55,7 +57,7 @@ const CartModal = ({ isOpen, onClose }) => {
                                             product.images?.[0]?.uuid;
 
                         return (
-                            <div key={item.id} className="border-b pb-4 mb-4">
+                            <div key={itemKey} className="border-b pb-4 mb-4">
                                 <div className="flex gap-4">
                                     <Image
                                         src={getImageUrl(imageUrl)}
@@ -74,15 +76,15 @@ const CartModal = ({ isOpen, onClose }) => {
                                         )}
                                         <p className=" flex justify-between text-sm text-gray-500 "><span>Rs {price} </span> <span className="ml-2">(Sub Total: Rs {subtotal})</span></p>
                                         <div className="flex items-center gap-3 mt-2">
-                                            <button onClick={() => updateCartQuantity(item.id, quantity - 1)}>
+                                            <button onClick={() => updateCartQuantity(itemKey, quantity - 1)}>
                                                 <Image src={assets.decrease_arrow} alt="decrease" className="w-4 h-4" />
                                             </button>
                                             <span className="text-md">{quantity}</span>
-                                            <button onClick={() => updateCartQuantity(item.id, quantity + 1)}>
+                                            <button onClick={() => updateCartQuantity(itemKey, quantity + 1)}>
                                                 <Image src={assets.increase_arrow} alt="increase" className="w-4 h-4" />
                                             </button>
                                             <button
-                                                onClick={() => removeFromCart(item.id)}
+                                                onClick={() => removeFromCart(itemKey)}
                                                 className="ml-auto text-sm text-gray-600 hover:text-red-600"
                                             >
                                                 Remove

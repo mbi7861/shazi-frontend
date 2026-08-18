@@ -1,13 +1,17 @@
 import ProductView from "./ProductView";
-import axios from "axios";
+import { notFound } from "next/navigation";
 import { apiServiceConfig, getApiServiceUrl } from "@/app/config/apiService";
+import { getImageUrl } from "@/app/utils/utils";
+
+export const revalidate = 60;
 
 export async function generateMetadata({ params }) {
     const { id } = await params;
 
     try {
         const productUrl = getApiServiceUrl(`${apiServiceConfig.endpoints.products}/${id}`);
-        const { data } = await axios.get(productUrl);
+        const response = await fetch(productUrl, { next: { revalidate: 60 } });
+        const data = await response.json();
 
         if (!data.status || !data.data) {
             return {
@@ -18,10 +22,10 @@ export async function generateMetadata({ params }) {
 
         const product = data.data;
         const plainTextDescription = product.description?.replace(/<[^>]+>/g, '').substring(0, 160) || "Explore our handcrafted jewellery collection.";
-        
+
         // Find main image
         const mainImage = product.primary_image || product.images?.find((img) => img.is_preview)?.uuid || product.images?.[0]?.uuid;
-        const imageUrl = mainImage ? `${apiServiceConfig.endpoints.imageUrl}/${mainImage}` : null;
+        const imageUrl = mainImage ? getImageUrl(mainImage) : null;
 
         return {
             title: `${product.title} - Shazi Jewels`,
@@ -50,26 +54,25 @@ export async function generateMetadata({ params }) {
 const ProductPage = async ({ params }) => {
     const { id } = await params;
 
+    let data;
     try {
         const productUrl = getApiServiceUrl(`${apiServiceConfig.endpoints.products}/${id}`);
-        const { data } = await axios.get(
-            productUrl,
-            { next: { revalidate: 60 } }
-        );
-
-        if (!data.status) {
-            return <div>Product not found</div>;
-        }
-
-        return (
-            <ProductView
-                initialProduct={data.data}
-            />
-        );
+        const response = await fetch(productUrl, { next: { revalidate: 60 } });
+        data = await response.json();
     } catch (err) {
-        console.error("Server Error:", err.response?.data?.message || err.message);
-        return <div>Failed to load product</div>;
+        console.error("Server Error:", err.message);
+        notFound();
     }
+
+    if (!data.status) {
+        notFound();
+    }
+
+    return (
+        <ProductView
+            initialProduct={data.data}
+        />
+    );
 };
 
 export default ProductPage;
