@@ -33,9 +33,18 @@ export const orderService = {
    */
   async fetchOrders(filters = {}) {
     try {
-      const { data } = await axiosInstance.get("/orders");
+      const { data } = await axiosInstance.get("/orders", { params: filters });
       if (data.status) {
-        return { success: true, data: data.data };
+        // GET /orders is now paginated (was previously unbounded) — the
+        // order list lives at data.data.data, alongside current_page/last_page.
+        return {
+          success: true,
+          data: data.data?.data ?? [],
+          pagination: {
+            currentPage: data.data?.current_page,
+            lastPage: data.data?.last_page,
+          },
+        };
       }
       return { success: false, data: null, message: data.message, errors: data.errors || {} };
     } catch (error) {
